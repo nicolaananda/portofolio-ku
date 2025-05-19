@@ -25,30 +25,24 @@ export default defineConfig(({ mode }) => ({
     sourcemap: mode === 'development',
     rollupOptions: {
       output: {
-        manualChunks: (id) => {
-          // Core React and routing
-          if (id.includes('node_modules/react') || 
-              id.includes('node_modules/react-dom') ||
-              id.includes('node_modules/react-router-dom')) {
-            return 'vendor-react';
-          }
-          
-          // UI Components
-          if (id.includes('node_modules/@radix-ui')) {
-            return 'vendor-ui';
-          }
-          
-          // Utility libraries
-          if (id.includes('node_modules/date-fns') ||
-              id.includes('node_modules/lucide-react') ||
-              id.includes('node_modules/sonner')) {
-            return 'vendor-utils';
-          }
-          
-          // Query and state management
-          if (id.includes('node_modules/@tanstack')) {
-            return 'vendor-query';
-          }
+        manualChunks: {
+          'vendor': [
+            'react',
+            'react-dom',
+            'react-router-dom',
+            '@tanstack/react-query'
+          ],
+          'ui': [
+            '@radix-ui/react-dialog',
+            '@radix-ui/react-dropdown-menu',
+            '@radix-ui/react-slot',
+            '@radix-ui/react-toast'
+          ],
+          'utils': [
+            'date-fns',
+            'lucide-react',
+            'sonner'
+          ]
         },
         chunkFileNames: 'assets/[name]-[hash].js',
         assetFileNames: (assetInfo) => {
