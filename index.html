@@ -11,9 +11,19 @@
     <meta name="googlebot" content="index, follow" />
     <link rel="canonical" href="https://nicola.id" />
 
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Preconnect to Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Fonts with display=swap -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript>
+      <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    </noscript>
 
+    <!-- Preload critical assets -->
+    <link rel="modulepreload" href="/src/main.tsx" as="script" type="module">
+    
     <!-- Open Graph / Social Media Meta Tags -->
     <meta property="og:title" content="Nicola Ananda | Data Analyst & Web Developer Portfolio" />
     <meta property="og:description" content="Professional portfolio of Nicola Ananda, showcasing expertise in Data Analytics, Web Development, and AI. View projects, skills, and experience in data analysis, Python, SQL, and modern web technologies." />
@@ -63,6 +73,7 @@
   <body>
     <div id="root"></div>
     
-    <script type="module" src="/src/main.tsx"></script>
+    <!-- Defer non-critical JavaScript -->
+    <script type="module" src="/src/main.tsx" defer></script>
   </body>
 </html>
