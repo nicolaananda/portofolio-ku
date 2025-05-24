@@ -80,22 +80,43 @@ const PortfolioPage = () => {
 
   return (
     <div className="min-h-screen pt-20 pb-16">
-      <div className="container px-4">
-        <AnimatedSection>
-          <h1 className="section-title text-center">My Portfolio</h1>
-          <p className="mx-auto mt-6 max-w-2xl text-center text-lg text-muted-foreground">
-            Explore my recent projects and see how I approach design and development challenges.
-          </p>
-        </AnimatedSection>
+      {/* Hero Section */}
+      <section className="relative py-20 overflow-hidden hero-gradient">
+        <div className="absolute inset-0 z-0">
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-accent/10"></div>
+          <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center opacity-20 [mask-image:radial-gradient(ellipse_at_center,white,transparent)]"></div>
+          
+          {/* Floating shapes */}
+          <div className="absolute top-10 left-20 w-20 h-20 bg-gradient-to-br from-primary/20 to-accent/20 rounded-full blur-xl floating-animation"></div>
+          <div className="absolute bottom-20 right-10 w-32 h-32 bg-gradient-to-br from-accent/15 to-primary/15 rounded-lg rotate-45 blur-xl floating-animation" style={{animationDelay: '2s'}}></div>
+        </div>
         
-        <div className="mt-12">
+        <div className="relative container px-4 z-10">
+          <AnimatedSection>
+            <h1 className="text-5xl md:text-6xl font-bold text-center mb-8">
+              My <span className="gradient-text">Portfolio</span>
+            </h1>
+            <p className="mx-auto mt-6 max-w-3xl text-center text-xl text-muted-foreground leading-relaxed">
+              Explore my recent projects and see how I approach design and development challenges with a focus on data-driven solutions and modern web technologies.
+            </p>
+          </AnimatedSection>
+        </div>
+      </section>
+      
+      <div className="container px-4">
+        
+        <div className="py-20">
           <AnimatedSection delay={100}>
-            <div className="mb-8 flex flex-wrap justify-center gap-2">
+            <div className="mb-16 flex flex-wrap justify-center gap-3">
               {categories.map((cat) => (
                 <Button
                   key={cat}
-                  variant={selectedCategory === cat ? 'outline' : 'ghost'}
-                  className="rounded-full"
+                  variant={selectedCategory === cat ? 'default' : 'outline'}
+                  className={`rounded-full px-6 py-3 text-sm font-medium transition-all duration-300 ${
+                    selectedCategory === cat 
+                      ? 'bg-gradient-to-r from-primary to-accent text-white shadow-lg hover:shadow-xl' 
+                      : 'hover:bg-primary/10 hover:text-primary'
+                  }`}
                   onClick={() => setSelectedCategory(cat)}
                 >
                   {cat}
@@ -104,29 +125,41 @@ const PortfolioPage = () => {
             </div>
           </AnimatedSection>
           
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-3">
             {filteredProjects.map((project, index) => (
               <AnimatedSection 
                 key={project.id} 
                 delay={150 + index * 50}
-                className="group overflow-hidden rounded-lg bg-card transition-all hover:shadow-lg"
+                className="group overflow-hidden rounded-2xl glass-effect transition-all hover:shadow-2xl hover:-translate-y-3"
               >
                 <Link to={`/portfolio/${project.id}`}>
-                  <div className="relative h-64 overflow-hidden">
+                  <div className="relative h-72 overflow-hidden">
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-10"></div>
                     <img 
                       src={project.imageUrl} 
                       alt={project.title} 
-                      className="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-110" 
+                      className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-110" 
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 transition-opacity group-hover:opacity-100"></div>
-                    <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity group-hover:opacity-100">
-                      <Button variant="secondary">View Details</Button>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100 z-20"></div>
+                    <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-all duration-500 group-hover:opacity-100 z-30">
+                      <Button 
+                        variant="secondary" 
+                        className="bg-white/90 text-gray-900 hover:bg-white border-2 border-white/30 backdrop-blur-sm shadow-2xl transform scale-95 group-hover:scale-100 transition-transform duration-300"
+                      >
+                        View Details
+                      </Button>
+                    </div>
+                    
+                    {/* Category badge */}
+                    <div className="absolute top-4 left-4 z-30">
+                      <span className="inline-block rounded-full bg-gradient-to-r from-primary to-accent px-3 py-1 text-xs font-semibold text-white shadow-lg">
+                        {project.category}
+                      </span>
                     </div>
                   </div>
-                  <div className="p-6">
-                    <span className="text-xs font-medium text-primary">{project.category}</span>
-                    <h3 className="mt-2 text-xl font-semibold">{project.title}</h3>
-                    <p className="mt-2 text-muted-foreground">{project.description}</p>
+                  <div className="p-8">
+                    <h3 className="text-2xl font-bold mb-3 group-hover:text-primary transition-colors duration-300">{project.title}</h3>
+                    <p className="text-muted-foreground leading-relaxed">{project.description}</p>
                   </div>
                 </Link>
               </AnimatedSection>

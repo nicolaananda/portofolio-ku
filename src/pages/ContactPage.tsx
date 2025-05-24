@@ -55,65 +55,86 @@ const ContactPage = () => {
   
   return (
     <div className="min-h-screen pt-20 pb-16">
-      <div className="container px-4">
-        <AnimatedSection>
-          <h1 className="section-title text-center">Get in Touch</h1>
-          <p className="mx-auto mt-6 max-w-2xl text-center text-lg text-muted-foreground">
-            Have a question or want to work together? Feel free to contact me using the form below or through my contact information.
-          </p>
-        </AnimatedSection>
+      {/* Hero Section */}
+      <section className="relative py-20 overflow-hidden hero-gradient">
+        <div className="absolute inset-0 z-0">
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-accent/10"></div>
+          <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center opacity-20 [mask-image:radial-gradient(ellipse_at_center,white,transparent)]"></div>
+          
+          {/* Floating shapes */}
+          <div className="absolute top-20 left-10 w-24 h-24 bg-gradient-to-br from-primary/20 to-accent/20 rounded-full blur-xl floating-animation"></div>
+          <div className="absolute bottom-10 right-20 w-32 h-32 bg-gradient-to-br from-accent/15 to-primary/15 rounded-lg rotate-45 blur-xl floating-animation" style={{animationDelay: '3s'}}></div>
+        </div>
         
-        <div className="mx-auto mt-12 max-w-6xl">
-          <div className="grid gap-10 md:grid-cols-3 md:gap-6">
+        <div className="relative container px-4 z-10">
+          <AnimatedSection>
+            <h1 className="text-5xl md:text-6xl font-bold text-center mb-8">
+              Get in <span className="gradient-text">Touch</span>
+            </h1>
+            <p className="mx-auto mt-6 max-w-3xl text-center text-xl text-muted-foreground leading-relaxed">
+              Have a question or want to work together? I'd love to hear from you. Send me a message and I'll respond as soon as possible.
+            </p>
+          </AnimatedSection>
+        </div>
+      </section>
+      
+      <div className="container px-4">
+        
+        <div className="mx-auto py-20 max-w-7xl">
+          <div className="grid gap-12 md:grid-cols-3 md:gap-10">
             <AnimatedSection delay={100} className="md:col-span-1">
-              <div className="space-y-8">
-                <h2 className="text-2xl font-semibold">Contact Information</h2>
+              <div className="glass-effect rounded-2xl p-8 space-y-8">
+                <h2 className="text-3xl font-bold mb-6">Contact Information</h2>
                 
-                <div className="space-y-6">
-                  <div className="flex items-start space-x-4">
-                    <Mail className="h-5 w-5 text-primary" />
+                <div className="space-y-8">
+                  <div className="flex items-start space-x-4 group">
+                    <div className="p-3 rounded-xl bg-gradient-to-br from-primary to-accent text-white shadow-lg group-hover:scale-110 transition-transform duration-300">
+                      <Mail className="h-6 w-6" />
+                    </div>
                     <div>
-                      <p className="font-medium">Email</p>
-                      <a href="mailto:gmail@nicola.id" className="text-muted-foreground hover:text-primary">
+                      <p className="font-semibold text-lg">Email</p>
+                      <a href="mailto:gmail@nicola.id" className="text-muted-foreground hover:text-primary transition-colors">
                         gmail@nicola.id
                       </a>
                     </div>
                   </div>
                   
-                  <div className="flex items-start space-x-4">
-                    <MapPin className="h-5 w-5 text-primary" />
+                  <div className="flex items-start space-x-4 group">
+                    <div className="p-3 rounded-xl bg-gradient-to-br from-accent to-primary text-white shadow-lg group-hover:scale-110 transition-transform duration-300">
+                      <MapPin className="h-6 w-6" />
+                    </div>
                     <div>
-                      <p className="font-medium">Location</p>
+                      <p className="font-semibold text-lg">Location</p>
                       <p className="text-muted-foreground">
-                        Malang, East Java
+                        Malang, East Java, Indonesia
                       </p>
                     </div>
                   </div>
                 </div>
                 
                 <div>
-                  <h3 className="mb-4 text-lg font-medium">Connect with me</h3>
+                  <h3 className="mb-6 text-xl font-bold">Connect with me</h3>
                   <div className="flex space-x-4">
-                    <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer"
-                      className="rounded-full bg-muted p-2 text-muted-foreground hover:bg-primary/20 hover:text-primary"
+                    <a href="https://linkedin.com/in/nicola-ananda" target="_blank" rel="noopener noreferrer"
+                      className="group p-4 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-600 text-white hover:from-blue-600 hover:to-blue-700 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
                     >
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6 group-hover:scale-110 transition-transform duration-300">
                         <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
                         <rect x="2" y="9" width="4" height="12"></rect>
                         <circle cx="4" cy="4" r="2"></circle>
                       </svg>
                     </a>
-                    <a href="https://github.com" target="_blank" rel="noopener noreferrer"
-                      className="rounded-full bg-muted p-2 text-muted-foreground hover:bg-primary/20 hover:text-primary"
+                    <a href="https://github.com/nicolaananda" target="_blank" rel="noopener noreferrer"
+                      className="group p-4 rounded-2xl bg-gradient-to-br from-gray-700 to-gray-800 text-white hover:from-gray-800 hover:to-gray-900 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
                     >
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6 group-hover:scale-110 transition-transform duration-300">
                         <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
                       </svg>
                     </a>
-                    <a href="https://twitter.com" target="_blank" rel="noopener noreferrer"
-                      className="rounded-full bg-muted p-2 text-muted-foreground hover:bg-primary/20 hover:text-primary"
+                    <a href="https://twitter.com/NoAbsen13" target="_blank" rel="noopener noreferrer"
+                      className="group p-4 rounded-2xl bg-gradient-to-br from-sky-400 to-sky-500 text-white hover:from-sky-500 hover:to-sky-600 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
                     >
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6 group-hover:scale-110 transition-transform duration-300">
                         <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
                       </svg>
                     </a>

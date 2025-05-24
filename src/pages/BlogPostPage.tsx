@@ -965,7 +965,10 @@ const BlogPostPage = () => {
   if (isLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center pt-20">
-        <div className="h-12 w-12 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
+        <div className="glass-effect rounded-2xl p-12 text-center">
+          <div className="h-16 w-16 mx-auto animate-spin rounded-full border-4 border-primary border-t-transparent mb-6"></div>
+          <p className="text-lg text-muted-foreground">Loading article...</p>
+        </div>
       </div>
     );
   }
@@ -973,72 +976,115 @@ const BlogPostPage = () => {
   if (!post) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center pt-20">
-        <h1 className="text-2xl font-bold">Article Not Found</h1>
-        <p className="mt-4 text-muted-foreground">The article you're looking for doesn't exist or has been removed.</p>
-        <Button asChild className="mt-8">
-          <Link to="/blog">Back to Blog</Link>
-        </Button>
+        <div className="glass-effect rounded-2xl p-12 text-center max-w-md">
+          <h1 className="text-3xl font-bold mb-4">Article Not Found</h1>
+          <p className="text-muted-foreground mb-8">The article you're looking for doesn't exist or has been removed.</p>
+          <Button asChild className="bg-gradient-to-r from-primary to-accent text-white px-8 py-3 hover:shadow-xl transition-all duration-300">
+            <Link to="/blog">Back to Blog</Link>
+          </Button>
+        </div>
       </div>
     );
   }
   
   return (
     <div className="min-h-screen pt-20 pb-16">
-      <div className="container px-4">
-        <AnimatedSection>
-          <Link to="/blog" className="mb-6 inline-flex items-center text-sm text-muted-foreground hover:text-foreground">
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Blog
-          </Link>
-          
-          <div className="overflow-hidden rounded-lg">
-            <img 
-              src={post.coverImage} 
-              alt={post.title} 
-              className="h-[40vh] w-full object-cover object-center md:h-[50vh]" 
-            />
-          </div>
-        </AnimatedSection>
+      {/* Hero Section with Cover Image */}
+      <section className="relative overflow-hidden">
+        <div className="container px-4">
+          <AnimatedSection>
+            <Link to="/blog" className="group mb-8 inline-flex items-center text-sm font-medium text-muted-foreground hover:text-primary transition-colors">
+              <ArrowLeft className="mr-2 h-4 w-4 group-hover:-translate-x-1 transition-transform" />
+              Back to Blog
+            </Link>
+            
+            <div className="relative overflow-hidden rounded-3xl shadow-2xl">
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10"></div>
+              <img 
+                src={post.coverImage} 
+                alt={post.title} 
+                className="h-[50vh] w-full object-cover object-center md:h-[60vh]" 
+              />
+              
+              {/* Overlay content */}
+              <div className="absolute bottom-8 left-8 right-8 z-20 text-white">
+                <div className="mb-4">
+                  <span className="inline-block rounded-full bg-gradient-to-r from-primary to-accent px-4 py-2 text-sm font-semibold shadow-lg">
+                    {post.category}
+                  </span>
+                </div>
+                <h1 className="text-4xl font-bold leading-tight md:text-5xl lg:text-6xl">{post.title}</h1>
+                
+                <div className="mt-6 flex flex-wrap items-center gap-6">
+                  <div className="flex items-center gap-2">
+                    <Calendar className="h-5 w-5" />
+                    <span className="font-medium">{post.date}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Clock className="h-5 w-5" />
+                    <span className="font-medium">{post.readTime}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </AnimatedSection>
+        </div>
+      </section>
         
-        <AnimatedSection delay={100} className="mx-auto mt-8 max-w-3xl">
-          <h1 className="text-3xl font-bold md:text-4xl">{post.title}</h1>
-          
-          <div className="mt-4 flex items-center gap-4">
-            <div className="flex items-center gap-2">
-              <Calendar className="h-4 w-4 text-muted-foreground" />
-              <span className="text-sm text-muted-foreground">{post.date}</span>
+      {/* Content Section */}
+      <section className="py-20">
+        <div className="container px-4">
+          <AnimatedSection delay={100} className="mx-auto max-w-4xl">
+            {/* Author Info */}
+            <div className="glass-effect rounded-2xl p-8 mb-12">
+              <div className="flex items-center gap-6">
+                <div className="relative">
+                  <img 
+                    src={post.author.avatar} 
+                    alt={post.author.name} 
+                    className="h-16 w-16 rounded-2xl object-cover shadow-lg" 
+                  />
+                  <div className="absolute -inset-1 bg-gradient-to-r from-primary to-accent rounded-2xl blur opacity-30"></div>
+                </div>
+                <div>
+                  <p className="text-xl font-bold">{post.author.name}</p>
+                  <p className="text-muted-foreground mt-1">{post.author.bio}</p>
+                </div>
+              </div>
             </div>
-            <div className="flex items-center gap-2">
-              <Clock className="h-4 w-4 text-muted-foreground" />
-              <span className="text-sm text-muted-foreground">{post.readTime}</span>
+            
+            {/* Article Content */}
+            <div className="glass-effect rounded-2xl p-8 md:p-12">
+              <div className="prose prose-lg prose-gray dark:prose-invert max-w-none
+                             prose-headings:text-foreground 
+                             prose-headings:font-bold
+                             prose-h2:text-2xl prose-h2:mt-12 prose-h2:mb-6
+                             prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-4
+                             prose-p:text-muted-foreground prose-p:leading-relaxed prose-p:mb-6
+                             prose-a:text-primary prose-a:no-underline hover:prose-a:underline
+                             prose-strong:text-foreground prose-strong:font-semibold
+                             prose-ul:text-muted-foreground prose-ol:text-muted-foreground
+                             prose-li:mb-2 prose-li:leading-relaxed
+                             prose-pre:bg-muted prose-pre:border prose-pre:rounded-xl prose-pre:p-6
+                             prose-code:text-primary prose-code:bg-muted prose-code:px-2 prose-code:py-1 prose-code:rounded
+                             prose-blockquote:border-l-4 prose-blockquote:border-primary prose-blockquote:pl-6 prose-blockquote:italic"
+                   dangerouslySetInnerHTML={{ __html: post.content }}>
+              </div>
             </div>
-            <div className="flex items-center gap-2">
-              <Tag className="h-4 w-4 text-muted-foreground" />
-              <span className="text-sm text-muted-foreground">{post.category}</span>
+            
+            {/* Call to Action */}
+            <div className="mt-16 text-center">
+              <div className="glass-effect rounded-2xl p-8">
+                <h3 className="text-2xl font-bold mb-4">Enjoyed this article?</h3>
+                <p className="text-muted-foreground mb-6">Check out more articles on our blog for insights on data analysis and web development.</p>
+                <Button asChild className="bg-gradient-to-r from-primary to-accent text-white px-8 py-3 hover:shadow-xl transition-all duration-300">
+                  <Link to="/blog">Read More Articles</Link>
+                </Button>
+              </div>
             </div>
-          </div>
-          
-          <div className="mt-8 flex items-center gap-4">
-            <img 
-              src={post.author.avatar} 
-              alt={post.author.name} 
-              className="h-12 w-12 rounded-full object-cover" 
-            />
-            <div>
-              <p className="font-medium">{post.author.name}</p>
-              <p className="text-sm text-muted-foreground">{post.author.bio}</p>
-            </div>
-          </div>
-          
-          <div className="prose prose-lg mt-8 max-w-none dark:prose-invert" dangerouslySetInnerHTML={{ __html: post.content }}></div>
-          
-          <div className="mt-12 flex justify-center">
-            <Button asChild>
-              <Link to="/blog">Read More Articles</Link>
-            </Button>
-          </div>
-        </AnimatedSection>
-      </div>
+          </AnimatedSection>
+        </div>
+      </section>
     </div>
   );
 };

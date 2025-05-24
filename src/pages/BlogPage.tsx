@@ -100,35 +100,56 @@ const BlogPage = () => {
   
   return (
     <div className="min-h-screen pt-20 pb-16">
-      <div className="container px-4">
-        <AnimatedSection>
-          <h1 className="section-title text-center">Blog</h1>
-          <p className="mx-auto mt-6 max-w-2xl text-center text-lg text-muted-foreground">
-            Thoughts, insights, and perspectives on web development, design, and technology.
-          </p>
-        </AnimatedSection>
+      {/* Hero Section */}
+      <section className="relative py-20 overflow-hidden hero-gradient">
+        <div className="absolute inset-0 z-0">
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-accent/10"></div>
+          <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center opacity-20 [mask-image:radial-gradient(ellipse_at_center,white,transparent)]"></div>
+          
+          {/* Floating shapes */}
+          <div className="absolute top-16 left-16 w-20 h-20 bg-gradient-to-br from-primary/20 to-accent/20 rounded-full blur-xl floating-animation"></div>
+          <div className="absolute bottom-16 right-16 w-28 h-28 bg-gradient-to-br from-accent/15 to-primary/15 rounded-lg rotate-45 blur-xl floating-animation" style={{animationDelay: '2.5s'}}></div>
+        </div>
         
-        <AnimatedSection delay={100} className="mt-12">
-          <div className="flex flex-col items-center gap-6 md:flex-row md:justify-between">
+        <div className="relative container px-4 z-10">
+          <AnimatedSection>
+            <h1 className="text-5xl md:text-6xl font-bold text-center mb-8">
+              My <span className="gradient-text">Blog</span>
+            </h1>
+            <p className="mx-auto mt-6 max-w-3xl text-center text-xl text-muted-foreground leading-relaxed">
+              Thoughts, insights, and perspectives on data analysis, web development, and modern technology trends.
+            </p>
+          </AnimatedSection>
+        </div>
+      </section>
+      
+      <div className="container px-4">
+        
+        <AnimatedSection delay={100} className="py-20">
+          <div className="flex flex-col items-center gap-8 md:flex-row md:justify-between">
             <div className="relative w-full max-w-md">
-              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
               <Input
                 type="text"
                 placeholder="Search articles..."
-                className="pl-10"
+                className="pl-12 py-3 rounded-2xl border-2 focus:border-primary/50 transition-colors"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
             
-            <div className="flex flex-wrap justify-center gap-2">
+            <div className="flex flex-wrap justify-center gap-3">
               {categories.map(category => (
                 <Button
                   key={category}
-                  variant={selectedCategory === category ? "default" : "ghost"}
+                  variant={selectedCategory === category ? "default" : "outline"}
                   size="sm"
                   onClick={() => setSelectedCategory(category)}
-                  className="rounded-full"
+                  className={`rounded-full px-6 py-2 text-sm font-medium transition-all duration-300 ${
+                    selectedCategory === category 
+                      ? 'bg-gradient-to-r from-primary to-accent text-white shadow-lg hover:shadow-xl' 
+                      : 'hover:bg-primary/10 hover:text-primary'
+                  }`}
                 >
                   {category}
                 </Button>
@@ -137,36 +158,37 @@ const BlogPage = () => {
           </div>
         </AnimatedSection>
         
-        <Separator className="my-10" />
-        
         {filteredPosts.length > 0 ? (
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-3">
             {filteredPosts.map((post, index) => (
               <AnimatedSection key={post.id} delay={150 + index * 50}>
-                <Link to={`/blog/${post.id}`} className="group block overflow-hidden rounded-lg bg-card transition-shadow hover:shadow-md">
-                  <div className="aspect-video overflow-hidden">
+                <Link to={`/blog/${post.id}`} className="group block overflow-hidden rounded-2xl glass-effect transition-all hover:shadow-2xl hover:-translate-y-3">
+                  <div className="relative aspect-video overflow-hidden">
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-10"></div>
                     <img
                       src={post.coverImage}
                       alt={post.title}
-                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
                     />
-                  </div>
-                  <div className="p-6">
-                    <div className="flex items-center justify-between">
-                      <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
+                    <div className="absolute top-4 left-4 z-20">
+                      <span className="inline-block rounded-full bg-gradient-to-r from-primary to-accent px-3 py-1 text-xs font-semibold text-white shadow-lg">
                         {post.category}
                       </span>
-                      <span className="text-xs text-muted-foreground">{post.date}</span>
                     </div>
-                    <h2 className="mt-4 text-xl font-semibold transition-colors group-hover:text-primary">
+                    <div className="absolute bottom-4 right-4 z-20">
+                      <span className="text-xs text-white/90 bg-black/30 backdrop-blur-sm px-2 py-1 rounded-full">{post.date}</span>
+                    </div>
+                  </div>
+                  <div className="p-8">
+                    <h2 className="text-2xl font-bold mb-3 transition-colors group-hover:text-primary leading-tight">
                       {post.title}
                     </h2>
-                    <p className="mt-2 line-clamp-2 text-muted-foreground">
+                    <p className="text-muted-foreground leading-relaxed mb-4 line-clamp-3">
                       {post.excerpt}
                     </p>
-                    <div className="mt-4 flex items-center justify-between">
-                      <span className="text-sm text-muted-foreground">{post.readTime}</span>
-                      <span className="text-sm font-medium text-primary">Read More</span>
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-muted-foreground font-medium">{post.readTime}</span>
+                      <span className="text-sm font-semibold text-primary group-hover:text-accent transition-colors">Read More →</span>
                     </div>
                   </div>
                 </Link>
@@ -174,11 +196,13 @@ const BlogPage = () => {
             ))}
           </div>
         ) : (
-          <div className="my-16 text-center">
-            <h2 className="text-2xl font-semibold">No posts found</h2>
-            <p className="mt-2 text-muted-foreground">
-              Try changing your search term or selecting a different category.
-            </p>
+          <div className="my-20 text-center">
+            <div className="glass-effect rounded-2xl p-12 max-w-md mx-auto">
+              <h2 className="text-3xl font-bold mb-4">No posts found</h2>
+              <p className="text-muted-foreground text-lg">
+                Try changing your search term or selecting a different category.
+              </p>
+            </div>
           </div>
         )}
       </div>

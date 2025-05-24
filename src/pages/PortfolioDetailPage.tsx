@@ -178,7 +178,10 @@ const PortfolioDetailPage = () => {
   if (isLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center pt-20">
-        <div className="h-12 w-12 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
+        <div className="glass-effect rounded-2xl p-12 text-center">
+          <div className="h-16 w-16 mx-auto animate-spin rounded-full border-4 border-primary border-t-transparent mb-6"></div>
+          <p className="text-lg text-muted-foreground">Loading project...</p>
+        </div>
       </div>
     );
   }
@@ -186,120 +189,163 @@ const PortfolioDetailPage = () => {
   if (!currentProject) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center pt-20">
-        <h2 className="text-2xl font-bold">Project Not Found</h2>
-        <p className="mt-4 text-muted-foreground">The project you're looking for doesn't exist or has been removed.</p>
-        <Button asChild className="mt-8">
-          <Link to="/portfolio">Back to Portfolio</Link>
-        </Button>
+        <div className="glass-effect rounded-2xl p-12 text-center max-w-md">
+          <h2 className="text-3xl font-bold mb-4">Project Not Found</h2>
+          <p className="text-muted-foreground mb-8">The project you're looking for doesn't exist or has been removed.</p>
+          <Button asChild className="bg-gradient-to-r from-primary to-accent text-white px-8 py-3 hover:shadow-xl transition-all duration-300">
+            <Link to="/portfolio">Back to Portfolio</Link>
+          </Button>
+        </div>
       </div>
     );
   }
   
   return (
     <div className="min-h-screen pt-20 pb-16">
-      <div className="container px-4">
-        <AnimatedSection>
-          <div className="mb-8">
-            <Link to="/portfolio" className="mb-4 inline-flex items-center text-sm text-muted-foreground hover:text-foreground">
-              <ArrowLeft className="mr-2 h-4 w-4" />
+      {/* Hero Section */}
+      <section className="relative py-20 overflow-hidden hero-gradient">
+        <div className="absolute inset-0 z-0">
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-accent/10"></div>
+          <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center opacity-20 [mask-image:radial-gradient(ellipse_at_center,white,transparent)]"></div>
+          
+          {/* Floating shapes */}
+          <div className="absolute top-20 left-20 w-24 h-24 bg-gradient-to-br from-primary/20 to-accent/20 rounded-full blur-xl floating-animation"></div>
+          <div className="absolute bottom-20 right-20 w-32 h-32 bg-gradient-to-br from-accent/15 to-primary/15 rounded-lg rotate-45 blur-xl floating-animation" style={{animationDelay: '3s'}}></div>
+        </div>
+        
+        <div className="relative container px-4 z-10">
+          <AnimatedSection>
+            <Link to="/portfolio" className="group mb-8 inline-flex items-center text-sm font-medium text-muted-foreground hover:text-primary transition-colors">
+              <ArrowLeft className="mr-2 h-4 w-4 group-hover:-translate-x-1 transition-transform" />
               Back to Portfolio
             </Link>
-            <h1 className="text-3xl font-bold md:text-4xl">{currentProject.title}</h1>
-            <p className="mt-2 text-lg text-muted-foreground">{currentProject.category}</p>
-          </div>
-        </AnimatedSection>
-        
-        <div className="grid gap-10 md:grid-cols-3">
-          <div className="md:col-span-2">
-            <AnimatedSection delay={100}>
-              <div className="overflow-hidden rounded-lg">
-                <img
-                  src={currentProject.imageUrls[currentImageIndex]}
-                  alt={currentProject.title}
-                  className="w-full object-cover"
-                />
-              </div>
-              
-              <div className="mt-4 grid grid-cols-3 gap-4">
-                {currentProject.imageUrls.map((img: string, idx: number) => (
-                  <div 
-                    key={idx} 
-                    className={`cursor-pointer overflow-hidden rounded-md ${idx === currentImageIndex ? 'ring-2 ring-primary' : ''}`}
-                    onClick={() => setCurrentImageIndex(idx)}
-                  >
-                    <AspectRatio ratio={16/9}>
-                      <img
-                        src={img}
-                        alt={`${currentProject.title} ${idx + 1}`}
-                        className="h-full w-full object-cover"
-                      />
-                    </AspectRatio>
-                  </div>
-                ))}
-              </div>
-            </AnimatedSection>
             
-            <AnimatedSection delay={200} className="mt-10">
-              <h2 className="text-2xl font-semibold">Project Overview</h2>
-              <p className="mt-4 text-muted-foreground">{currentProject.description}</p>
-              
-              <h3 className="mt-8 text-xl font-semibold">The Challenge</h3>
-              <p className="mt-2 text-muted-foreground">{currentProject.challenge}</p>
-              
-              <h3 className="mt-8 text-xl font-semibold">The Solution</h3>
-              <p className="mt-2 text-muted-foreground">{currentProject.solution}</p>
-            </AnimatedSection>
-          </div>
-          
-          <div>
-            <AnimatedSection delay={150} className="rounded-lg border bg-card p-6">
-              <h3 className="text-lg font-semibold">Project Details</h3>
-              <Separator className="my-4" />
-              
-              <div className="space-y-4">
-                <div>
-                  <h4 className="text-sm font-medium text-muted-foreground">Client</h4>
-                  <p>{currentProject.client}</p>
-                </div>
-                
-                <div>
-                  <h4 className="text-sm font-medium text-muted-foreground">Completion Date</h4>
-                  <p>{currentProject.completionDate}</p>
-                </div>
-                
-                <div>
-                  <h4 className="text-sm font-medium text-muted-foreground">Technologies Used</h4>
-                  <div className="mt-2 flex flex-wrap gap-2">
-                    {currentProject.technologies.map((tech: string, idx: number) => (
-                      <span 
-                        key={idx}
-                        className="inline-block rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary"
-                      >
-                        {tech}
-                      </span>
-                    ))}
+            <div className="max-w-4xl">
+              <span className="inline-block rounded-full bg-gradient-to-r from-primary to-accent px-4 py-2 text-sm font-semibold text-white shadow-lg mb-6">
+                {currentProject.category}
+              </span>
+              <h1 className="text-4xl font-bold leading-tight md:text-5xl lg:text-6xl mb-6">
+                {currentProject.title}
+              </h1>
+              <p className="text-xl text-muted-foreground leading-relaxed max-w-2xl">
+                {currentProject.description}
+              </p>
+            </div>
+          </AnimatedSection>
+        </div>
+      </section>
+      
+      <div className="container px-4">
+        
+        <div className="py-20">
+          <div className="grid gap-12 lg:grid-cols-3">
+            <div className="lg:col-span-2">
+              <AnimatedSection delay={100}>
+                <div className="glass-effect rounded-2xl p-2 mb-8">
+                  <div className="relative overflow-hidden rounded-xl">
+                    <img
+                      src={currentProject.imageUrls[currentImageIndex]}
+                      alt={currentProject.title}
+                      className="w-full aspect-video object-cover transition-transform duration-500 hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
                   </div>
                 </div>
                 
-                <div className="pt-2">
-                  <Button asChild variant="outline" className="w-full justify-start">
-                    <a href={currentProject.liveUrl} target="_blank" rel="noopener noreferrer">
-                      <ExternalLink className="mr-2 h-4 w-4" />
-                      Live Preview
-                    </a>
-                  </Button>
+                <div className="grid grid-cols-3 gap-4">
+                  {currentProject.imageUrls.map((img: string, idx: number) => (
+                    <div 
+                      key={idx} 
+                      className={`group cursor-pointer overflow-hidden rounded-xl transition-all duration-300 hover:shadow-lg ${
+                        idx === currentImageIndex 
+                          ? 'ring-4 ring-primary/50 shadow-xl scale-105' 
+                          : 'hover:scale-105 glass-effect'
+                      }`}
+                      onClick={() => setCurrentImageIndex(idx)}
+                    >
+                      <AspectRatio ratio={16/9}>
+                        <img
+                          src={img}
+                          alt={`${currentProject.title} ${idx + 1}`}
+                          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                      </AspectRatio>
+                    </div>
+                  ))}
                 </div>
-                
-                <div>
-                  <Button asChild variant="outline" className="w-full justify-start">
-                    <a href={currentProject.githubUrl} target="_blank" rel="noopener noreferrer">
-                      <Github className="mr-2 h-4 w-4" />
-                      View Code
-                    </a>
-                  </Button>
+              </AnimatedSection>
+              
+              <AnimatedSection delay={200} className="mt-12">
+                <div className="glass-effect rounded-2xl p-8 md:p-12">
+                  <h2 className="text-3xl font-bold mb-8">Project Details</h2>
+                  
+                  <div className="space-y-8">
+                    <div>
+                      <h3 className="text-xl font-semibold mb-4 text-primary">The Challenge</h3>
+                      <p className="text-muted-foreground leading-relaxed text-lg">{currentProject.challenge}</p>
+                    </div>
+                    
+                    <Separator className="my-8" />
+                    
+                    <div>
+                      <h3 className="text-xl font-semibold mb-4 text-primary">The Solution</h3>
+                      <p className="text-muted-foreground leading-relaxed text-lg">{currentProject.solution}</p>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </AnimatedSection>
+              </AnimatedSection>
+            </div>
+            
+            <div>
+              <AnimatedSection delay={150}>
+                <div className="glass-effect rounded-2xl p-8 sticky top-24">
+                  <h3 className="text-2xl font-bold mb-6">Project Info</h3>
+                  
+                  <div className="space-y-6">
+                    <div className="p-4 rounded-xl bg-gradient-to-r from-primary/10 to-accent/10">
+                      <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-2">Client</h4>
+                      <p className="text-lg font-medium">{currentProject.client}</p>
+                    </div>
+                    
+                    <div className="p-4 rounded-xl bg-gradient-to-r from-accent/10 to-primary/10">
+                      <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-2">Completion Date</h4>
+                      <p className="text-lg font-medium">{currentProject.completionDate}</p>
+                    </div>
+                    
+                    <div>
+                      <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-4">Technologies Used</h4>
+                      <div className="flex flex-wrap gap-3">
+                        {currentProject.technologies.map((tech: string, idx: number) => (
+                          <span 
+                            key={idx}
+                            className="inline-block rounded-full bg-gradient-to-r from-primary to-accent px-4 py-2 text-sm font-semibold text-white shadow-lg hover:shadow-xl transition-shadow duration-300"
+                          >
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-3 pt-4">
+                      <Button asChild className="w-full bg-gradient-to-r from-primary to-accent text-white hover:shadow-xl transition-all duration-300 h-12">
+                        <a href={currentProject.liveUrl} target="_blank" rel="noopener noreferrer">
+                          <ExternalLink className="mr-2 h-5 w-5" />
+                          Live Preview
+                        </a>
+                      </Button>
+                      
+                      <Button asChild variant="outline" className="w-full hover:bg-primary/10 hover:text-primary h-12">
+                        <a href={currentProject.githubUrl} target="_blank" rel="noopener noreferrer">
+                          <Github className="mr-2 h-5 w-5" />
+                          View Code
+                        </a>
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </AnimatedSection>
+            </div>
           </div>
         </div>
       </div>

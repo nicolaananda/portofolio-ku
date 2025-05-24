@@ -6,11 +6,22 @@ const AboutPage = () => {
   return (
     <div className="min-h-screen pt-20">
       {/* Hero Section */}
-      <section className="bg-muted/30 py-16 md:py-24">
-        <div className="container px-4">
-          <div className="grid items-center gap-8 md:grid-cols-2 lg:gap-16">
+      <section className="relative py-20 md:py-32 overflow-hidden hero-gradient">
+        <div className="absolute inset-0 z-0">
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-accent/10"></div>
+          <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center opacity-20 [mask-image:radial-gradient(ellipse_at_center,white,transparent)]"></div>
+          
+          {/* Floating geometric shapes */}
+          <div className="absolute top-20 left-10 w-24 h-24 bg-gradient-to-br from-primary/20 to-accent/20 rounded-full blur-xl floating-animation"></div>
+          <div className="absolute bottom-40 right-20 w-32 h-32 bg-gradient-to-br from-accent/15 to-primary/15 rounded-lg rotate-45 blur-xl floating-animation" style={{animationDelay: '3s'}}></div>
+        </div>
+        
+        <div className="relative container px-4 z-10">
+          <div className="grid items-center gap-12 md:grid-cols-2 lg:gap-20">
             <AnimatedSection className="order-2 md:order-1">
-              <h1 className="section-title">About Me</h1>
+              <h1 className="text-5xl md:text-6xl font-bold mb-8">
+                About <span className="gradient-text">Me</span>
+              </h1>
               <p className="mt-6 text-lg text-muted-foreground text-justify">
                 I am a passionate <strong className="text-primary">Data Analyst</strong> aspirant, dedicated to transforming raw data into valuable business insights. My analytical skills include data interpretation, trend identification, and creating comprehensive reports that support informed decision-making. I am currently enhancing my capabilities in AI-powered Data Analysis while building on my strong foundation in business intelligence and reporting.
               </p>
@@ -26,12 +37,16 @@ const AboutPage = () => {
             </AnimatedSection>
             
             <AnimatedSection delay={200} className="order-1 md:order-2">
-              <div className="aspect-square overflow-hidden rounded-lg">
-                <img 
-                  src="/about.webp" 
-                  alt="Nicola" 
-                  className="h-full w-full object-cover object-center"
-                />
+              <div className="relative group">
+                <div className="aspect-square overflow-hidden rounded-3xl shadow-2xl border-4 border-white/20 floating-animation pulse-glow">
+                  <div className="absolute inset-0 bg-gradient-to-br from-primary/30 to-accent/30 z-10"></div>
+                  <div className="absolute inset-0 bg-gradient-to-tr from-accent/20 via-transparent to-primary/20 z-10"></div>
+                  <img 
+                    src="/about.webp" 
+                    alt="Nicola" 
+                    className="relative z-20 h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-110"
+                  />
+                </div>
               </div>
             </AnimatedSection>
           </div>
@@ -39,18 +54,18 @@ const AboutPage = () => {
       </section>
       
       {/* Skills Section */}
-      <section className="py-12 md:py-16">
+      <section className="py-20 md:py-32 bg-gradient-to-br from-background via-muted/20 to-background">
         <div className="container px-4">
           <AnimatedSection>
-            <h2 className="section-title">My Skills</h2>
+            <h2 className="section-title mx-auto text-center">My Skills</h2>
           </AnimatedSection>
           
-          <div className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-16 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             <AnimatedSection delay={100}>
-              <div className="group relative overflow-hidden rounded-lg border bg-card p-4 transition-all hover:shadow-lg">
-                <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-primary/5 opacity-0 transition-opacity group-hover:opacity-100"></div>
-                <h3 className="mb-3 text-base font-semibold">Data Analyst</h3>
-                <ul className="space-y-2">
+              <div className="group relative overflow-hidden rounded-2xl glass-effect p-8 transition-all hover:shadow-2xl hover:-translate-y-2">
+                <div className="absolute inset-0 bg-gradient-to-br from-primary to-accent opacity-0 transition-opacity group-hover:opacity-90"></div>
+                <h3 className="relative z-10 mb-6 text-xl font-semibold group-hover:text-white transition-colors">Data Analyst</h3>
+                <ul className="relative z-10 space-y-4">
                   <SkillItem name="Python" proficiency={95} icon="🐍" />
                   <SkillItem name="SQL" proficiency={90} icon="📊" />
                   <SkillItem name="Statistical Analysis" proficiency={95} icon="📈" />
@@ -61,10 +76,10 @@ const AboutPage = () => {
             </AnimatedSection>
             
             <AnimatedSection delay={200}>
-              <div className="group relative overflow-hidden rounded-lg border bg-card p-4 transition-all hover:shadow-lg">
-                <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-primary/5 opacity-0 transition-opacity group-hover:opacity-100"></div>
-                <h3 className="mb-3 text-base font-semibold">Web Development</h3>
-                <ul className="space-y-2">
+              <div className="group relative overflow-hidden rounded-2xl glass-effect p-8 transition-all hover:shadow-2xl hover:-translate-y-2">
+                <div className="absolute inset-0 bg-gradient-to-br from-accent to-primary opacity-0 transition-opacity group-hover:opacity-90"></div>
+                <h3 className="relative z-10 mb-6 text-xl font-semibold group-hover:text-white transition-colors">Web Development</h3>
+                <ul className="relative z-10 space-y-4">
                   <SkillItem name="React & TypeScript" proficiency={90} icon="⚛️" />
                   <SkillItem name="Next.js" proficiency={85} icon="🔼" />
                   <SkillItem name="Node.js" proficiency={85} icon="🟢" />
@@ -75,10 +90,10 @@ const AboutPage = () => {
             </AnimatedSection>
             
             <AnimatedSection delay={300}>
-              <div className="group relative overflow-hidden rounded-lg border bg-card p-4 transition-all hover:shadow-lg">
-                <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-primary/5 opacity-0 transition-opacity group-hover:opacity-100"></div>
-                <h3 className="mb-3 text-base font-semibold">Tools & Technologies</h3>
-                <ul className="space-y-2">
+              <div className="group relative overflow-hidden rounded-2xl glass-effect p-8 transition-all hover:shadow-2xl hover:-translate-y-2">
+                <div className="absolute inset-0 bg-gradient-to-br from-primary via-accent to-primary opacity-0 transition-opacity group-hover:opacity-90"></div>
+                <h3 className="relative z-10 mb-6 text-xl font-semibold group-hover:text-white transition-colors">Tools & Technologies</h3>
+                <ul className="relative z-10 space-y-4">
                   <SkillItem name="Tableau" proficiency={95} icon="📊" />
                   <SkillItem name="Power BI" proficiency={85} icon="📈" />
                   <SkillItem name="Google Data Studio" proficiency={80} icon="📊" />
@@ -89,10 +104,10 @@ const AboutPage = () => {
             </AnimatedSection>
             
             <AnimatedSection delay={400}>
-              <div className="group relative overflow-hidden rounded-lg border bg-card p-4 transition-all hover:shadow-lg">
-                <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-primary/5 opacity-0 transition-opacity group-hover:opacity-100"></div>
-                <h3 className="mb-3 text-base font-semibold">Additional Technical Skills</h3>
-                <ul className="space-y-2">
+              <div className="group relative overflow-hidden rounded-2xl glass-effect p-8 transition-all hover:shadow-2xl hover:-translate-y-2">
+                <div className="absolute inset-0 bg-gradient-to-br from-accent to-primary opacity-0 transition-opacity group-hover:opacity-90"></div>
+                <h3 className="relative z-10 mb-6 text-xl font-semibold group-hover:text-white transition-colors">Additional Technical Skills</h3>
+                <ul className="relative z-10 space-y-4">
                   <SkillItem name="Django" proficiency={75} icon="🐍" />
                   <SkillItem name="HTML/CSS" proficiency={90} icon="🌐" />
                   <SkillItem name="Image Editing" proficiency={80} icon="🖼️" />
@@ -103,10 +118,10 @@ const AboutPage = () => {
             </AnimatedSection>
             
             <AnimatedSection delay={500}>
-              <div className="group relative overflow-hidden rounded-lg border bg-card p-4 transition-all hover:shadow-lg">
-                <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-primary/5 opacity-0 transition-opacity group-hover:opacity-100"></div>
-                <h3 className="mb-3 text-base font-semibold">Soft Skills</h3>
-                <ul className="space-y-2">
+              <div className="group relative overflow-hidden rounded-2xl glass-effect p-8 transition-all hover:shadow-2xl hover:-translate-y-2">
+                <div className="absolute inset-0 bg-gradient-to-br from-primary to-accent opacity-0 transition-opacity group-hover:opacity-90"></div>
+                <h3 className="relative z-10 mb-6 text-xl font-semibold group-hover:text-white transition-colors">Soft Skills</h3>
+                <ul className="relative z-10 space-y-4">
                   <SkillItem name="Problem-Solving" proficiency={95} icon="🧩" />
                   <SkillItem name="Critical Thinking" proficiency={90} icon="🧠" />
                   <SkillItem name="Data Storytelling" proficiency={90} icon="📚" />
@@ -117,10 +132,10 @@ const AboutPage = () => {
             </AnimatedSection>
             
             <AnimatedSection delay={600}>
-              <div className="group relative overflow-hidden rounded-lg border bg-card p-4 transition-all hover:shadow-lg">
-                <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-primary/5 opacity-0 transition-opacity group-hover:opacity-100"></div>
-                <h3 className="mb-3 text-base font-semibold">Professional Attributes</h3>
-                <ul className="space-y-2">
+              <div className="group relative overflow-hidden rounded-2xl glass-effect p-8 transition-all hover:shadow-2xl hover:-translate-y-2">
+                <div className="absolute inset-0 bg-gradient-to-br from-accent via-primary to-accent opacity-0 transition-opacity group-hover:opacity-90"></div>
+                <h3 className="relative z-10 mb-6 text-xl font-semibold group-hover:text-white transition-colors">Professional Attributes</h3>
+                <ul className="relative z-10 space-y-4">
                   <SkillItem name="Business Insight Development" proficiency={85} icon="💼" />
                   <SkillItem name="Adaptability" proficiency={90} icon="🔄" />
                   <SkillItem name="Time Management" proficiency={85} icon="⏰" />
@@ -134,13 +149,14 @@ const AboutPage = () => {
       </section>
       
       {/* Experience Section */}
-      <section className="bg-muted/30 py-16 md:py-24">
-        <div className="container px-4">
+      <section className="relative py-20 md:py-32 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-background via-muted/30 to-background"></div>
+        <div className="relative container px-4 z-10">
           <AnimatedSection>
-            <h2 className="section-title">Work Experience</h2>
+            <h2 className="section-title mx-auto text-center">Work Experience</h2>
           </AnimatedSection>
           
-          <div className="mt-12 grid gap-8 max-w-4xl mx-auto">
+          <div className="mt-16 grid gap-12 max-w-5xl mx-auto">
             <AnimatedSection delay={100}>
               <div className="group relative overflow-hidden rounded-xl border bg-card p-6 transition-all hover:shadow-lg">
                 <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-primary/5 opacity-0 transition-opacity group-hover:opacity-100"></div>
@@ -405,7 +421,7 @@ const AboutPage = () => {
                       </span>
                     </div>
                   </div>
-                  <p className="mt-4 text-muted-foreground">
+                  <p className="mt-4 text-muted-foreground text-justify">
                     Engaged in an intensive bootcamp focused on integrating artificial intelligence with modern web development. This program emphasizes hands-on experience in building intelligent web applications using Python, equipping participants with the skills to implement AI-driven features and solutions in real-world projects.
                   </p>
                   <div className="mt-4 flex flex-wrap gap-2">
@@ -436,7 +452,7 @@ const AboutPage = () => {
                       </span>
                     </div>
                   </div>
-                  <p className="mt-4 text-muted-foreground">
+                  <p className="mt-4 text-muted-foreground text-justify">
                     Completed a comprehensive program in digital marketing, mastering strategies and tools essential for online marketing success. The curriculum covered SEO, social media marketing, content strategy, and analytics, providing a robust foundation for driving digital growth and engagement.
                   </p>
                   <div className="mt-4 flex flex-wrap gap-2">
@@ -468,7 +484,7 @@ const AboutPage = () => {
                       </span>
                     </div>
                   </div>
-                  <p className="mt-4 text-muted-foreground">
+                  <p className="mt-4 text-muted-foreground text-justify">
                     Successfully completed an immersive bootcamp in the MERN stack, gaining expertise in MongoDB, Express.js, React, and Node.js. This program emphasized practical application, enabling the development of full-stack applications with modern JavaScript frameworks and industry best practices.
                   </p>
                   <div className="mt-4 flex flex-wrap gap-2">
@@ -500,7 +516,7 @@ const AboutPage = () => {
                       </span>
                     </div>
                   </div>
-                  <p className="mt-4 text-muted-foreground">
+                  <p className="mt-4 text-muted-foreground text-justify">
                     Completed a rigorous training program in data analytics, focusing on data processing, visualization, and business intelligence. This course provided the skills necessary to transform raw data into actionable insights using tools like Python, SQL, and Tableau.
                   </p>
                   <div className="mt-4 flex flex-wrap gap-2">
@@ -532,7 +548,7 @@ const AboutPage = () => {
                       </span>
                     </div>
                   </div>
-                  <p className="mt-4 text-muted-foreground">
+                  <p className="mt-4 text-muted-foreground text-justify">
                     Earned a Bachelor's degree in Sport Science, with a curriculum that included exercise physiology, sports psychology, and physical education. Developed strong analytical and research skills through both practical applications and theoretical studies, preparing for a career that bridges the gap between sports science and data analysis.
                   </p>
                   <div className="mt-4 flex flex-wrap gap-2">
@@ -729,15 +745,15 @@ const SkillItem = ({ name, proficiency, icon }: SkillItemProps) => {
   return (
     <li className="group/item">
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-1.5">
-          <span className="text-base">{icon}</span>
-          <span className="text-sm group-hover/item:text-primary transition-colors">{name}</span>
+        <div className="flex items-center gap-2">
+          <span className="text-lg">{icon}</span>
+          <span className="text-sm font-medium group-hover:text-white group-hover/item:text-white transition-colors">{name}</span>
         </div>
-        <span className="text-xs text-muted-foreground group-hover/item:text-primary transition-colors">{proficiency}%</span>
+        <span className="text-xs text-muted-foreground group-hover:text-white/90 group-hover/item:text-white/90 transition-colors font-semibold">{proficiency}%</span>
       </div>
-      <div className="mt-1 h-1.5 w-full overflow-hidden rounded-full bg-muted/50">
+      <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-white/20 group-hover:bg-white/30 transition-colors">
         <div 
-          className="h-full bg-primary transition-all duration-500 ease-out group-hover/item:bg-primary/90" 
+          className="h-full bg-gradient-to-r from-green-400 via-green-500 to-green-600 rounded-full transition-all duration-500 ease-out" 
           style={{ 
             width: `${proficiency}%`,
             transform: 'scaleX(0)',
