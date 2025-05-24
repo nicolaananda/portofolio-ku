@@ -1,68 +1,81 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Nicola Ananda | Data Analyst & Web Developer Portfolio</title>
-    <meta name="description" content="Professional portfolio of Nicola Ananda, showcasing expertise in Data Analytics, Web Development, and AI. View projects, skills, and experience in data analysis, Python, SQL, and modern web technologies." />
-    <meta name="author" content="Nicola Ananda" />
-    <meta name="keywords" content="Data Analyst, Web Developer, Python, SQL, React, Node.js, Portfolio, Data Analytics, Full Stack Developer" />
-    <meta name="robots" content="index, follow" />
-    <meta name="googlebot" content="index, follow" />
-    <link rel="canonical" href="https://nicola.id" />
-
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-    <!-- Open Graph / Social Media Meta Tags -->
-    <meta property="og:title" content="Nicola Ananda | Data Analyst & Web Developer Portfolio" />
-    <meta property="og:description" content="Professional portfolio of Nicola Ananda, showcasing expertise in Data Analytics, Web Development, and AI. View projects, skills, and experience in data analysis, Python, SQL, and modern web technologies." />
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="/profile.webp" as="image" type="image/webp" />
+    <link rel="preload" href="/profile_optimized.jpg" as="image" type="image/jpeg" />
+    
+    <!-- DNS prefetch for external resources -->
+    <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="//www.google.com" />
+    
+    <!-- Preconnect to improve loading speed -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    
+    <title>Nicola Ananda - Data Analyst & Web Developer</title>
+    <meta name="description" content="Nicola Ananda - Professional Data Analyst and Full Stack Web Developer specializing in React, TypeScript, and modern web technologies." />
+    
+    <!-- Open Graph / Social Media -->
     <meta property="og:type" content="website" />
+    <meta property="og:title" content="Nicola Ananda - Data Analyst & Web Developer" />
+    <meta property="og:description" content="Professional Data Analyst and Full Stack Web Developer specializing in React, TypeScript, and modern web technologies." />
+    <meta property="og:image" content="/profile.jpg" />
     <meta property="og:url" content="https://nicola.id" />
-    <meta property="og:image" content="https://nicola.id/og-image.jpg" />
-    <meta property="og:site_name" content="Nicola Ananda Portfolio" />
-
-    <!-- Twitter Card Meta Tags -->
+    
+    <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@NoAbsen13" />
-    <meta name="twitter:title" content="Nicola Ananda | Data Analyst & Web Developer Portfolio" />
-    <meta name="twitter:description" content="Professional portfolio of Nicola Ananda, showcasing expertise in Data Analytics, Web Development, and AI. View projects, skills, and experience in data analysis, Python, SQL, and modern web technologies." />
-    <meta name="twitter:image" content="https://nicola.id/twitter-image.jpg" />
-
-    <!-- Structured Data for Person -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Person",
-      "name": "Nicola Ananda",
-      "url": "https://nicola.id",
-      "jobTitle": "Data Analyst & Web Developer",
-      "sameAs": [
-        "https://twitter.com/NoAbsen13",
-        "https://github.com/nicola-ananda"
-      ],
-      "knowsAbout": [
-        "Data Analysis",
-        "Python",
-        "SQL",
-        "Web Development",
-        "React",
-        "Node.js"
-      ],
-      "description": "Professional Data Analyst and Web Developer with expertise in data processing, visualization, and modern web technologies."
-    }
-    </script>
-
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico">
-    <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico">
-    <meta name="theme-color" content="#ffffff">
+    <meta name="twitter:title" content="Nicola Ananda - Data Analyst & Web Developer" />
+    <meta name="twitter:description" content="Professional Data Analyst and Full Stack Web Developer specializing in React, TypeScript, and modern web technologies." />
+    <meta name="twitter:image" content="/profile.jpg" />
+    
+    <!-- Theme color -->
+    <meta name="theme-color" content="#3b82f6" />
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json" />
+    
+    <!-- Disable unused browser features for performance -->
+    <meta http-equiv="X-DNS-Prefetch-Control" content="on" />
+    
+    <style>
+      /* Critical CSS for preventing layout shifts */
+      .hero-gradient {
+        background: linear-gradient(135deg, hsl(var(--background)) 0%, hsl(var(--muted)) 100%);
+      }
+      .floating-animation {
+        animation: float 6s ease-in-out infinite;
+      }
+      @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-20px); }
+      }
+      /* Prevent FOUC */
+      body { visibility: hidden; }
+      body.loaded { visibility: visible; }
+    </style>
   </head>
-
   <body>
     <div id="root"></div>
-    
     <script type="module" src="/src/main.tsx"></script>
+    <script>
+      // Prevent FOUC
+      document.addEventListener('DOMContentLoaded', function() {
+        document.body.classList.add('loaded');
+      });
+      
+      // Service Worker registration for caching
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+          navigator.serviceWorker.register('/sw.js').catch(function() {
+            // Silent fail for service worker
+          });
+        });
+      }
+    </script>
   </body>
 </html>

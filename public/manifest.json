@@ -1,0 +1,26 @@
+{
+  "name": "Nicola Ananda - Data Analyst & Web Developer",
+  "short_name": "Nicola Portfolio",
+  "description": "Professional Data Analyst and Full Stack Web Developer specializing in React, TypeScript, and modern web technologies.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#3b82f6",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "32x32",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "/profile_optimized.jpg",
+      "sizes": "320x320",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["portfolio", "business", "productivity"],
+  "lang": "en",
+  "dir": "ltr"
+} 

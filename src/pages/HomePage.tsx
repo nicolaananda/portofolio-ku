@@ -5,6 +5,7 @@ import TypingAnimation from '../components/TypingAnimation';
 import SocialIcons from '../components/SocialIcons';
 import AnimatedSection from '../components/AnimatedSection';
 import SkillBadge from '../components/SkillBadge';
+import LazyImage from '../components/LazyImage';
 
 const HomePage = () => {
   const typingStrings = [
@@ -77,11 +78,13 @@ const HomePage = () => {
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/30 to-accent/30"></div>
                 <div className="absolute inset-0 bg-gradient-to-tr from-accent/20 via-transparent to-primary/20"></div>
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-primary/10"></div>
-                {/* Replace with actual profile image */}
-                <img
-                  src="/profile.jpg"
-                  alt="Nicola Ananda"
-                  className="relative z-10 h-full w-full object-cover object-center transition-all duration-700 hover:scale-110 hover:rotate-2"
+                <LazyImage
+                  src="/profile_optimized.jpg"
+                  webpSrc="/profile.webp"
+                  alt="Nicola Ananda - Data Analyst & Web Developer"
+                  className="relative z-10 h-full w-full transition-all duration-700 hover:scale-110 hover:rotate-2"
+                  sizes="(max-width: 768px) 256px, 320px"
+                  loading="eager"
                 />
               </div>
             </div>
