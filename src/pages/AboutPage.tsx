@@ -1,10 +1,40 @@
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Download, Award, Users, Code, Calendar, Mail, CheckCircle, MapPin, Sparkles, Star, Trophy, Target } from 'lucide-react';
 import AnimatedSection from '../components/AnimatedSection';
+import SEOHead from '../components/SEOHead';
 
 const AboutPage = () => {
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    "mainEntity": {
+      "@type": "Person",
+      "name": "Nicola Ananda",
+      "jobTitle": ["Data Analyst", "Web Developer"],
+      "description": "Professional Data Analyst and Full Stack Web Developer with expertise in data analysis, business intelligence, and modern web development technologies.",
+      "url": "https://nicola.id/about",
+      "image": "https://nicola.id/about.webp",
+      "hasCredential": [
+        {
+          "@type": "EducationalOccupationalCredential",
+          "name": "Fullstack JavaScript Developer",
+          "credentialCategory": "Certificate",
+          "educationalLevel": "Professional Training"
+        }
+      ]
+    }
+  };
+
   return (
     <div className="min-h-screen pt-20">
+      <SEOHead
+        title="About Me - Nicola Ananda | Data Analyst & Web Developer"
+        description="Learn more about Nicola Ananda, a professional Data Analyst and Full Stack Web Developer with expertise in Python, React, TypeScript, and business intelligence. Based in Malang, Indonesia."
+        keywords="About Nicola Ananda, Data Analyst Profile, Web Developer Background, Python Expert, React Developer, TypeScript, Business Intelligence, Malang Indonesia"
+        url="https://nicola.id/about"
+        image="/about.webp"
+        structuredData={structuredData}
+      />
       {/* Elegant Hero Section */}
       <section className="relative py-32 lg:py-40 overflow-hidden">
         <div className="absolute inset-0">

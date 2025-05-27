@@ -6,6 +6,7 @@ import SocialIcons from '../components/SocialIcons';
 import AnimatedSection from '../components/AnimatedSection';
 import SkillBadge from '../components/SkillBadge';
 import LazyImage from '../components/LazyImage';
+import SEOHead from '../components/SEOHead';
 
 const HomePage = () => {
   const typingStrings = [
@@ -15,9 +16,48 @@ const HomePage = () => {
     "AI-Enabled Developer",
     "Business Intelligence Expert"
   ];
+
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Nicola Ananda",
+    "jobTitle": ["Data Analyst", "Web Developer", "Full Stack Developer"],
+    "description": "Professional Data Analyst and Full Stack Web Developer specializing in React, TypeScript, Python, and modern web technologies.",
+    "url": "https://nicola.id",
+    "image": "https://nicola.id/profile.webp",
+    "sameAs": [
+      "https://linkedin.com/in/nicola-ananda",
+      "https://github.com/nicolaananda",
+      "https://twitter.com/NoAbsen13"
+    ],
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Malang",
+      "addressRegion": "East Java",
+      "addressCountry": "Indonesia"
+    },
+    "knowsAbout": [
+      "Data Analysis", 
+      "Web Development", 
+      "React", 
+      "TypeScript", 
+      "Python", 
+      "Business Intelligence",
+      "Data Visualization",
+      "Full Stack Development"
+    ]
+  };
   
   return (
     <div className="flex min-h-screen flex-col">
+      <SEOHead
+        title="Nicola Ananda - Data Analyst & Web Developer | Portfolio"
+        description="Professional Data Analyst and Full Stack Web Developer specializing in React, TypeScript, Python, and modern web technologies. Based in Malang, Indonesia."
+        keywords="Nicola Ananda, Data Analyst, Web Developer, React, TypeScript, Python, Portfolio, Malang, Indonesia, Full Stack Developer, Business Intelligence, Data Visualization"
+        url="https://nicola.id"
+        image="/profile.webp"
+        structuredData={structuredData}
+      />
       {/* Elegant Hero Section */}
       <section className="relative flex min-h-screen items-center justify-center overflow-hidden">
         {/* Sophisticated background */}
