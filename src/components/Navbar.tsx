@@ -20,11 +20,11 @@ const Navbar = ({ isScrolled }: NavbarProps) => {
   
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-      isScrolled ? 'bg-white/90 backdrop-blur-sm shadow-md py-2' : 'bg-transparent py-4'
+      isScrolled ? 'bg-white/95 backdrop-blur-sm shadow-sm border-b border-gray-100 py-4' : 'bg-transparent py-6'
     }`}>
       <div className="container flex items-center justify-between px-4">
-        <Link to="/" className="font-montserrat text-xl font-bold text-foreground">
-          ./Nicola
+        <Link to="/" className="text-xl font-bold text-gray-900 hover:text-primary transition-colors duration-300">
+          <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">./Nicola</span>
         </Link>
         
         {/* Desktop Navigation */}
@@ -32,7 +32,6 @@ const Navbar = ({ isScrolled }: NavbarProps) => {
           <NavLink to="/" label="Home" currentPath={location.pathname} />
           <NavLink to="/about" label="About" currentPath={location.pathname} />
           <NavLink to="/portfolio" label="Portfolio" currentPath={location.pathname} />
-          <NavLink to="/blog" label="Blog" currentPath={location.pathname} />
           <NavLink to="/contact" label="Contact" currentPath={location.pathname} />
         </nav>
         
@@ -52,14 +51,13 @@ const Navbar = ({ isScrolled }: NavbarProps) => {
         </Button>
       </div>
       
-      {/* Mobile Navigation */}
+              {/* Mobile Navigation */}
       {isMenuOpen && (
-        <div className="absolute top-full left-0 right-0 bg-white shadow-lg md:hidden animate-fade-in">
-          <nav className="container flex flex-col space-y-4 p-4">
+        <div className="absolute top-full left-0 right-0 bg-white/95 backdrop-blur-sm shadow-lg border-b border-gray-100 md:hidden animate-fade-in">
+          <nav className="container flex flex-col space-y-4 p-6">
             <MobileNavLink to="/" label="Home" currentPath={location.pathname} />
             <MobileNavLink to="/about" label="About" currentPath={location.pathname} />
             <MobileNavLink to="/portfolio" label="Portfolio" currentPath={location.pathname} />
-            <MobileNavLink to="/blog" label="Blog" currentPath={location.pathname} />
             <MobileNavLink to="/contact" label="Contact" currentPath={location.pathname} />
             
             <div className="flex justify-center pt-4 border-t border-muted">
@@ -84,7 +82,7 @@ const NavLink = ({ to, label, currentPath }: NavLinkProps) => {
   return (
     <Link 
       to={to} 
-      className={`nav-link ${isActive ? 'active text-accent' : ''}`}
+      className={`text-gray-700 hover:text-primary transition-colors duration-200 font-medium ${isActive ? 'text-primary' : ''}`}
     >
       {label}
     </Link>
@@ -97,8 +95,8 @@ const MobileNavLink = ({ to, label, currentPath }: NavLinkProps) => {
   return (
     <Link 
       to={to} 
-      className={`py-2 text-lg font-montserrat transition-colors duration-200 ${
-        isActive ? 'text-accent font-semibold' : 'text-foreground'
+      className={`py-2 text-lg font-medium transition-colors duration-200 ${
+        isActive ? 'text-primary font-semibold' : 'text-gray-700'
       }`}
     >
       {label}

@@ -2,10 +2,10 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, HashRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
-import { Suspense, lazy } from "react";
+import { Suspense, lazy, Component, ErrorInfo, ReactNode } from "react";
 
 // Layout
 import MainLayout from "./layouts/MainLayout";
@@ -31,52 +31,97 @@ const AdminBlogEdit = lazy(() => import("./pages/admin/BlogEdit"));
 
 // Loading component
 const LoadingSpinner = () => (
-  <div className="flex h-screen w-full items-center justify-center">
-    <div className="h-10 w-10 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
+  <div className="flex h-screen w-full items-center justify-center bg-white">
+    <div className="text-center">
+      <div className="h-10 w-10 animate-spin rounded-full border-4 border-primary border-t-transparent mx-auto mb-4"></div>
+      <p className="text-gray-600">Loading...</p>
+    </div>
   </div>
 );
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <AuthProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Suspense fallback={<LoadingSpinner />}>
-            <Routes>
-              <Route path="/" element={<MainLayout />}>
-                <Route index element={<HomePage />} />
-                <Route path="about" element={<AboutPage />} />
-                <Route path="portfolio" element={<PortfolioPage />} />
-                <Route path="portfolio/:id" element={<PortfolioDetailPage />} />
-                <Route path="blog" element={<BlogPage />} />
-                <Route path="blog/:id" element={<BlogPostPage />} />
-                <Route path="contact" element={<ContactPage />} />
-                <Route path="login" element={<LoginPage />} />
-              </Route>
+// Use HashRouter for better production compatibility
+const Router = import.meta.env.PROD ? HashRouter : BrowserRouter;
 
-              <Route path="/admin" element={
-                <ProtectedRoute>
-                  <AdminLayout />
-                </ProtectedRoute>
-              }>
-                <Route index element={<AdminDashboard />} />
-                <Route path="blog" element={<AdminBlogPosts />} />
-                <Route path="blog/:id" element={<AdminBlogEdit />} />
-                <Route path="portfolio" element={<AdminPortfolio />} />
-                <Route path="portfolio/:id" element={<AdminPortfolioEdit />} />
-              </Route>
-              
-              <Route path="*" element={<NotFoundPage />} />
-            </Routes>
-          </Suspense>
-        </BrowserRouter>
-      </AuthProvider>
-    </TooltipProvider>
-  </QueryClientProvider>
+// Error Boundary Component
+class ErrorBoundary extends Component<{children: ReactNode}, {hasError: boolean}> {
+  constructor(props: {children: ReactNode}) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(_: Error) {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    console.error('App Error:', error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="flex h-screen w-full items-center justify-center bg-white">
+          <div className="text-center p-8">
+            <h1 className="text-2xl font-bold text-gray-900 mb-4">Something went wrong</h1>
+            <p className="text-gray-600 mb-4">Please refresh the page to try again.</p>
+            <button 
+              onClick={() => window.location.reload()}
+              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            >
+              Refresh Page
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    return this.props.children;
+  }
+}
+
+const App = () => (
+  <ErrorBoundary>
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <AuthProvider>
+          <Toaster />
+          <Sonner />
+          <Router>
+            <Suspense fallback={<LoadingSpinner />}>
+              <Routes>
+                <Route path="/" element={<MainLayout />}>
+                  <Route index element={<HomePage />} />
+                  <Route path="about" element={<AboutPage />} />
+                  <Route path="portfolio" element={<PortfolioPage />} />
+                  <Route path="portfolio/:id" element={<PortfolioDetailPage />} />
+                  <Route path="blog" element={<BlogPage />} />
+                  <Route path="blog/:id" element={<BlogPostPage />} />
+                  <Route path="contact" element={<ContactPage />} />
+                  <Route path="login" element={<LoginPage />} />
+                </Route>
+
+                <Route path="/admin" element={
+                  <ProtectedRoute>
+                    <AdminLayout />
+                  </ProtectedRoute>
+                }>
+                  <Route index element={<AdminDashboard />} />
+                  <Route path="blog" element={<AdminBlogPosts />} />
+                  <Route path="blog/:id" element={<AdminBlogEdit />} />
+                  <Route path="portfolio" element={<AdminPortfolio />} />
+                  <Route path="portfolio/:id" element={<AdminPortfolioEdit />} />
+                </Route>
+                
+                <Route path="*" element={<NotFoundPage />} />
+              </Routes>
+            </Suspense>
+          </Router>
+        </AuthProvider>
+      </TooltipProvider>
+    </QueryClientProvider>
+  </ErrorBoundary>
 );
 
 export default App;

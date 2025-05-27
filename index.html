@@ -54,18 +54,39 @@
         0%, 100% { transform: translateY(0px); }
         50% { transform: translateY(-20px); }
       }
-      /* Prevent FOUC */
-      body { visibility: hidden; }
-      body.loaded { visibility: visible; }
+      /* Ensure body is always visible */
+      body { 
+        visibility: visible; 
+        opacity: 1;
+      }
+      /* Loading screen */
+      #root:empty::before {
+        content: '';
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 40px;
+        height: 40px;
+        border: 4px solid #f3f4f6;
+        border-top: 4px solid #3b82f6;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        z-index: 9999;
+      }
+      @keyframes spin {
+        0% { transform: translate(-50%, -50%) rotate(0deg); }
+        100% { transform: translate(-50%, -50%) rotate(360deg); }
+      }
     </style>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
     <script>
-      // Prevent FOUC
+      // Ensure app is loaded
       document.addEventListener('DOMContentLoaded', function() {
-        document.body.classList.add('loaded');
+        console.log('DOM loaded');
       });
       
       // Service Worker registration for caching
@@ -76,6 +97,11 @@
           });
         });
       }
+      
+      // Debug logging
+      window.addEventListener('load', function() {
+        console.log('Window loaded');
+      });
     </script>
   </body>
 </html>
