@@ -6,170 +6,44 @@ import AnimatedSection from '../components/AnimatedSection';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { Separator } from '@/components/ui/separator';
 
-// Mock project data (would come from API in production)
-const projects = [
-  {
-    id: "7",
-    title: "Data Analyst Dashboard",
-    category: "Data Analyst",
-    client: "BusinessMetrics Inc.",
-    completionDate: "October 2023",
-    technologies: ["Python", "Pandas", "Plotly", "React", "TypeScript"],
-    description: "An interactive dashboard for visualizing business metrics and KPIs. The platform provides real-time Data Analyst, customizable reports, and automated insights generation. Features include data filtering, trend analysis, and export capabilities.",
-    challenge: "The main challenge was processing and visualizing large datasets in real-time while maintaining performance and user experience.",
-    solution: "I implemented a hybrid architecture using Python for data processing and React for the frontend. The solution includes data caching, progressive loading, and optimized rendering techniques.",
-    imageUrls: [
-      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop&q=80",
-      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&auto=format&fit=crop&q=80",
-      "https://images.unsplash.com/photo-1543286386-713bdd548da4?w=800&auto=format&fit=crop&q=80"
-    ],
-    liveUrl: "https://example-project.com",
-    githubUrl: "https://github.com/username/project"
-  },
-  {
-    id: "8",
-    title: "E-Commerce Analytics Platform",
-    category: "Data Analyst",
-    client: "RetailInsights",
-    completionDate: "May 2023",
-    technologies: ["Python", "SQL", "Tableau", "AWS", "Docker"],
-    description: "A comprehensive analytics platform for e-commerce businesses. The system tracks customer behavior, sales metrics, inventory levels, and marketing campaign performance. Features include predictive analytics, customer segmentation, and automated reporting.",
-    challenge: "Integrating data from multiple sources and ensuring data consistency across different platforms was the primary challenge.",
-    solution: "I designed an ETL pipeline using Python and AWS services, with data validation and cleaning processes. The solution includes automated data quality checks and real-time synchronization.",
-    imageUrls: [
-      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&auto=format&fit=crop&q=80",
-      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop&q=80",
-      "https://images.unsplash.com/photo-1543286386-713bdd548da4?w=800&auto=format&fit=crop&q=80"
-    ],
-    liveUrl: "https://example-project.com",
-    githubUrl: "https://github.com/username/project"
-  },
-  {
-    id: "3",
-    title: "Modern Web Application",
-    category: "Web Development",
-    client: "TechStartup",
-    completionDate: "January 2023",
-    technologies: ["React", "Node.js", "TypeScript", "MongoDB", "Docker"],
-    description: "A full-stack web application built with modern technologies. Features include user authentication, real-time updates, responsive design, and API integration. The application follows best practices for performance, security, and maintainability.",
-    challenge: "Implementing real-time features while maintaining application performance and scalability was challenging.",
-    solution: "I used WebSocket for real-time communication and implemented a microservices architecture. The solution includes proper error handling, logging, and monitoring.",
-    imageUrls: [
-      "https://images.unsplash.com/photo-1587620962725-abab7fe55159?w=800&auto=format&fit=crop&q=80",
-      "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&auto=format&fit=crop&q=80",
-      "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&auto=format&fit=crop&q=80"
-    ],
-    liveUrl: "https://example-project.com",
-    githubUrl: "https://github.com/username/project"
-  },
-  {
-    id: "4",
-    title: "Data Visualization Tool",
-    category: "Data Analyst",
-    client: "DataViz Corp",
-    completionDate: "August 2023",
-    technologies: ["D3.js", "React", "TypeScript", "Python", "FastAPI"],
-    description: "A custom data visualization tool for complex datasets. The application provides interactive charts, graphs, and dashboards. Features include data filtering, custom visualizations, and export capabilities.",
-    challenge: "Creating performant and interactive visualizations for large datasets was the main challenge.",
-    solution: "I implemented data aggregation and progressive loading techniques, along with optimized rendering strategies using D3.js and React.",
-    imageUrls: [
-      "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&auto=format&fit=crop&q=80",
-      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop&q=80",
-      "https://images.unsplash.com/photo-1543286386-713bdd548da4?w=800&auto=format&fit=crop&q=80"
-    ],
-    liveUrl: "https://example-project.com",
-    githubUrl: "https://github.com/username/project"
-  },
-  {
-    id: "5",
-    title: "RESTful API Service",
-    category: "Web Development",
-    client: "APIConnect",
-    completionDate: "March 2023",
-    technologies: ["Node.js", "Express", "MongoDB", "TypeScript", "Docker"],
-    description: "A scalable RESTful API service with comprehensive documentation and testing. Features include authentication, rate limiting, caching, and monitoring. The service follows REST best practices and includes proper error handling.",
-    challenge: "Ensuring API security and handling high traffic loads were the main challenges.",
-    solution: "I implemented JWT authentication, rate limiting, and caching strategies. The solution includes comprehensive logging and monitoring.",
-    imageUrls: [
-      "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&auto=format&fit=crop&q=80",
-      "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&auto=format&fit=crop&q=80",
-      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop&q=80"
-    ],
-    liveUrl: "https://example-project.com",
-    githubUrl: "https://github.com/username/project"
-  },
-  {
-    id: "6",
-    title: "Business Intelligence Dashboard",
-    category: "Data Analyst",
-    client: "Enterprise Solutions",
-    completionDate: "December 2022",
-    technologies: ["Python", "SQL", "Power BI", "Azure", "Docker"],
-    description: "A real-time business intelligence dashboard with advanced analytics and reporting features. The platform provides insights into business performance, market trends, and operational metrics. Features include automated reporting, data alerts, and custom analytics.",
-    challenge: "Processing and analyzing large volumes of data in real-time while maintaining dashboard performance was challenging.",
-    solution: "I implemented a data warehouse solution with optimized queries and caching. The solution includes automated data refresh and real-time updates.",
-    imageUrls: [
-      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop&q=80",
-      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&auto=format&fit=crop&q=80",
-      "https://images.unsplash.com/photo-1543286386-713bdd548da4?w=800&auto=format&fit=crop&q=80"
-    ],
-    liveUrl: "https://example-project.com",
-    githubUrl: "https://github.com/username/project"
-  },
-  {
-    id: "2",
-    title: "E-Commerce Growth & Market Insights (Revtoko.co)",
-    category: "Data Analyst",
-    client: "Revtoko.co",
-    completionDate: "March 2024",
-    technologies: ["Tableau", "Excel", "SQL", "PowerPoint", "Business Intelligence"],
-    description: "A data-driven business analysis project aimed at increasing user acquisition and market share for an e-commerce platform. The project involved analyzing user registration trends, product category performance, customer journey, conversion rates, and providing actionable business recommendations.",
-    challenge: "Stagnant user growth and the need to identify new strategies for boosting user acquisition and retention in a competitive e-commerce landscape.",
-    solution: "Conducted in-depth Data Analyst on user behavior, sales, and conversion funnels. Delivered strategic recommendations including localized marketing, checkout optimization, and personalized retention programs. Presented findings in a comprehensive dashboard and business report.",
-    imageUrls: [
-      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop&q=80",
-      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&auto=format&fit=crop&q=80",
-      "https://images.unsplash.com/photo-1543286386-713bdd548da4?w=800&auto=format&fit=crop&q=80"
-    ],
-    liveUrl: "https://example-dashboard.com",
-    githubUrl: "https://github.com/username/revtoko-portfolio"
-  },
-  {
-    id: "1",
-    title: "Customer Retention Analysis Dashboard",
-    category: "Data Analytics",
-    client: "B2B Marketplace Telkom",
-    completionDate: "April 2024",
-    technologies: ["Python", "Pandas", "Tableau", "SQL", "Power BI"],
-    description: "A comprehensive dashboard designed to analyze customer retention and segmentation for a B2B marketplace. It leverages cohort analysis, Customer Lifetime Value (CLV), and Average Revenue Per User (ARPU) to provide actionable insights for reducing churn and increasing customer lifetime value.",
-    challenge: "The main challenge was integrating and processing large volumes of transactional data from various buyer segments (Gold, Silver, Bronze) while delivering real-time analytics to guide marketing strategies effectively.",
-    solution: "We implemented an end-to-end data pipeline using Python and SQL for data extraction and transformation, combined with Tableau and Power BI for dynamic visualization. Cohort analysis and root cause analysis models were developed to identify retention trends and churn drivers, enabling proactive marketing interventions.",
-    imageUrls: [
-      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&auto=format&fit=crop&q=80",
-      "https://images.unsplash.com/photo-1590650153855-d9e808231d41?w=800&auto=format&fit=crop&q=80",
-      "https://images.unsplash.com/photo-1599658880436-c61792e70672?w=800&auto=format&fit=crop&q=80"
-    ],
-    liveUrl: "https://docs.google.com/presentation/d/1G3xvu6xoKDDeOOPkKbkkG4H6-0M6g0RX-BPJdvg5Nnc/edit?usp=sharing",
-    githubUrl: "https://github.com/username/customer-retention-dashboard"
-  }
-  
-];
+interface Project {
+  _id: string;
+  title: string;
+  category: string;
+  client: string;
+  completionDate: string;
+  technologies: string[];
+  description: string;
+  challenge: string;
+  solution: string;
+  imageUrls: string[];
+  liveUrl: string;
+  githubUrl: string;
+}
 
 const PortfolioDetailPage = () => {
   const { id } = useParams<{ id: string }>();
-  const [currentProject, setCurrentProject] = useState<any>(null);
+  const [currentProject, setCurrentProject] = useState<Project | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState('');
   
   useEffect(() => {
-    // In a real app, this would be an API call
-    const fetchProject = () => {
-      setIsLoading(true);
-      setTimeout(() => {
-        const project = projects.find(p => p.id === id);
-        setCurrentProject(project);
+    const fetchProject = async () => {
+      try {
+        const response = await fetch(`http://localhost:5002/api/portfolio/${id}`);
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.message || 'Failed to fetch project');
+        }
+
+        setCurrentProject(data.data);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to fetch project');
+      } finally {
         setIsLoading(false);
-      }, 500); // Simulate loading
+      }
     };
     
     fetchProject();
@@ -183,6 +57,32 @@ const PortfolioDetailPage = () => {
           <div className="relative">
             <div className="h-16 w-16 mx-auto animate-spin rounded-full border-4 border-primary border-t-transparent mb-6"></div>
             <p className="text-lg text-gray-600 font-light">Loading project details...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+  
+  if (error) {
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center pt-20">
+        <div className="relative p-12 rounded-3xl border border-gray-100 hover:border-gray-200 hover:shadow-2xl transition-all duration-500 bg-white/80 backdrop-blur-sm text-center max-w-md">
+          <div className="absolute inset-0 bg-gradient-to-br from-red-50/30 to-orange-50/30 rounded-3xl opacity-60"></div>
+          <div className="relative">
+            <div className="w-16 h-16 bg-gradient-to-br from-gray-400 to-gray-500 rounded-2xl flex items-center justify-center mx-auto mb-6">
+              <Sparkles className="w-8 h-8 text-white" />
+            </div>
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Error Loading Project</h2>
+            <p className="text-gray-600 font-light mb-8 leading-relaxed">{error}</p>
+            <Button asChild className="group relative overflow-hidden bg-gradient-to-r from-primary to-accent text-white px-8 py-3 hover:shadow-xl transition-all duration-300 rounded-2xl">
+              <Link to="/portfolio">
+                <span className="relative z-10 flex items-center">
+                  <ArrowLeft className="mr-2 h-4 w-4 group-hover:-translate-x-1 transition-transform duration-300" />
+                  Back to Portfolio
+                </span>
+                <div className="absolute inset-0 bg-gradient-to-r from-accent to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              </Link>
+            </Button>
           </div>
         </div>
       </div>
@@ -259,10 +159,6 @@ const PortfolioDetailPage = () => {
                   {currentProject.title}
                 </span>
               </h1>
-              
-              <p className="text-xl text-gray-600 leading-relaxed max-w-3xl font-light">
-                {currentProject.description}
-              </p>
             </div>
           </AnimatedSection>
         </div>
@@ -328,6 +224,16 @@ const PortfolioDetailPage = () => {
                       <h2 className="text-3xl font-bold text-gray-900 mb-10">Technical Implementation</h2>
                   
                       <div className="space-y-10">
+                        <div className="p-8 rounded-2xl bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100">
+                          <h3 className="text-2xl font-semibold mb-6 text-blue-700 flex items-center">
+                            <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center mr-3">
+                              <span className="text-white text-sm font-bold">i</span>
+                            </div>
+                            Project Description
+                          </h3>
+                          <p className="text-gray-700 leading-relaxed text-lg font-light">{currentProject.description}</p>
+                        </div>
+
                         <div className="p-8 rounded-2xl bg-gradient-to-br from-red-50 to-orange-50 border border-red-100">
                           <h3 className="text-2xl font-semibold mb-6 text-red-700 flex items-center">
                             <div className="w-8 h-8 bg-red-500 rounded-lg flex items-center justify-center mr-3">
@@ -401,22 +307,26 @@ const PortfolioDetailPage = () => {
                         </div>
                         
                         <div className="space-y-4 pt-6 border-t border-gray-100">
-                          <Button asChild className="group relative overflow-hidden w-full bg-gradient-to-r from-primary to-accent text-white hover:shadow-xl transition-all duration-300 h-14 rounded-2xl font-semibold">
-                            <a href={currentProject.liveUrl} target="_blank" rel="noopener noreferrer">
-                              <span className="relative z-10 flex items-center justify-center">
-                                <ExternalLink className="mr-3 h-5 w-5 group-hover:scale-110 transition-transform duration-300" />
-                                Live Preview
-                              </span>
-                              <div className="absolute inset-0 bg-gradient-to-r from-accent to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                            </a>
-                          </Button>
+                          {currentProject.liveUrl && (
+                            <Button asChild className="group relative overflow-hidden w-full bg-gradient-to-r from-primary to-accent text-white hover:shadow-xl transition-all duration-300 h-14 rounded-2xl font-semibold">
+                              <a href={currentProject.liveUrl} target="_blank" rel="noopener noreferrer">
+                                <span className="relative z-10 flex items-center justify-center">
+                                  <ExternalLink className="mr-3 h-5 w-5 group-hover:scale-110 transition-transform duration-300" />
+                                  Live Preview
+                                </span>
+                                <div className="absolute inset-0 bg-gradient-to-r from-accent to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                              </a>
+                            </Button>
+                          )}
                           
-                          <Button asChild variant="outline" className="w-full hover:bg-primary/10 hover:text-primary h-14 rounded-2xl font-semibold border-2 border-gray-200 hover:border-primary/30 transition-all duration-300">
-                            <a href={currentProject.githubUrl} target="_blank" rel="noopener noreferrer">
-                              <Github className="mr-3 h-5 w-5" />
-                              View Code
-                            </a>
-                          </Button>
+                          {currentProject.githubUrl && (
+                            <Button asChild variant="outline" className="w-full hover:bg-primary/10 hover:text-primary h-14 rounded-2xl font-semibold border-2 border-gray-200 hover:border-primary/30 transition-all duration-300">
+                              <a href={currentProject.githubUrl} target="_blank" rel="noopener noreferrer">
+                                <Github className="mr-3 h-5 w-5" />
+                                View Code
+                              </a>
+                            </Button>
+                          )}
                         </div>
                       </div>
                     </div>

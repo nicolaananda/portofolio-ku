@@ -2,11 +2,13 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, HashRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, HashRouter, Routes, Route, Navigate } from "react-router-dom";
 import { HelmetProvider } from 'react-helmet-async';
-import { AuthProvider } from "./contexts/AuthContext";
+import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { Suspense, lazy, Component, ErrorInfo, ReactNode } from "react";
+import Login from './pages/Login';
+import AddPortfolio from './pages/AddPortfolio';
 
 // Layout
 import MainLayout from "./layouts/MainLayout";
@@ -20,7 +22,6 @@ const PortfolioDetailPage = lazy(() => import("./pages/PortfolioDetailPage"));
 const BlogPage = lazy(() => import("./pages/BlogPage"));
 const BlogPostPage = lazy(() => import("./pages/BlogPostPage"));
 const ContactPage = lazy(() => import("./pages/ContactPage"));
-const LoginPage = lazy(() => import("./pages/LoginPage"));
 const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
 
 // Lazy loaded admin pages
@@ -82,6 +83,11 @@ class ErrorBoundary extends Component<{children: ReactNode}, {hasError: boolean}
   }
 }
 
+function PrivateRoute({ children }: { children: React.ReactNode }) {
+  const { isAuthenticated } = useAuth();
+  return isAuthenticated ? <>{children}</> : <Navigate to="/login" />;
+}
+
 const App = () => (
   <ErrorBoundary>
     <HelmetProvider>
@@ -91,38 +97,44 @@ const App = () => (
             <Toaster />
             <Sonner />
             <Router>
-            <Suspense fallback={<LoadingSpinner />}>
-              <Routes>
-                <Route path="/" element={<MainLayout />}>
-                  <Route index element={<HomePage />} />
-                  <Route path="about" element={<AboutPage />} />
-                  <Route path="portfolio" element={<PortfolioPage />} />
-                  <Route path="portfolio/:id" element={<PortfolioDetailPage />} />
-                  <Route path="blog" element={<BlogPage />} />
-                  <Route path="blog/:id" element={<BlogPostPage />} />
-                  <Route path="contact" element={<ContactPage />} />
-                  <Route path="login" element={<LoginPage />} />
-                </Route>
+              <Suspense fallback={<LoadingSpinner />}>
+                <Routes>
+                  <Route path="/" element={<MainLayout />}>
+                    <Route index element={<HomePage />} />
+                    <Route path="about" element={<AboutPage />} />
+                    <Route path="portfolio" element={<PortfolioPage />} />
+                    <Route path="portfolio/:id" element={<PortfolioDetailPage />} />
+                    <Route path="blog" element={<BlogPage />} />
+                    <Route path="blog/:id" element={<BlogPostPage />} />
+                    <Route path="contact" element={<ContactPage />} />
+                    <Route path="login" element={<Login />} />
+                  </Route>
 
-                <Route path="/admin" element={
-                  <ProtectedRoute>
-                    <AdminLayout />
-                  </ProtectedRoute>
-                }>
-                  <Route index element={<AdminDashboard />} />
-                  <Route path="blog" element={<AdminBlogPosts />} />
-                  <Route path="blog/:id" element={<AdminBlogEdit />} />
-                  <Route path="portfolio" element={<AdminPortfolio />} />
-                  <Route path="portfolio/:id" element={<AdminPortfolioEdit />} />
-                </Route>
-                
-                <Route path="*" element={<NotFoundPage />} />
-              </Routes>
-            </Suspense>
-          </Router>
-        </AuthProvider>
-      </TooltipProvider>
-    </QueryClientProvider>
+                  <Route path="/admin" element={
+                    <ProtectedRoute>
+                      <AdminLayout />
+                    </ProtectedRoute>
+                  }>
+                    <Route index element={<AdminDashboard />} />
+                    <Route path="blog" element={<AdminBlogPosts />} />
+                    <Route path="blog/:id" element={<AdminBlogEdit />} />
+                    <Route path="portfolio" element={<AdminPortfolio />} />
+                    <Route path="portfolio/:id" element={<AdminPortfolioEdit />} />
+                  </Route>
+                  
+                  <Route path="/add-portfolio" element={
+                    <PrivateRoute>
+                      <AddPortfolio />
+                    </PrivateRoute>
+                  } />
+
+                  <Route path="*" element={<NotFoundPage />} />
+                </Routes>
+              </Suspense>
+            </Router>
+          </AuthProvider>
+        </TooltipProvider>
+      </QueryClientProvider>
     </HelmetProvider>
   </ErrorBoundary>
 );

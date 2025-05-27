@@ -7,6 +7,22 @@ import AnimatedSection from '../components/AnimatedSection';
 import SkillBadge from '../components/SkillBadge';
 import LazyImage from '../components/LazyImage';
 import SEOHead from '../components/SEOHead';
+import { useState, useEffect } from 'react';
+
+interface Project {
+  _id: string;
+  title: string;
+  category: string;
+  client: string;
+  completionDate: string;
+  technologies: string[];
+  description: string;
+  challenge: string;
+  solution: string;
+  imageUrls: string[];
+  liveUrl: string;
+  githubUrl: string;
+}
 
 const HomePage = () => {
   const typingStrings = [
@@ -48,6 +64,32 @@ const HomePage = () => {
     ]
   };
   
+  const [featuredProjects, setFeaturedProjects] = useState<Project[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    const fetchFeaturedProjects = async () => {
+      try {
+        const response = await fetch('http://localhost:5002/api/portfolio');
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.message || 'Failed to fetch projects');
+        }
+
+        // Get the first 3 projects as featured
+        setFeaturedProjects(data.data.slice(0, 3));
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to fetch projects');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchFeaturedProjects();
+  }, []);
+
   return (
     <div className="flex min-h-screen flex-col">
       <SEOHead
@@ -328,118 +370,68 @@ const HomePage = () => {
             </div>
           </AnimatedSection>
           
-          <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-3 max-w-7xl mx-auto">
-            {/* Project 1 */}
-            <AnimatedSection delay={200} className="group">
-              <div className="relative overflow-hidden rounded-3xl border border-gray-100 hover:border-gray-200 hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-500 bg-white transform hover:-translate-y-2">
-                <div className="relative h-64 overflow-hidden">
-                  <img 
-                    src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&auto=format&fit=crop&q=80" 
-                    alt="Customer Retention Analysis Dashboard" 
-                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" 
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-                  <div className="absolute top-6 left-6">
-                    <span className="bg-blue-500 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg backdrop-blur-sm">Data Analytics</span>
-                  </div>
-                  <div className="absolute bottom-6 left-6 right-6">
-                    <h3 className="text-xl font-semibold text-white mb-2 group-hover:text-blue-200 transition-colors">
-                      Customer Retention Analysis
-                    </h3>
-                  </div>
-                </div>
-                <div className="p-8">
-                  <p className="text-gray-600 mb-6 leading-relaxed font-light">
-                    Comprehensive dashboard analyzing customer retention and segmentation for B2B marketplace 
-                    using cohort analysis and CLV metrics.
-                  </p>
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    <span className="px-3 py-1 bg-gray-100 text-gray-700 text-xs rounded-full font-medium border border-gray-200">Python</span>
-                    <span className="px-3 py-1 bg-gray-100 text-gray-700 text-xs rounded-full font-medium border border-gray-200">Tableau</span>
-                    <span className="px-3 py-1 bg-gray-100 text-gray-700 text-xs rounded-full font-medium border border-gray-200">SQL</span>
-                  </div>
-                  <Link to="/portfolio/1" className="inline-flex items-center text-primary font-semibold hover:text-primary/80 transition-colors group-hover:gap-3 gap-2">
-                    View Project
-                    <ArrowRight size={16} className="transition-transform duration-300" />
-                  </Link>
-                </div>
+          {isLoading ? (
+            <div className="flex justify-center items-center py-20">
+              <div className="h-16 w-16 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
+            </div>
+          ) : error ? (
+            <div className="text-center py-20">
+              <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Sparkles className="w-8 h-8 text-red-500" />
               </div>
-            </AnimatedSection>
-            
-            {/* Project 2 */}
-            <AnimatedSection delay={300} className="group">
-              <div className="relative overflow-hidden rounded-3xl border border-gray-100 hover:border-gray-200 hover:shadow-2xl hover:shadow-purple-500/10 transition-all duration-500 bg-white transform hover:-translate-y-2">
-                <div className="relative h-64 overflow-hidden">
-                  <img 
-                    src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop&q=80" 
-                    alt="E-Commerce Growth Analysis" 
-                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" 
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-                  <div className="absolute top-6 left-6">
-                    <span className="bg-purple-500 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg backdrop-blur-sm">Business Analytics</span>
+              <h3 className="text-2xl font-semibold text-gray-900 mb-4">Error Loading Projects</h3>
+              <p className="text-gray-600 font-light">{error}</p>
+            </div>
+          ) : (
+            <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-3 max-w-7xl mx-auto">
+              {featuredProjects.map((project, index) => (
+                <AnimatedSection key={project._id} delay={200 + index * 100} className="group">
+                  <div className="relative overflow-hidden rounded-3xl border border-gray-100 hover:border-gray-200 hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-500 bg-white transform hover:-translate-y-2">
+                    <div className="relative h-64 overflow-hidden">
+                      <img 
+                        src={project.imageUrls[0]} 
+                        alt={project.title} 
+                        className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" 
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                      <div className="absolute top-6 left-6">
+                        <span className={`px-4 py-2 rounded-full text-sm font-semibold text-white shadow-lg backdrop-blur-sm ${
+                          project.category === 'Data Analyst' 
+                            ? 'bg-gradient-to-r from-blue-500 to-blue-600' 
+                            : project.category === 'Web Development'
+                            ? 'bg-gradient-to-r from-purple-500 to-purple-600'
+                            : 'bg-gradient-to-r from-green-500 to-green-600'
+                        }`}>
+                          {project.category}
+                        </span>
+                      </div>
+                      <div className="absolute bottom-6 left-6 right-6">
+                        <h3 className="text-xl font-semibold text-white mb-2 group-hover:text-blue-200 transition-colors">
+                          {project.title}
+                        </h3>
+                      </div>
+                    </div>
+                    <div className="p-8">
+                      <p className="text-gray-600 mb-6 leading-relaxed font-light">
+                        {project.description}
+                      </p>
+                      <div className="flex flex-wrap gap-2 mb-6">
+                        {project.technologies.slice(0, 3).map((tech, idx) => (
+                          <span key={idx} className="px-3 py-1 bg-gray-100 text-gray-700 text-xs rounded-full font-medium border border-gray-200">
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+                      <Link to={`/portfolio/${project._id}`} className="inline-flex items-center text-primary font-semibold hover:text-primary/80 transition-colors group-hover:gap-3 gap-2">
+                        View Project
+                        <ArrowRight size={16} className="transition-transform duration-300" />
+                      </Link>
+                    </div>
                   </div>
-                  <div className="absolute bottom-6 left-6 right-6">
-                    <h3 className="text-xl font-semibold text-white mb-2 group-hover:text-purple-200 transition-colors">
-                      E-Commerce Growth Analysis
-                    </h3>
-                  </div>
-                </div>
-                <div className="p-8">
-                  <p className="text-gray-600 mb-6 leading-relaxed font-light">
-                    Data-driven analysis for increasing user acquisition and market share, 
-                    including user journey mapping and conversion optimization.
-                  </p>
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    <span className="px-3 py-1 bg-gray-100 text-gray-700 text-xs rounded-full font-medium border border-gray-200">Market Analysis</span>
-                    <span className="px-3 py-1 bg-gray-100 text-gray-700 text-xs rounded-full font-medium border border-gray-200">User Analytics</span>
-                    <span className="px-3 py-1 bg-gray-100 text-gray-700 text-xs rounded-full font-medium border border-gray-200">Growth Strategy</span>
-                  </div>
-                  <Link to="/portfolio/2" className="inline-flex items-center text-primary font-semibold hover:text-primary/80 transition-colors group-hover:gap-3 gap-2">
-                    View Project
-                    <ArrowRight size={16} className="transition-transform duration-300" />
-                  </Link>
-                </div>
-              </div>
-            </AnimatedSection>
-            
-            {/* Project 3 */}
-            <AnimatedSection delay={400} className="group">
-              <div className="relative overflow-hidden rounded-3xl border border-gray-100 hover:border-gray-200 hover:shadow-2xl hover:shadow-green-500/10 transition-all duration-500 bg-white transform hover:-translate-y-2">
-                <div className="relative h-64 overflow-hidden">
-                  <img 
-                    src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop&q=80" 
-                    alt="Interactive Dashboard" 
-                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" 
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-                  <div className="absolute top-6 left-6">
-                    <span className="bg-green-500 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg backdrop-blur-sm">Web Development</span>
-                  </div>
-                  <div className="absolute bottom-6 left-6 right-6">
-                    <h3 className="text-xl font-semibold text-white mb-2 group-hover:text-green-200 transition-colors">
-                      Interactive Analytics Dashboard
-                    </h3>
-                  </div>
-                </div>
-                <div className="p-8">
-                  <p className="text-gray-600 mb-6 leading-relaxed font-light">
-                    Real-time dashboard for visualizing business metrics and KPIs with 
-                    customizable reports and automated insights generation.
-                  </p>
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    <span className="px-3 py-1 bg-gray-100 text-gray-700 text-xs rounded-full font-medium border border-gray-200">React</span>
-                    <span className="px-3 py-1 bg-gray-100 text-gray-700 text-xs rounded-full font-medium border border-gray-200">D3.js</span>
-                    <span className="px-3 py-1 bg-gray-100 text-gray-700 text-xs rounded-full font-medium border border-gray-200">API Integration</span>
-                  </div>
-                  <Link to="/portfolio/7" className="inline-flex items-center text-primary font-semibold hover:text-primary/80 transition-colors group-hover:gap-3 gap-2">
-                    View Project
-                    <ArrowRight size={16} className="transition-transform duration-300" />
-                  </Link>
-                </div>
-              </div>
-            </AnimatedSection>
-          </div>
+                </AnimatedSection>
+              ))}
+            </div>
+          )}
           
           <div className="text-center mt-16">
             <Button asChild size="lg" className="group rounded-2xl px-8 py-6 text-base font-semibold bg-gradient-to-r from-primary to-accent hover:shadow-xl hover:shadow-primary/20 transition-all duration-300">

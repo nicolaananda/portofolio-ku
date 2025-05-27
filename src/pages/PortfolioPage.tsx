@@ -1,82 +1,101 @@
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import AnimatedSection from '../components/AnimatedSection';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Briefcase, Sparkles, Filter, ChevronDown } from 'lucide-react';
 
-const projects = [
-  {
-    id: 7,
-    title: 'Data Analyst Dashboard',
-    category: 'Data Analyst',
-    imageUrl: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop&q=80',
-    description: 'Interactive dashboard for business metrics visualization using Python, Pandas, and Plotly.',
-  },
-  {
-    id: 8,
-    title: 'E-Commerce Analytics Platform',
-    category: 'Data Analyst',
-    imageUrl: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&auto=format&fit=crop&q=80',
-    description: 'Comprehensive analytics platform for tracking e-commerce metrics and customer behavior.',
-  },
-  {
-    id: 3,
-    title: 'Modern Web Application',
-    category: 'Web Development',
-    imageUrl: 'https://images.unsplash.com/photo-1587620962725-abab7fe55159?w=800&auto=format&fit=crop&q=80',
-    description: 'Full-stack web application built with React, Node.js, and TypeScript.',
-  },
-  {
-    id: 4,
-    title: 'Data Visualization Tool',
-    category: 'Data Analyst',
-    imageUrl: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&auto=format&fit=crop&q=80',
-    description: 'Custom data visualization tool for complex datasets using D3.js and React.',
-  },
-  {
-    id: 5,
-    title: 'RESTful API Service',
-    category: 'Web Development',
-    imageUrl: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&auto=format&fit=crop&q=80',
-    description: 'Scalable RESTful API service with Node.js, Express, and MongoDB.',
-  },
-  {
-    id: 6,
-    title: 'Business Intelligence Dashboard',
-    category: 'Data Analyst',
-    imageUrl: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop&q=80',
-    description: 'Real-time business intelligence dashboard with advanced analytics and reporting features.',
-  },
-  {
-    id: 2,
-    title: 'E-Commerce Growth & Market Insights (Revtoko.co)',
-    category: 'Data Analyst',
-    imageUrl: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop&q=80',
-    description: 'Comprehensive data-driven business analysis and strategic recommendations to boost user acquisition and market share for an e-commerce platform.',
-  },
-  {
-    id: 1,
-    title: 'Customer Retention & Churn Analysis (B2B Marketplace Telkom)',
-    category: 'Data Analyst',
-    imageUrl: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&auto=format&fit=crop&q=80',
-    description: 'Data-driven analysis focusing on customer segmentation, cohort retention trends, and churn drivers to enhance buyer loyalty and increase lifetime value in a government-backed B2B marketplace.',
-  }
-];
+interface Project {
+  _id: string;
+  title: string;
+  category: string;
+  imageUrl: string;
+  description: string;
+}
 
-const categories = [
-  'All',
-  'Web Development',
-  'Data Analyst',
-  'UI/UX Design',
-  'Mobile Development',
-];
+interface ApiProject {
+  _id: string;
+  title: string;
+  category: string;
+  imageUrls: string[];
+  description: string;
+}
+
+interface ApiResponse {
+  status: string;
+  message?: string;
+  data: ApiProject[];
+}
 
 const PortfolioPage = () => {
   const [selectedCategory, setSelectedCategory] = useState('All');
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [categories, setCategories] = useState<string[]>(['All']);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const response = await fetch('http://localhost:5002/api/portfolio');
+        const data: ApiResponse = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.message || 'Failed to fetch projects');
+        }
+
+        // Transform the data to match our Project interface
+        const transformedProjects = data.data.map((project: ApiProject) => ({
+          _id: project._id,
+          title: project.title,
+          category: project.category,
+          imageUrl: project.imageUrls[0] || '', // Use the first image as the main image
+          description: project.description,
+        }));
+
+        setProjects(transformedProjects);
+
+        // Extract unique categories from projects and add 'All' category
+        const uniqueCategories = ['All', ...new Set(transformedProjects.map(project => project.category))];
+        setCategories(uniqueCategories);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to fetch projects');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchProjects();
+  }, []);
 
   const filteredProjects = selectedCategory === 'All'
     ? projects
     : projects.filter((project) => project.category === selectedCategory);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center pt-20">
+        <div className="text-center">
+          <div className="h-10 w-10 animate-spin rounded-full border-4 border-primary border-t-transparent mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading projects...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center pt-20">
+        <div className="text-center">
+          <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <Sparkles className="w-8 h-8 text-red-500" />
+          </div>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">Error Loading Projects</h2>
+          <p className="text-gray-600 mb-4">{error}</p>
+          <Button onClick={() => window.location.reload()}>Try Again</Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen pt-20">
@@ -158,11 +177,11 @@ const PortfolioPage = () => {
           <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-3 max-w-7xl mx-auto">
             {filteredProjects.map((project, index) => (
               <AnimatedSection 
-                key={project.id} 
+                key={project._id} 
                 delay={200 + index * 100}
                 className="group"
               >
-                <Link to={`/portfolio/${project.id}`}>
+                <Link to={`/portfolio/${project._id}`}>
                   <div className="relative overflow-hidden rounded-3xl border border-gray-100 hover:border-gray-200 hover:shadow-2xl transition-all duration-500 bg-white transform hover:-translate-y-2">
                     {/* Image Container */}
                     <div className="relative h-72 overflow-hidden">
