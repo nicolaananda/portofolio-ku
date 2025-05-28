@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
@@ -41,17 +40,38 @@ const ContactPage = () => {
     },
   });
   
+  const API_URL = import.meta.env.VITE_API_URL;
+  
   const onSubmit = async (data: ContactFormValues) => {
     setIsSubmitting(true);
     
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    console.log('Form submitted:', data);
-    toast.success('Message sent successfully! I will get back to you soon.');
-    
-    form.reset();
-    setIsSubmitting(false);
+    try {
+      const response = await fetch(`${API_URL}/contact`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: data.name,
+          email: data.email,
+          subject: data.subject,
+          message: data.message
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || 'Failed to send message');
+      }
+
+      toast.success('Message sent successfully! I will get back to you soon.');
+      form.reset();
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'Failed to send message');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
   
   return (

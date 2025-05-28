@@ -12,7 +12,6 @@ import AddPortfolio from './pages/AddPortfolio';
 
 // Layout
 import MainLayout from "./layouts/MainLayout";
-import AdminLayout from "./layouts/AdminLayout";
 
 // Lazy loaded pages
 const HomePage = lazy(() => import("./pages/HomePage"));
@@ -23,13 +22,6 @@ const BlogPage = lazy(() => import("./pages/BlogPage"));
 const BlogPostPage = lazy(() => import("./pages/BlogPostPage"));
 const ContactPage = lazy(() => import("./pages/ContactPage"));
 const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
-
-// Lazy loaded admin pages
-const AdminDashboard = lazy(() => import("./pages/admin/Dashboard"));
-const AdminBlogPosts = lazy(() => import("./pages/admin/BlogPosts"));
-const AdminPortfolio = lazy(() => import("./pages/admin/Portfolio"));
-const AdminPortfolioEdit = lazy(() => import("./pages/admin/PortfolioEdit"));
-const AdminBlogEdit = lazy(() => import("./pages/admin/BlogEdit"));
 
 // Loading component
 const LoadingSpinner = () => (
@@ -108,18 +100,6 @@ const App = () => (
                     <Route path="blog/:id" element={<BlogPostPage />} />
                     <Route path="contact" element={<ContactPage />} />
                     <Route path="login" element={<Login />} />
-                  </Route>
-
-                  <Route path="/admin" element={
-                    <ProtectedRoute>
-                      <AdminLayout />
-                    </ProtectedRoute>
-                  }>
-                    <Route index element={<AdminDashboard />} />
-                    <Route path="blog" element={<AdminBlogPosts />} />
-                    <Route path="blog/:id" element={<AdminBlogEdit />} />
-                    <Route path="portfolio" element={<AdminPortfolio />} />
-                    <Route path="portfolio/:id" element={<AdminPortfolioEdit />} />
                   </Route>
                   
                   <Route path="/add-portfolio" element={
