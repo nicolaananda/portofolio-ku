@@ -145,52 +145,52 @@ export default function DashboardPage() {
       {/* Stats Grid */}
       <motion.div 
         variants={staggerContainer}
-        className="grid gap-6 md:grid-cols-2 lg:grid-cols-4"
+        className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4"
       >
         {/* Total Portfolios */}
         <motion.div 
           variants={fadeIn}
-          className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1"
+          className="bg-white rounded-xl border border-gray-200 p-4 sm:p-6 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1"
         >
           <div className="flex items-center justify-between mb-4">
-            <div className="rounded-lg bg-blue-50 p-3">
-              <Briefcase className="h-6 w-6 text-blue-600" />
+            <div className="rounded-lg bg-blue-50 p-2 sm:p-3">
+              <Briefcase className="h-5 w-5 sm:h-6 sm:w-6 text-blue-600" />
             </div>
             <span className="flex items-center text-sm text-green-600">
               <TrendingUp className="h-4 w-4 mr-1" />
               {portfolioGrowth}%
             </span>
           </div>
-          <h3 className="text-2xl font-bold text-gray-900">{stats.totalPortfolios}</h3>
+          <h3 className="text-xl sm:text-2xl font-bold text-gray-900">{stats.totalPortfolios}</h3>
           <p className="text-sm text-gray-600 mt-1">Total Portfolios</p>
         </motion.div>
 
         {/* Total Messages */}
         <motion.div 
           variants={fadeIn}
-          className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1"
+          className="bg-white rounded-xl border border-gray-200 p-4 sm:p-6 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1"
         >
           <div className="flex items-center justify-between mb-4">
-            <div className="rounded-lg bg-green-50 p-3">
-              <Mail className="h-6 w-6 text-green-600" />
+            <div className="rounded-lg bg-green-50 p-2 sm:p-3">
+              <Mail className="h-5 w-5 sm:h-6 sm:w-6 text-green-600" />
             </div>
             <span className="flex items-center text-sm text-green-600">
               <TrendingUp className="h-4 w-4 mr-1" />
               {contactGrowth}%
             </span>
           </div>
-          <h3 className="text-2xl font-bold text-gray-900">{stats.totalContacts}</h3>
+          <h3 className="text-xl sm:text-2xl font-bold text-gray-900">{stats.totalContacts}</h3>
           <p className="text-sm text-gray-600 mt-1">Total Messages</p>
         </motion.div>
 
         {/* Unread Messages */}
         <motion.div 
           variants={fadeIn}
-          className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1"
+          className="bg-white rounded-xl border border-gray-200 p-4 sm:p-6 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1"
         >
           <div className="flex items-center justify-between mb-4">
-            <div className="rounded-lg bg-orange-50 p-3">
-              <MessageCircle className="h-6 w-6 text-orange-600" />
+            <div className="rounded-lg bg-orange-50 p-2 sm:p-3">
+              <MessageCircle className="h-5 w-5 sm:h-6 sm:w-6 text-orange-600" />
             </div>
             {stats.unreadContacts > 0 && (
               <span className="px-2 py-1 text-xs font-medium bg-orange-100 text-orange-600 rounded-full animate-pulse">
@@ -198,14 +198,14 @@ export default function DashboardPage() {
               </span>
             )}
           </div>
-          <h3 className="text-2xl font-bold text-gray-900">{stats.unreadContacts}</h3>
+          <h3 className="text-xl sm:text-2xl font-bold text-gray-900">{stats.unreadContacts}</h3>
           <p className="text-sm text-gray-600 mt-1">Unread Messages</p>
         </motion.div>
 
         {/* Quick Actions */}
         <motion.div 
           variants={fadeIn}
-          className="bg-gradient-to-br from-primary to-primary/90 rounded-xl p-6 text-white shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1"
+          className="bg-gradient-to-br from-primary to-primary/90 rounded-xl p-4 sm:p-6 text-white shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1"
         >
           <h3 className="text-lg font-semibold mb-4">Quick Actions</h3>
           <div className="space-y-3">
@@ -230,14 +230,14 @@ export default function DashboardPage() {
       {/* Recent Activity Section */}
       <motion.div 
         variants={staggerContainer}
-        className="grid gap-6 lg:grid-cols-2"
+        className="grid gap-4 sm:gap-6 grid-cols-1 lg:grid-cols-2"
       >
         {/* Recent Portfolios */}
         <motion.div 
           variants={fadeIn}
           className="bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300"
         >
-          <div className="p-6 border-b border-gray-200">
+          <div className="p-4 sm:p-6 border-b border-gray-200">
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-semibold text-gray-900">Recent Portfolios</h2>
               <Link
@@ -249,7 +249,7 @@ export default function DashboardPage() {
               </Link>
             </div>
           </div>
-          <div className="p-6">
+          <div className="p-4 sm:p-6">
             {stats.recentPortfolios?.length > 0 ? (
               <div className="space-y-4">
                 {stats.recentPortfolios.slice(0, 5).map((portfolio: any) => (
@@ -258,17 +258,17 @@ export default function DashboardPage() {
                     whileHover={{ x: 5 }}
                     className="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors"
                   >
-                    <div className="flex-1">
-                      <h3 className="font-medium text-gray-900">{portfolio.title}</h3>
-                      <div className="flex items-center gap-4 mt-1">
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-medium text-gray-900 truncate">{portfolio.title}</h3>
+                      <div className="flex items-center gap-2 mt-1 flex-wrap">
                         <span className="text-sm text-gray-500">{portfolio.category}</span>
                         <span className="text-sm text-gray-400">•</span>
-                        <span className="text-sm text-gray-500">{portfolio.client}</span>
+                        <span className="text-sm text-gray-500 truncate">{portfolio.client}</span>
                       </div>
                     </div>
                     <Link
                       to={`/admin/portfolio/${portfolio._id}/edit`}
-                      className="text-sm text-primary hover:text-primary/80 flex items-center gap-1 group"
+                      className="text-sm text-primary hover:text-primary/80 flex items-center gap-1 group ml-4"
                     >
                       Edit
                       <ArrowUpRight className="h-4 w-4 transform group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
@@ -287,7 +287,7 @@ export default function DashboardPage() {
           variants={fadeIn}
           className="bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300"
         >
-          <div className="p-6 border-b border-gray-200">
+          <div className="p-4 sm:p-6 border-b border-gray-200">
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-semibold text-gray-900">Recent Messages</h2>
               <Link
@@ -299,7 +299,7 @@ export default function DashboardPage() {
               </Link>
             </div>
           </div>
-          <div className="p-6">
+          <div className="p-4 sm:p-6">
             {stats.recentContacts?.length > 0 ? (
               <div className="space-y-4">
                 {stats.recentContacts.slice(0, 5).map((contact: any) => (
@@ -314,7 +314,7 @@ export default function DashboardPage() {
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between">
                         <h3 className="font-medium text-gray-900 truncate">{contact.name}</h3>
-                        <span className="text-xs text-gray-500">
+                        <span className="text-xs text-gray-500 ml-2">
                           {new Date(contact.createdAt).toLocaleDateString()}
                         </span>
                       </div>
@@ -334,9 +334,9 @@ export default function DashboardPage() {
       {/* Activity Chart */}
       <motion.div 
         variants={fadeIn}
-        className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-all duration-300"
+        className="bg-white rounded-xl border border-gray-200 p-4 sm:p-6 shadow-sm hover:shadow-md transition-all duration-300"
       >
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
           <h2 className="text-lg font-semibold text-gray-900">Activity Overview</h2>
           <div className="flex items-center gap-2">
             {['week', 'month', 'year'].map((timeframe) => (
