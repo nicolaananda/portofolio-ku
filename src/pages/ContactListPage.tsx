@@ -48,7 +48,7 @@ export default function ContactListPage() {
 
   const fetchContacts = async () => {
     try {
-      const response = await fetch('http://localhost:5002/api/contact', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/contact`, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
@@ -68,7 +68,7 @@ export default function ContactListPage() {
 
   const handleMarkAsRead = async (id: string) => {
     try {
-      const response = await fetch(`http://localhost:5002/api/contact/${id}/read`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/contact/${id}/read`, {
         method: 'PATCH',
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -96,7 +96,7 @@ export default function ContactListPage() {
     }
 
     try {
-      const response = await fetch(`http://localhost:5002/api/contact/${id}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/contact/${id}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${accessToken}`,

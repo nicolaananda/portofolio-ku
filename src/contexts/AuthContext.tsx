@@ -14,31 +14,33 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  const validateAndRefreshToken = async () => {
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/refresh-token`, {
+        method: 'POST',
+        credentials: 'include',
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setAccessToken(data.accessToken);
+        localStorage.setItem('accessToken', data.accessToken);
+        setIsAuthenticated(true);
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.error('Token validation error:', error);
+      return false;
+    }
+  };
+
   useEffect(() => {
-    // Check for existing token and validate it on mount
-    const validateToken = async () => {
+    const initializeAuth = async () => {
       const token = localStorage.getItem('accessToken');
       if (token) {
-        try {
-          // Try to refresh the token
-          const response = await fetch('http://localhost:5002/api/auth/refresh-token', {
-            method: 'POST',
-            credentials: 'include',
-          });
-
-          if (response.ok) {
-            const data = await response.json();
-            setAccessToken(data.accessToken);
-            localStorage.setItem('accessToken', data.accessToken);
-            setIsAuthenticated(true);
-          } else {
-            // If refresh fails, clear the token
-            localStorage.removeItem('accessToken');
-            setAccessToken(null);
-            setIsAuthenticated(false);
-          }
-        } catch (error) {
-          console.error('Token validation error:', error);
+        const isValid = await validateAndRefreshToken();
+        if (!isValid) {
           localStorage.removeItem('accessToken');
           setAccessToken(null);
           setIsAuthenticated(false);
@@ -47,12 +49,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setIsLoading(false);
     };
 
-    validateToken();
+    initializeAuth();
   }, []);
 
   const login = async (email: string, password: string) => {
     try {
-      const response = await fetch('http://localhost:5002/api/auth/login', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -78,10 +80,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const logout = async () => {
     try {
       if (accessToken) {
-        await fetch('http://localhost:5002/api/auth/logout', {
+        await fetch(`${import.meta.env.VITE_API_URL}/auth/logout`, {
           method: 'POST',
           headers: {
-            Authorization: `Bearer ${accessToken}`,
+            'Authorization': `Bearer ${accessToken}`,
           },
           credentials: 'include',
         });
@@ -95,27 +97,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  // Add token refresh logic
+  // Token refresh logic
   useEffect(() => {
     if (!accessToken) return;
 
     const refreshInterval = setInterval(async () => {
-      try {
-        const response = await fetch('http://localhost:5002/api/auth/refresh-token', {
-          method: 'POST',
-          credentials: 'include',
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          setAccessToken(data.accessToken);
-          localStorage.setItem('accessToken', data.accessToken);
-        } else {
-          // If refresh fails, logout
-          logout();
-        }
-      } catch (error) {
-        console.error('Token refresh error:', error);
+      const isValid = await validateAndRefreshToken();
+      if (!isValid) {
         logout();
       }
     }, 14 * 60 * 1000); // Refresh every 14 minutes

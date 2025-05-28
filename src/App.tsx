@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, HashRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { HelmetProvider } from 'react-helmet-async';
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -42,8 +42,8 @@ const LoadingSpinner = () => (
 
 const queryClient = new QueryClient();
 
-// Use HashRouter for better production compatibility
-const RouterComponent = import.meta.env.PROD ? HashRouter : BrowserRouter;
+// Use BrowserRouter for clean URLs
+const RouterComponent = BrowserRouter;
 
 // Error Boundary Component
 class ErrorBoundary extends Component<{children: ReactNode}, {hasError: boolean}> {

@@ -40,7 +40,7 @@ export default function PortfolioEditPage() {
   useEffect(() => {
     const fetchPortfolio = async () => {
       try {
-        const response = await fetch(`http://localhost:5002/api/portfolio/${id}`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/portfolio/${id}`, {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
@@ -68,7 +68,7 @@ export default function PortfolioEditPage() {
     setIsSaving(true);
 
     try {
-      const response = await fetch(`http://localhost:5002/api/portfolio/${id}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/portfolio/${id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

@@ -53,7 +53,7 @@ export default function PortfolioListPage() {
 
   const fetchPortfolios = async () => {
     try {
-      const response = await fetch('http://localhost:5002/api/portfolio', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/portfolio`, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
@@ -77,7 +77,7 @@ export default function PortfolioListPage() {
     }
 
     try {
-      const response = await fetch(`http://localhost:5002/api/portfolio/${id}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/portfolio/${id}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${accessToken}`,

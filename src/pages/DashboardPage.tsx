@@ -57,14 +57,14 @@ export default function DashboardPage() {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const portfolioResponse = await fetch('http://localhost:5002/api/portfolio?limit=5', {
+        const portfolioResponse = await fetch(`${import.meta.env.VITE_API_URL}/portfolio?limit=5`, {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
         });
         const portfolioData = await portfolioResponse.json();
 
-        const contactResponse = await fetch('http://localhost:5002/api/contact?limit=5', {
+        const contactResponse = await fetch(`${import.meta.env.VITE_API_URL}/contact?limit=5`, {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
