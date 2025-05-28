@@ -9,6 +9,13 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import { Suspense, lazy, Component, ErrorInfo, ReactNode } from "react";
 import Login from './pages/Login';
 import AddPortfolio from './pages/AddPortfolio';
+import AdminLayout from '@/layouts/AdminLayout';
+import LoginPage from '@/pages/LoginPage';
+import DashboardPage from '@/pages/DashboardPage';
+import PortfolioListPage from '@/pages/PortfolioListPage';
+import PortfolioEditPage from '@/pages/PortfolioEditPage';
+import PortfolioCreatePage from '@/pages/PortfolioCreatePage';
+import ContactListPage from '@/pages/ContactListPage';
 
 // Layout
 import MainLayout from "./layouts/MainLayout";
@@ -36,7 +43,7 @@ const LoadingSpinner = () => (
 const queryClient = new QueryClient();
 
 // Use HashRouter for better production compatibility
-const Router = import.meta.env.PROD ? HashRouter : BrowserRouter;
+const RouterComponent = import.meta.env.PROD ? HashRouter : BrowserRouter;
 
 // Error Boundary Component
 class ErrorBoundary extends Component<{children: ReactNode}, {hasError: boolean}> {
@@ -75,11 +82,6 @@ class ErrorBoundary extends Component<{children: ReactNode}, {hasError: boolean}
   }
 }
 
-function PrivateRoute({ children }: { children: React.ReactNode }) {
-  const { isAuthenticated } = useAuth();
-  return isAuthenticated ? <>{children}</> : <Navigate to="/login" />;
-}
-
 const App = () => (
   <ErrorBoundary>
     <HelmetProvider>
@@ -88,9 +90,10 @@ const App = () => (
           <AuthProvider>
             <Toaster />
             <Sonner />
-            <Router>
+            <RouterComponent>
               <Suspense fallback={<LoadingSpinner />}>
                 <Routes>
+                  {/* Public Routes */}
                   <Route path="/" element={<MainLayout />}>
                     <Route index element={<HomePage />} />
                     <Route path="about" element={<AboutPage />} />
@@ -99,19 +102,66 @@ const App = () => (
                     <Route path="blog" element={<BlogPage />} />
                     <Route path="blog/:id" element={<BlogPostPage />} />
                     <Route path="contact" element={<ContactPage />} />
-                    <Route path="login" element={<Login />} />
+                    <Route path="login" element={<LoginPage />} />
                   </Route>
-                  
-                  <Route path="/add-portfolio" element={
-                    <PrivateRoute>
-                      <AddPortfolio />
-                    </PrivateRoute>
-                  } />
 
+                  {/* Protected Admin Routes */}
+                  <Route
+                    path="/admin"
+                    element={
+                      <ProtectedRoute>
+                        <AdminLayout>
+                          <DashboardPage />
+                        </AdminLayout>
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/admin/portfolio"
+                    element={
+                      <ProtectedRoute>
+                        <AdminLayout>
+                          <PortfolioListPage />
+                        </AdminLayout>
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/admin/portfolio/create"
+                    element={
+                      <ProtectedRoute>
+                        <AdminLayout>
+                          <PortfolioCreatePage />
+                        </AdminLayout>
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/admin/portfolio/:id/edit"
+                    element={
+                      <ProtectedRoute>
+                        <AdminLayout>
+                          <PortfolioEditPage />
+                        </AdminLayout>
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/admin/contact"
+                    element={
+                      <ProtectedRoute>
+                        <AdminLayout>
+                          <ContactListPage />
+                        </AdminLayout>
+                      </ProtectedRoute>
+                    }
+                  />
+
+                  {/* Catch all route */}
                   <Route path="*" element={<NotFoundPage />} />
                 </Routes>
               </Suspense>
-            </Router>
+            </RouterComponent>
           </AuthProvider>
         </TooltipProvider>
       </QueryClientProvider>
