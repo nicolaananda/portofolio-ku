@@ -34,6 +34,8 @@ export default function AddPortfolio() {
     githubUrl: '',
   });
 
+  const API_URL = import.meta.env.VITE_API_URL;
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
@@ -44,7 +46,7 @@ export default function AddPortfolio() {
     setError('');
 
     try {
-      const response = await fetch('http://localhost:5002/api/portfolio', {
+      const response = await fetch(`${API_URL}/portfolio`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

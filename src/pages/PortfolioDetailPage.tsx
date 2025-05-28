@@ -28,10 +28,12 @@ const PortfolioDetailPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
   
+  const API_URL = import.meta.env.VITE_API_URL;
+
   useEffect(() => {
     const fetchProject = async () => {
       try {
-        const response = await fetch(`http://localhost:5002/api/portfolio/${id}`);
+        const response = await fetch(`${API_URL}/portfolio/${id}`);
         const data = await response.json();
 
         if (!response.ok) {

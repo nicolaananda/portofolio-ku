@@ -68,10 +68,12 @@ const HomePage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
 
+  const API_URL = import.meta.env.VITE_API_URL;
+
   useEffect(() => {
     const fetchFeaturedProjects = async () => {
       try {
-        const response = await fetch('http://localhost:5002/api/portfolio');
+        const response = await fetch(`${API_URL}/portfolio`);
         const data = await response.json();
 
         if (!response.ok) {
