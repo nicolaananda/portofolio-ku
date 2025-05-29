@@ -7,15 +7,21 @@ A modern, responsive portfolio website built with React, TypeScript, and Tailwin
 - **Responsive Design**: Fully responsive layout that works on all devices
 - **Modern UI**: Clean and professional design with smooth animations
 - **Portfolio Showcase**: Filterable project gallery with detailed project pages
-- **Dark/Light Mode**: Theme toggle for user preference
+- **Admin Dashboard**: Secure admin panel for managing portfolio and messages
+- **Contact Management**: Integrated contact form with message management
+- **Authentication**: Secure login system with token-based authentication
+- **Mobile-First**: Optimized for all screen sizes with mobile-friendly navigation
 - **Performance Optimized**: Fast loading times and smooth interactions
 
 ## Technologies Used
 
 - **Frontend**: React, TypeScript, Tailwind CSS
 - **Routing**: React Router
-- **Animations**: Custom animations with CSS transitions
-- **State Management**: React Hooks
+- **Animations**: Framer Motion
+- **State Management**: React Context API
+- **Authentication**: JWT with HTTP-only cookies
+- **UI Components**: Custom components with shadcn/ui
+- **API Integration**: RESTful API with fetch
 - **Deployment**: [Deployment platform]
 
 ## Project Structure
@@ -25,10 +31,13 @@ portfolio-website/
 ├── public/              # Static files
 ├── src/
 │   ├── components/      # Reusable UI components
+│   │   ├── ui/         # Base UI components
+│   │   └── admin/      # Admin-specific components
 │   ├── pages/          # Page components
-│   ├── styles/         # Global styles and Tailwind config
-│   ├── utils/          # Utility functions
+│   ├── layouts/        # Layout components
+│   ├── contexts/       # React contexts
 │   ├── hooks/          # Custom React hooks
+│   ├── lib/            # Utility functions
 │   ├── types/          # TypeScript type definitions
 │   ├── assets/         # Images and other assets
 │   └── App.tsx         # Root component
@@ -58,7 +67,12 @@ npm install
 yarn install
 ```
 
-3. Start the development server:
+3. Create a `.env` file in the root directory and add your environment variables:
+```env
+VITE_API_URL=your_api_url
+```
+
+4. Start the development server:
 ```bash
 npm run dev
 # or
@@ -69,22 +83,30 @@ The application will be available at `http://localhost:3000`
 
 ## Usage
 
+### Public Pages
 - Navigate through different sections using the navigation menu
-- Toggle between light and dark mode using the theme switcher
 - Browse projects in the portfolio section
 - Filter projects by category or technology
 - View detailed project information by clicking on project cards
+- Send messages through the contact form
+
+### Admin Dashboard
+- Secure login system with token-based authentication
+- Mobile-friendly admin interface
+- Manage portfolio items with CRUD operations
+- View and manage contact messages
+- Real-time statistics and activity overview
+- Responsive sidebar navigation
 
 ## Customization
 
 ### Adding New Projects
-
-1. Navigate to the projects data file
-2. Add a new project object following the existing structure
-3. Include project details such as title, description, technologies, and links
+1. Log in to the admin dashboard
+2. Navigate to the Portfolio section
+3. Click "Add Portfolio" to create a new project
+4. Fill in the project details and upload images
 
 ### Modifying Styles
-
 - Global styles can be modified in the `src/styles` directory
 - Component-specific styles are located within their respective component folders
 - Tailwind configuration can be adjusted in `tailwind.config.js`

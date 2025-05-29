@@ -93,6 +93,8 @@ Backend API untuk website portfolio yang dibangun dengan Express.js, TypeScript,
 - Account locking setelah 5 kali percobaan login gagal
 - Lock duration: 30 menit
 - Refresh token disimpan dalam HTTP-only cookie
+- CSRF protection
+- Rate limiting per IP
 
 ---
 
