@@ -33,6 +33,12 @@ const HomePage = () => {
     "Business Intelligence Expert"
   ];
 
+  // Add truncateText function
+  const truncateText = (text: string, maxLength: number = 120) => {
+    if (text.length <= maxLength) return text;
+    return text.slice(0, maxLength).trim() + '...';
+  };
+
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "Person",
@@ -415,7 +421,7 @@ const HomePage = () => {
                     </div>
                     <div className="p-8">
                       <p className="text-gray-600 mb-6 leading-relaxed font-light">
-                        {project.description}
+                        {truncateText(project.description)}
                       </p>
                       <div className="flex flex-wrap gap-2 mb-6">
                         {project.technologies.slice(0, 3).map((tech, idx) => (
