@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, User, Download, Mail, Phone, MapPin, Star, Zap, Target, Award, Code, Briefcase, Coffee, Sparkles, ChevronDown } from 'lucide-react';
+import { ArrowRight, User, Download, Mail, Phone, MapPin, Star, Zap, Target, Award, Code, Briefcase, Coffee, Sparkles, ChevronDown, ExternalLink, Github, Eye } from 'lucide-react';
 import TypingAnimation from '../components/TypingAnimation';
 import SocialIcons from '../components/SocialIcons';
 import AnimatedSection from '../components/AnimatedSection';
@@ -26,14 +26,13 @@ interface Project {
 
 const HomePage = () => {
   const typingStrings = [
-    "Data Analyst",
-    "Web Developer",
-    "Fullstack JavaScript Developer",
-    "AI-Enabled Developer",
-    "Business Intelligence Expert"
+    "Data Scientist",
+    "Full Stack Developer", 
+    "AI Engineer",
+    "Business Intelligence Expert",
+    "Digital Innovator"
   ];
 
-  // Add truncateText function
   const truncateText = (text: string, maxLength: number = 120) => {
     if (text.length <= maxLength) return text;
     return text.slice(0, maxLength).trim() + '...';
@@ -86,7 +85,6 @@ const HomePage = () => {
           throw new Error(data.message || 'Failed to fetch projects');
         }
 
-        // Get the first 3 projects as featured
         setFeaturedProjects(data.data.slice(0, 3));
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to fetch projects');
@@ -98,8 +96,44 @@ const HomePage = () => {
     fetchFeaturedProjects();
   }, []);
 
+  const skills = [
+    { name: "Python", level: 95, category: "Data & AI", icon: "🐍", color: "from-green-400 to-emerald-600" },
+    { name: "React", level: 90, category: "Frontend", icon: "⚛️", color: "from-blue-400 to-cyan-600" },
+    { name: "TypeScript", level: 88, category: "Frontend", icon: "📘", color: "from-blue-600 to-indigo-600" },
+    { name: "Node.js", level: 85, category: "Backend", icon: "🟢", color: "from-green-500 to-lime-600" },
+    { name: "SQL", level: 92, category: "Database", icon: "🗄️", color: "from-orange-400 to-red-500" },
+    { name: "Tableau", level: 94, category: "Analytics", icon: "📊", color: "from-purple-400 to-pink-600" }
+  ];
+
+  const services = [
+    {
+      icon: <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>,
+      title: "Data Analytics & BI",
+      description: "Transform complex datasets into actionable business insights with advanced analytics, machine learning, and interactive dashboards.",
+      features: ["Predictive Analytics", "Business Intelligence", "Data Visualization", "Statistical Modeling"],
+      gradient: "from-blue-500 to-purple-600",
+      bgGradient: "from-blue-50 to-purple-50"
+    },
+    {
+      icon: <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>,
+      title: "Full Stack Development",
+      description: "Build scalable, modern web applications with cutting-edge technologies and exceptional user experiences.",
+      features: ["React & Next.js", "Node.js APIs", "Database Design", "Cloud Deployment"],
+      gradient: "from-purple-500 to-pink-600",
+      bgGradient: "from-purple-50 to-pink-50"
+    },
+    {
+      icon: <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>,
+      title: "AI & Machine Learning",
+      description: "Integrate intelligent features and automation into applications using modern AI technologies and frameworks.",
+      features: ["ML Model Development", "AI Integration", "Automation Scripts", "NLP Solutions"],
+      gradient: "from-green-500 to-teal-600",
+      bgGradient: "from-green-50 to-teal-50"
+    }
+  ];
+
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col overflow-hidden">
       <SEOHead
         title="Nicola Ananda - Data Analyst & Web Developer | Portfolio"
         description="Professional Data Analyst and Full Stack Web Developer specializing in React, TypeScript, Python, and modern web technologies. Based in Malang, Indonesia."
@@ -108,39 +142,41 @@ const HomePage = () => {
         image="/profile.webp"
         structuredData={structuredData}
       />
-      {/* Elegant Hero Section */}
-      <section className="relative flex min-h-screen items-center justify-center overflow-hidden">
-        {/* Sophisticated background */}
+
+      {/* Modern Hero Section with Split Layout */}
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+        {/* Dynamic Background */}
         <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-white to-blue-50/30"></div>
-          <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-purple-50/20 to-transparent"></div>
-          <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center opacity-[0.03] [mask-image:radial-gradient(ellipse_at_center,white,transparent)]"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-white to-blue-50/40"></div>
+          <div className="absolute inset-0 bg-gradient-to-tr from-purple-50/30 via-transparent to-pink-50/20"></div>
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,rgba(120,119,198,0.1),transparent),radial-gradient(ellipse_at_bottom_right,rgba(255,154,158,0.1),transparent)]"></div>
         </div>
         
-        {/* Elegant floating elements */}
-        <div className="absolute top-20 left-16 w-32 h-32 bg-gradient-to-br from-primary/8 to-accent/8 rounded-full blur-3xl animate-pulse opacity-70"></div>
-        <div className="absolute bottom-32 right-20 w-40 h-40 bg-gradient-to-br from-purple-200/20 to-blue-200/20 rounded-full blur-3xl animate-pulse opacity-60" style={{animationDelay: '3s'}}></div>
-        <div className="absolute top-1/2 left-8 w-24 h-24 bg-gradient-to-br from-accent/6 to-primary/6 rounded-full blur-2xl animate-pulse opacity-50" style={{animationDelay: '1.5s'}}></div>
+        {/* Floating Elements */}
+        <div className="absolute top-1/4 left-10 w-20 h-20 bg-gradient-to-br from-primary/20 to-accent/20 rounded-full blur-xl animate-pulse"></div>
+        <div className="absolute bottom-1/4 right-16 w-32 h-32 bg-gradient-to-br from-purple-300/20 to-blue-300/20 rounded-full blur-2xl animate-pulse" style={{animationDelay: '2s'}}></div>
+        <div className="absolute top-1/2 right-1/4 w-16 h-16 bg-gradient-to-br from-pink-300/20 to-purple-300/20 rounded-full blur-xl animate-pulse" style={{animationDelay: '4s'}}></div>
         
-        <div className="container relative z-10 px-4 py-20">
-          <div className="grid items-center gap-16 lg:grid-cols-2 lg:gap-24">
-            <div className="text-center lg:text-left space-y-8">
-              {/* Elegant status indicator */}
-              <div className="mb-10 inline-flex items-center rounded-full bg-gradient-to-r from-green-50 to-emerald-50 px-6 py-3 text-sm font-medium text-green-700 border border-green-100 shadow-sm backdrop-blur-sm">
-                <Sparkles className="mr-2 h-4 w-4 text-green-500" />
-                Available for new opportunities
+        <div className="container relative z-10 px-4 py-16">
+          <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
+            {/* Content Section */}
+            <div className="lg:col-span-7 text-center lg:text-left space-y-8">
+              {/* Status Badge */}
+              <div className="inline-flex items-center rounded-full bg-gradient-to-r from-green-100 to-emerald-100 px-4 py-2 text-sm font-semibold text-green-700 border border-green-200/50 backdrop-blur-sm">
+                <div className="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></div>
+                Available for Projects
               </div>
               
-              <div className="space-y-6">
-                <h1 className="text-5xl font-bold leading-[1.1] tracking-tight lg:text-6xl xl:text-7xl">
-                  <span className="block text-gray-900 mb-2">Hello, I'm</span>
-                  <span className="block bg-gradient-to-r from-primary via-purple-600 to-accent bg-clip-text text-transparent animate-gradient">
+              {/* Main Heading */}
+              <div className="space-y-4">
+                <h1 className="text-5xl font-bold leading-tight tracking-tight lg:text-6xl xl:text-7xl">
+                  <span className="block text-gray-900 mb-2">Hi, I'm</span>
+                  <span className="block bg-gradient-to-r from-primary via-purple-600 to-accent bg-clip-text text-transparent">
                     Nicola Ananda
                   </span>
                 </h1>
                 
-                <div className="text-2xl font-medium text-gray-600 lg:text-3xl">
-                  <span className="text-gray-800 font-semibold">A passionate </span>
+                <div className="text-2xl font-medium text-gray-600 lg:text-3xl min-h-[3rem]">
                   <TypingAnimation
                     strings={typingStrings}
                     className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent font-bold"
@@ -148,51 +184,48 @@ const HomePage = () => {
                 </div>
               </div>
               
-              <p className="text-xl text-gray-600 leading-relaxed max-w-2xl mx-auto lg:mx-0 font-light">
-                Transforming complex data into <span className="text-gray-800 font-medium">actionable insights</span> while crafting 
-                <span className="text-gray-800 font-medium"> beautiful, functional</span> web applications that drive business success.
+              {/* Description */}
+              <p className="text-xl text-gray-600 leading-relaxed max-w-2xl mx-auto lg:mx-0">
+                Transforming <span className="font-semibold text-gray-800">complex data</span> into powerful insights and 
+                building <span className="font-semibold text-gray-800">innovative web solutions</span> that drive business growth.
               </p>
               
-              {/* Elegant action buttons */}
-              <div className="flex flex-col gap-4 sm:flex-row sm:justify-center lg:justify-start pt-4">
-                <Button asChild size="lg" className="group relative overflow-hidden rounded-2xl px-8 py-6 text-base font-semibold bg-gradient-to-r from-primary to-accent hover:shadow-xl hover:shadow-primary/20 transition-all duration-300 transform hover:-translate-y-0.5">
+              {/* Action Buttons */}
+              <div className="flex flex-col gap-4 sm:flex-row sm:justify-center lg:justify-start pt-6">
+                <Button asChild size="lg" className="group relative overflow-hidden rounded-2xl px-8 py-4 text-base font-semibold bg-gradient-to-r from-primary to-accent hover:shadow-2xl hover:shadow-primary/25 transition-all duration-300 transform hover:-translate-y-1">
                   <Link to="/portfolio">
                     <span className="relative z-10 flex items-center">
+                      <Eye size={18} className="mr-2" />
                       View My Work
-                      <ArrowRight size={20} className="ml-2 group-hover:translate-x-1 transition-transform duration-300" />
+                      <ArrowRight size={18} className="ml-2 group-hover:translate-x-1 transition-transform duration-300" />
                     </span>
-                    <div className="absolute inset-0 bg-gradient-to-r from-accent to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                   </Link>
                 </Button>
-                <Button asChild variant="outline" size="lg" className="group rounded-2xl px-8 py-6 text-base font-semibold border-2 border-gray-200 hover:border-primary/30 hover:bg-primary/5 transition-all duration-300 backdrop-blur-sm">
-                  <Link to="/about">
-                    <User size={20} className="mr-2 group-hover:scale-110 transition-transform duration-300" />
-                    Learn More About Me
+                <Button asChild variant="outline" size="lg" className="group rounded-2xl px-8 py-4 text-base font-semibold border-2 border-gray-200 hover:border-primary/40 hover:bg-primary/5 transition-all duration-300">
+                  <Link to="/contact">
+                    <Mail size={18} className="mr-2 group-hover:scale-110 transition-transform duration-300" />
+                    Let's Connect
                   </Link>
                 </Button>
               </div>
               
-              {/* Elegant social section */}
-              <div className="flex flex-col items-center lg:items-start gap-6 pt-8">
-                <div className="flex items-center gap-3">
-                  <div className="h-px w-12 bg-gradient-to-r from-transparent to-gray-300"></div>
-                  <p className="text-sm text-gray-500 font-medium tracking-wide">CONNECT WITH ME</p>
-                  <div className="h-px w-12 bg-gradient-to-l from-transparent to-gray-300"></div>
-                </div>
+              {/* Social Links */}
+              <div className="flex flex-col items-center lg:items-start gap-4 pt-8">
+                <p className="text-sm text-gray-500 font-medium tracking-wide">CONNECT WITH ME</p>
                 <SocialIcons />
               </div>
             </div>
             
-            <div className="flex justify-center lg:justify-end">
+            {/* Profile Image Section */}
+            <div className="lg:col-span-5 flex justify-center lg:justify-end">
               <div className="relative group">
-                {/* Elegant profile container with sophisticated shadows */}
                 <div className="relative h-80 w-80 lg:h-96 lg:w-96">
-                  {/* Layered background elements for depth */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-purple-300/10 to-accent/20 rounded-full blur-3xl opacity-60 group-hover:opacity-80 transition-opacity duration-700"></div>
-                  <div className="absolute inset-2 bg-gradient-to-tl from-accent/15 via-transparent to-primary/15 rounded-full blur-2xl opacity-40 group-hover:opacity-60 transition-opacity duration-700" style={{animationDelay: '1s'}}></div>
+                  {/* Background Effects */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-primary/30 via-purple-300/20 to-accent/30 rounded-full blur-3xl opacity-60 group-hover:opacity-80 transition-opacity duration-700 animate-pulse"></div>
+                  <div className="absolute inset-4 bg-gradient-to-tl from-accent/20 via-transparent to-primary/20 rounded-full blur-2xl opacity-40"></div>
                   
-                  <div className="relative h-full w-full overflow-hidden rounded-full border-4 border-white/60 shadow-2xl shadow-gray-900/10 group-hover:shadow-3xl group-hover:shadow-primary/10 transition-all duration-700 backdrop-blur-sm">
-                    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-white/10"></div>
+                  {/* Main Image Container */}
+                  <div className="relative h-full w-full overflow-hidden rounded-full border-4 border-white/80 shadow-2xl shadow-gray-900/20 group-hover:shadow-3xl group-hover:shadow-primary/20 transition-all duration-700 backdrop-blur-sm">
                     <LazyImage
                       src="/profile_optimized.jpg"
                       webpSrc="/profile.webp"
@@ -201,157 +234,62 @@ const HomePage = () => {
                       sizes="(max-width: 768px) 320px, 384px"
                       loading="eager"
                     />
-                    {/* Elegant overlay */}
-                    <div className="absolute inset-0 rounded-full ring-1 ring-white/20 ring-inset"></div>
+                    <div className="absolute inset-0 rounded-full ring-1 ring-white/30 ring-inset"></div>
                   </div>
-                  
-
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Elegant scroll indicator */}
+        {/* Scroll Indicator */}
         <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2 text-gray-400 animate-bounce">
-          <p className="text-xs font-medium tracking-widest uppercase">Scroll Down</p>
+          <p className="text-xs font-medium tracking-widest uppercase">Explore</p>
           <ChevronDown className="w-5 h-5" />
         </div>
       </section>
 
-      {/* Elegant Services Section */}
-      <section className="py-32 bg-gradient-to-b from-white to-gray-50/50">
-        <div className="container px-4">
+      {/* Enhanced Services Section */}
+      <section className="py-24 bg-gradient-to-b from-gray-50/50 to-white relative overflow-hidden">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 opacity-[0.02]">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(0,0,0,1)_1px,transparent_0)] bg-[size:24px_24px]"></div>
+        </div>
+        
+        <div className="container px-4 relative z-10">
           <AnimatedSection delay={100}>
-            <div className="text-center mb-24">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary font-medium text-sm mb-6">
+            <div className="text-center mb-20">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary font-semibold text-sm mb-6">
                 <Sparkles className="w-4 h-4" />
                 What I Do
               </div>
               <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6 tracking-tight">
-                Crafting Digital <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Excellence</span>
+                Expertise That <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Delivers</span>
               </h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed font-light">
-                I combine analytical expertise with modern development skills to deliver 
-                comprehensive solutions that drive business growth and innovation.
+              <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+                Comprehensive solutions spanning data science, web development, and AI integration
               </p>
             </div>
           </AnimatedSection>
           
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 max-w-7xl mx-auto">
-            <AnimatedSection delay={200} className="group">
-              <div className="relative p-10 rounded-3xl border border-gray-100 hover:border-primary/20 hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-500 bg-white/80 backdrop-blur-sm h-full transform hover:-translate-y-2">
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                <div className="relative">
-                  <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-blue-500/20">
-                    <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                    </svg>
-                  </div>
-                  <h3 className="text-2xl font-semibold text-gray-900 mb-4">Data Analysis</h3>
-                  <p className="text-gray-600 mb-8 leading-relaxed font-light text-lg">
-                    Transform raw data into meaningful insights using advanced statistical analysis, 
-                    predictive modeling, and cutting-edge analytics techniques.
-                  </p>
-                  <div className="flex flex-wrap gap-3">
-                    <span className="px-4 py-2 bg-blue-100 text-blue-700 text-sm rounded-full font-medium border border-blue-200">Python</span>
-                    <span className="px-4 py-2 bg-blue-100 text-blue-700 text-sm rounded-full font-medium border border-blue-200">SQL</span>
-                    <span className="px-4 py-2 bg-blue-100 text-blue-700 text-sm rounded-full font-medium border border-blue-200">Tableau</span>
-                  </div>
-                </div>
-              </div>
-            </AnimatedSection>
-            
-            <AnimatedSection delay={300} className="group">
-              <div className="relative p-10 rounded-3xl border border-gray-100 hover:border-primary/20 hover:shadow-2xl hover:shadow-purple-500/10 transition-all duration-500 bg-white/80 backdrop-blur-sm h-full transform hover:-translate-y-2">
-                <div className="absolute inset-0 bg-gradient-to-br from-purple-50/50 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                <div className="relative">
-                  <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-purple-500/20">
-                    <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-                    </svg>
-                  </div>
-                  <h3 className="text-2xl font-semibold text-gray-900 mb-4">Web Development</h3>
-                  <p className="text-gray-600 mb-8 leading-relaxed font-light text-lg">
-                    Build modern, responsive web applications using React, TypeScript, 
-                    and Node.js with focus on exceptional user experience and performance.
-                  </p>
-                  <div className="flex flex-wrap gap-3">
-                    <span className="px-4 py-2 bg-purple-100 text-purple-700 text-sm rounded-full font-medium border border-purple-200">React</span>
-                    <span className="px-4 py-2 bg-purple-100 text-purple-700 text-sm rounded-full font-medium border border-purple-200">TypeScript</span>
-                    <span className="px-4 py-2 bg-purple-100 text-purple-700 text-sm rounded-full font-medium border border-purple-200">Node.js</span>
-                  </div>
-                </div>
-              </div>
-            </AnimatedSection>
-            
-            <AnimatedSection delay={400} className="group">
-              <div className="relative p-10 rounded-3xl border border-gray-100 hover:border-primary/20 hover:shadow-2xl hover:shadow-green-500/10 transition-all duration-500 bg-white/80 backdrop-blur-sm h-full transform hover:-translate-y-2">
-                <div className="absolute inset-0 bg-gradient-to-br from-green-50/50 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                <div className="relative">
-                  <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-green-500/20">
-                    <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
-                    </svg>
-                  </div>
-                  <h3 className="text-2xl font-semibold text-gray-900 mb-4">AI Integration</h3>
-                  <p className="text-gray-600 mb-8 leading-relaxed font-light text-lg">
-                    Integrate artificial intelligence and machine learning capabilities 
-                    into web applications for smarter, data-driven solutions.
-                  </p>
-                  <div className="flex flex-wrap gap-3">
-                    <span className="px-4 py-2 bg-green-100 text-green-700 text-sm rounded-full font-medium border border-green-200">AI/ML</span>
-                    <span className="px-4 py-2 bg-green-100 text-green-700 text-sm rounded-full font-medium border border-green-200">Python</span>
-                    <span className="px-4 py-2 bg-green-100 text-green-700 text-sm rounded-full font-medium border border-green-200">Django</span>
-                  </div>
-                </div>
-              </div>
-            </AnimatedSection>
-          </div>
-        </div>
-      </section>
-      
-      {/* Elegant Skills Section */}
-      <section className="py-32 bg-gradient-to-b from-gray-50/50 to-white">
-        <div className="container px-4">
-          <AnimatedSection delay={100}>
-            <div className="text-center mb-24">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 text-accent font-medium text-sm mb-6">
-                <Code className="w-4 h-4" />
-                Technical Expertise
-              </div>
-              <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6 tracking-tight">
-                My <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Toolkit</span>
-              </h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed font-light">
-                A comprehensive arsenal spanning data analysis, web development, and modern technologies
-              </p>
-            </div>
-          </AnimatedSection>
-          
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 max-w-6xl mx-auto">
-            {[
-              { name: "React", level: "Advanced", icon: "⚛️", color: "from-blue-500 to-blue-600", bg: "bg-blue-50", text: "text-blue-700", border: "border-blue-200" },
-              { name: "TypeScript", level: "Advanced", icon: "📘", color: "from-blue-600 to-indigo-600", bg: "bg-indigo-50", text: "text-indigo-700", border: "border-indigo-200" },
-              { name: "Python", level: "Expert", icon: "🐍", color: "from-green-500 to-emerald-600", bg: "bg-green-50", text: "text-green-700", border: "border-green-200" },
-              { name: "SQL", level: "Advanced", icon: "🗄️", color: "from-orange-500 to-red-500", bg: "bg-orange-50", text: "text-orange-700", border: "border-orange-200" },
-              { name: "Tableau", level: "Expert", icon: "📊", color: "from-blue-400 to-cyan-500", bg: "bg-cyan-50", text: "text-cyan-700", border: "border-cyan-200" },
-              { name: "Node.js", level: "Intermediate", icon: "🟢", color: "from-green-600 to-lime-600", bg: "bg-lime-50", text: "text-lime-700", border: "border-lime-200" },
-              { name: "Git", level: "Advanced", icon: "🔄", color: "from-gray-600 to-slate-600", bg: "bg-slate-50", text: "text-slate-700", border: "border-slate-200" },
-              { name: "Data Analysis", level: "Expert", icon: "📈", color: "from-purple-500 to-violet-600", bg: "bg-purple-50", text: "text-purple-700", border: "border-purple-200" }
-            ].map((skill, index) => (
-              <AnimatedSection key={skill.name} delay={200 + index * 50}>
-                <div className="group p-8 bg-white rounded-2xl border border-gray-100 hover:border-gray-200 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className={`w-12 h-12 bg-gradient-to-br ${skill.color} rounded-xl flex items-center justify-center text-white text-xl shadow-lg group-hover:scale-110 transition-transform duration-300`}>
-                      {skill.icon}
+          <div className="grid gap-8 lg:grid-cols-3 max-w-7xl mx-auto">
+            {services.map((service, index) => (
+              <AnimatedSection key={service.title} delay={200 + index * 100} className="group">
+                <div className={`relative p-8 rounded-3xl border border-gray-100 hover:border-gray-200 hover:shadow-2xl transition-all duration-500 bg-gradient-to-br ${service.bgGradient} backdrop-blur-sm h-full transform hover:-translate-y-2`}>
+                  <div className="relative">
+                    <div className={`w-16 h-16 bg-gradient-to-br ${service.gradient} rounded-2xl flex items-center justify-center mb-6 text-white shadow-xl group-hover:scale-110 transition-transform duration-300`}>
+                      {service.icon}
                     </div>
-                    <div>
-                      <h3 className="font-semibold text-gray-900 text-lg">{skill.name}</h3>
-                      <span className={`text-sm font-medium px-3 py-1 rounded-full ${skill.bg} ${skill.text} ${skill.border} border`}>
-                        {skill.level}
-                      </span>
-                    </div>
+                    <h3 className="text-2xl font-bold text-gray-900 mb-4">{service.title}</h3>
+                    <p className="text-gray-600 mb-6 leading-relaxed">{service.description}</p>
+                    <ul className="space-y-2">
+                      {service.features.map((feature, idx) => (
+                        <li key={idx} className="flex items-center text-gray-700 text-sm">
+                          <div className={`w-2 h-2 bg-gradient-to-r ${service.gradient} rounded-full mr-3`}></div>
+                          {feature}
+                        </li>
+                      ))}
+                    </ul>
                   </div>
                 </div>
               </AnimatedSection>
@@ -359,81 +297,144 @@ const HomePage = () => {
           </div>
         </div>
       </section>
-      
-      {/* Elegant Featured Projects Section */}
-      <section className="py-32 bg-gradient-to-b from-white to-gray-50/30">
+
+      {/* Modern Skills Grid */}
+      <section className="py-24 bg-white">
         <div className="container px-4">
           <AnimatedSection delay={100}>
-            <div className="text-center mb-24">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary font-medium text-sm mb-6">
+            <div className="text-center mb-20">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 text-accent font-semibold text-sm mb-6">
+                <Code className="w-4 h-4" />
+                Technical Stack
+              </div>
+              <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6 tracking-tight">
+                Skills & <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Expertise</span>
+              </h2>
+            </div>
+          </AnimatedSection>
+          
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 max-w-4xl mx-auto">
+            {skills.map((skill, index) => (
+              <AnimatedSection key={skill.name} delay={200 + index * 50}>
+                <div className="group p-6 bg-gradient-to-br from-white to-gray-50/50 rounded-2xl border border-gray-100 hover:border-gray-200 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-3">
+                      <div className={`w-12 h-12 bg-gradient-to-br ${skill.color} rounded-xl flex items-center justify-center text-white text-xl shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+                        {skill.icon}
+                      </div>
+                      <div>
+                        <h3 className="font-bold text-gray-900">{skill.name}</h3>
+                        <p className="text-sm text-gray-500">{skill.category}</p>
+                      </div>
+                    </div>
+                    <span className="text-2xl font-bold text-gray-800">{skill.level}%</span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+                    <div 
+                      className={`h-full bg-gradient-to-r ${skill.color} transition-all duration-1000 ease-out rounded-full`}
+                      style={{ width: `${skill.level}%` }}
+                    ></div>
+                  </div>
+                </div>
+              </AnimatedSection>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Featured Projects with Enhanced Design */}
+      <section className="py-24 bg-gradient-to-b from-gray-50/30 to-white">
+        <div className="container px-4">
+          <AnimatedSection delay={100}>
+            <div className="text-center mb-20">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary font-semibold text-sm mb-6">
                 <Briefcase className="w-4 h-4" />
                 Featured Work
               </div>
               <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6 tracking-tight">
-                Project <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Showcase</span>
+                Latest <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Projects</span>
               </h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed font-light">
-                Real-world applications showcasing data analysis and web development expertise
+              <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+                Real-world applications showcasing innovation in data science and web development
               </p>
             </div>
           </AnimatedSection>
           
           {isLoading ? (
             <div className="flex justify-center items-center py-20">
-              <div className="h-16 w-16 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
+              <div className="relative">
+                <div className="h-16 w-16 animate-spin rounded-full border-4 border-primary/20 border-t-primary"></div>
+                <div className="absolute inset-0 h-16 w-16 animate-ping rounded-full border-2 border-primary/10"></div>
+              </div>
             </div>
           ) : error ? (
             <div className="text-center py-20">
               <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Sparkles className="w-8 h-8 text-red-500" />
               </div>
-              <h3 className="text-2xl font-semibold text-gray-900 mb-4">Error Loading Projects</h3>
-              <p className="text-gray-600 font-light">{error}</p>
+              <h3 className="text-2xl font-semibold text-gray-900 mb-4">Unable to Load Projects</h3>
+              <p className="text-gray-600">{error}</p>
             </div>
           ) : (
-            <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-3 max-w-7xl mx-auto">
+            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 max-w-7xl mx-auto">
               {featuredProjects.map((project, index) => (
                 <AnimatedSection key={project._id} delay={200 + index * 100} className="group">
-                  <div className="relative overflow-hidden rounded-3xl border border-gray-100 hover:border-gray-200 hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-500 bg-white transform hover:-translate-y-2">
-                    <div className="relative h-64 overflow-hidden">
+                  <div className="relative overflow-hidden rounded-3xl border border-gray-100 hover:border-gray-200 hover:shadow-2xl transition-all duration-500 bg-white transform hover:-translate-y-2">
+                    <div className="relative h-56 overflow-hidden">
                       <img 
                         src={project.imageUrls[0]} 
                         alt={project.title} 
                         className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" 
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-                      <div className="absolute top-6 left-6">
-                        <span className={`px-4 py-2 rounded-full text-sm font-semibold text-white shadow-lg backdrop-blur-sm ${
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+                      <div className="absolute top-4 left-4">
+                        <span className={`px-3 py-1 rounded-full text-xs font-bold text-white backdrop-blur-sm ${
                           project.category === 'Data Analyst' 
-                            ? 'bg-gradient-to-r from-blue-500 to-blue-600' 
+                            ? 'bg-blue-500/90' 
                             : project.category === 'Web Development'
-                            ? 'bg-gradient-to-r from-purple-500 to-purple-600'
-                            : 'bg-gradient-to-r from-green-500 to-green-600'
+                            ? 'bg-purple-500/90'
+                            : 'bg-green-500/90'
                         }`}>
                           {project.category}
                         </span>
                       </div>
-                      <div className="absolute bottom-6 left-6 right-6">
-                        <h3 className="text-xl font-semibold text-white mb-2 group-hover:text-blue-200 transition-colors">
+                      <div className="absolute bottom-4 left-4 right-4">
+                        <h3 className="text-xl font-bold text-white mb-2">
                           {project.title}
                         </h3>
                       </div>
                     </div>
-                    <div className="p-8">
-                      <p className="text-gray-600 mb-6 leading-relaxed font-light">
+                    <div className="p-6">
+                      <p className="text-gray-600 mb-4 leading-relaxed">
                         {truncateText(project.description)}
                       </p>
-                      <div className="flex flex-wrap gap-2 mb-6">
+                      <div className="flex flex-wrap gap-2 mb-4">
                         {project.technologies.slice(0, 3).map((tech, idx) => (
-                          <span key={idx} className="px-3 py-1 bg-gray-100 text-gray-700 text-xs rounded-full font-medium border border-gray-200">
+                          <span key={idx} className="px-3 py-1 bg-gray-100 text-gray-700 text-xs rounded-full font-medium">
                             {tech}
                           </span>
                         ))}
                       </div>
-                      <Link to={`/portfolio/${project._id}`} className="inline-flex items-center text-primary font-semibold hover:text-primary/80 transition-colors group-hover:gap-3 gap-2">
-                        View Project
-                        <ArrowRight size={16} className="transition-transform duration-300" />
-                      </Link>
+                      <div className="flex items-center justify-between">
+                        <Link to={`/portfolio/${project._id}`} className="inline-flex items-center text-primary font-semibold hover:text-primary/80 transition-colors">
+                          View Details
+                          <ArrowRight size={16} className="ml-1 group-hover:translate-x-1 transition-transform duration-300" />
+                        </Link>
+                        <div className="flex gap-2">
+                          {project.liveUrl && (
+                            <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" 
+                               className="p-2 bg-gray-100 hover:bg-primary hover:text-white rounded-full transition-colors">
+                              <ExternalLink size={14} />
+                            </a>
+                          )}
+                          {project.githubUrl && (
+                            <a href={project.githubUrl} target="_blank" rel="noopener noreferrer"
+                               className="p-2 bg-gray-100 hover:bg-gray-800 hover:text-white rounded-full transition-colors">
+                              <Github size={14} />
+                            </a>
+                          )}
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </AnimatedSection>
@@ -442,55 +443,56 @@ const HomePage = () => {
           )}
           
           <div className="text-center mt-16">
-            <Button asChild size="lg" className="group rounded-2xl px-8 py-6 text-base font-semibold bg-gradient-to-r from-primary to-accent hover:shadow-xl hover:shadow-primary/20 transition-all duration-300">
+            <Button asChild size="lg" className="group rounded-2xl px-8 py-4 text-base font-semibold bg-gradient-to-r from-primary to-accent hover:shadow-xl hover:shadow-primary/20 transition-all duration-300">
               <Link to="/portfolio">
-                View All Projects
-                <ArrowRight size={20} className="ml-2 group-hover:translate-x-1 transition-transform duration-300" />
+                Explore All Projects
+                <ArrowRight size={18} className="ml-2 group-hover:translate-x-1 transition-transform duration-300" />
               </Link>
             </Button>
           </div>
         </div>
       </section>
 
-      {/* Elegant Contact Section */}
-      <section className="py-32 bg-gradient-to-br from-gray-50 via-white to-gray-50/50 relative overflow-hidden">
-        {/* Background elements */}
-        <div className="absolute top-20 right-20 w-64 h-64 bg-gradient-to-br from-primary/5 to-accent/5 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-20 left-20 w-48 h-48 bg-gradient-to-br from-purple-200/20 to-blue-200/20 rounded-full blur-3xl"></div>
+      {/* Modern CTA Section */}
+      <section className="py-24 bg-gradient-to-br from-primary/5 via-purple-50/50 to-accent/5 relative overflow-hidden">
+        {/* Background Elements */}
+        <div className="absolute top-0 left-0 w-full h-full">
+          <div className="absolute top-20 right-20 w-72 h-72 bg-gradient-to-br from-primary/10 to-accent/10 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-20 left-20 w-56 h-56 bg-gradient-to-br from-purple-200/20 to-blue-200/20 rounded-full blur-3xl"></div>
+        </div>
         
         <div className="container px-4 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
             <AnimatedSection delay={100}>
               <div className="mb-8">
-                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 text-accent font-medium text-sm mb-6">
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 text-accent font-semibold text-sm mb-6">
                   <Mail className="w-4 h-4" />
-                  Let's Connect
+                  Ready to Collaborate
                 </div>
                 <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6 tracking-tight">
-                  Ready to Create Something <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Amazing?</span>
+                  Let's Build Something <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Extraordinary</span>
                 </h2>
-                <p className="text-xl text-gray-600 mb-12 leading-relaxed font-light max-w-3xl mx-auto">
-                  Let's transform your data into actionable insights and build exceptional web applications 
-                  that drive your business forward.
+                <p className="text-xl text-gray-600 mb-12 leading-relaxed max-w-3xl mx-auto">
+                  Ready to transform your ideas into reality? Let's collaborate and create innovative solutions 
+                  that make a real impact on your business.
                 </p>
               </div>
             </AnimatedSection>
             
             <AnimatedSection delay={200}>
               <div className="flex flex-col sm:flex-row gap-6 justify-center">
-                <Button asChild size="lg" className="group relative overflow-hidden rounded-2xl px-10 py-6 text-lg font-semibold bg-gradient-to-r from-primary to-accent hover:shadow-xl hover:shadow-primary/20 transition-all duration-300 transform hover:-translate-y-0.5">
+                <Button asChild size="lg" className="group relative overflow-hidden rounded-2xl px-10 py-6 text-lg font-semibold bg-gradient-to-r from-primary to-accent hover:shadow-2xl hover:shadow-primary/30 transition-all duration-300 transform hover:-translate-y-1">
                   <Link to="/contact">
                     <span className="relative z-10 flex items-center">
                       <Mail size={20} className="mr-3 group-hover:scale-110 transition-transform duration-300" />
-                      Start a Conversation
+                      Start a Project
                     </span>
-                    <div className="absolute inset-0 bg-gradient-to-r from-accent to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                   </Link>
                 </Button>
-                <Button asChild variant="outline" size="lg" className="group rounded-2xl px-10 py-6 text-lg font-semibold border-2 border-gray-200 hover:border-primary/30 hover:bg-primary/5 transition-all duration-300">
+                <Button asChild variant="outline" size="lg" className="group rounded-2xl px-10 py-6 text-lg font-semibold border-2 border-gray-200 hover:border-primary/40 hover:bg-white/80 transition-all duration-300 backdrop-blur-sm">
                   <Link to="/about">
                     <User size={20} className="mr-3 group-hover:scale-110 transition-transform duration-300" />
-                    Learn More About Me
+                    Learn More
                   </Link>
                 </Button>
               </div>
