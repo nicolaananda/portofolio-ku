@@ -24,9 +24,12 @@ export default defineConfig(({ mode }) => ({
     minify: 'terser',
     cssMinify: true,
     sourcemap: mode === 'development',
+    // Optimize chunk size
+    chunkSizeWarningLimit: 1000,
     rollupOptions: {
       output: {
         manualChunks: {
+          // Core React chunks
           'vendor-react': [
             'react',
             'react-dom',
@@ -35,32 +38,46 @@ export default defineConfig(({ mode }) => ({
           'vendor-query': [
             '@tanstack/react-query'
           ],
+          // Split admin components separately
+          'admin': [
+            './src/pages/DashboardPage',
+            './src/pages/PortfolioListPage',
+            './src/pages/PortfolioEditPage',
+            './src/pages/PortfolioCreatePage',
+            './src/pages/ContactListPage',
+            './src/layouts/AdminLayout'
+          ],
+          // Core UI components
           'ui-core': [
             '@radix-ui/react-dialog',
             '@radix-ui/react-dropdown-menu',
             '@radix-ui/react-slot'
           ],
+          // Form-related components
           'ui-forms': [
             '@radix-ui/react-label',
             'react-hook-form',
             '@hookform/resolvers',
             'zod'
           ],
+          // Extended UI components
           'ui-extended': [
             '@radix-ui/react-toast',
             '@radix-ui/react-accordion',
             '@radix-ui/react-tabs',
             '@radix-ui/react-popover'
           ],
-          'charts': [
-            'recharts'
-          ],
+          // Utilities
           'utils': [
             'date-fns',
             'lucide-react',
             'sonner',
             'clsx',
             'tailwind-merge'
+          ],
+          // Animation libraries
+          'animation': [
+            'framer-motion'
           ]
         },
         chunkFileNames: 'assets/js/[name]-[hash].js',
@@ -80,7 +97,16 @@ export default defineConfig(({ mode }) => ({
       compress: {
         drop_console: mode === 'production',
         drop_debugger: mode === 'production',
-        pure_funcs: mode === 'production' ? ['console.log', 'console.info', 'console.debug'] : []
+        pure_funcs: mode === 'production' ? ['console.log', 'console.info', 'console.debug'] : [],
+        // Additional compression options
+        dead_code: true,
+        unused: true,
+      },
+      mangle: {
+        safari10: true,
+      },
+      format: {
+        safari10: true,
       }
     }
   },
@@ -94,7 +120,12 @@ export default defineConfig(({ mode }) => ({
   },
   // Performance optimizations
   esbuild: {
-    logOverride: { 'this-is-undefined-in-esm': 'silent' }
+    logOverride: { 'this-is-undefined-in-esm': 'silent' },
+    // Tree shake unused code more aggressively
+    treeShaking: true,
+    minifyIdentifiers: mode === 'production',
+    minifySyntax: mode === 'production',
+    minifyWhitespace: mode === 'production',
   }
 }));
 

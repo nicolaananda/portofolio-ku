@@ -7,20 +7,11 @@ import { HelmetProvider } from 'react-helmet-async';
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { Suspense, lazy, Component, ErrorInfo, ReactNode } from "react";
-import Login from './pages/Login';
-import AddPortfolio from './pages/AddPortfolio';
-import AdminLayout from '@/layouts/AdminLayout';
-import LoginPage from '@/pages/LoginPage';
-import DashboardPage from '@/pages/DashboardPage';
-import PortfolioListPage from '@/pages/PortfolioListPage';
-import PortfolioEditPage from '@/pages/PortfolioEditPage';
-import PortfolioCreatePage from '@/pages/PortfolioCreatePage';
-import ContactListPage from '@/pages/ContactListPage';
 
 // Layout
 import MainLayout from "./layouts/MainLayout";
 
-// Lazy loaded pages
+// Lazy loaded public pages
 const HomePage = lazy(() => import("./pages/HomePage"));
 const AboutPage = lazy(() => import("./pages/AboutPage"));
 const PortfolioPage = lazy(() => import("./pages/PortfolioPage"));
@@ -29,18 +20,42 @@ const BlogPage = lazy(() => import("./pages/BlogPage"));
 const BlogPostPage = lazy(() => import("./pages/BlogPostPage"));
 const ContactPage = lazy(() => import("./pages/ContactPage"));
 const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
+const LoginPage = lazy(() => import("./pages/LoginPage"));
 
-// Loading component
-const LoadingSpinner = () => (
+// Lazy loaded admin components (for better code splitting)
+const AdminLayout = lazy(() => import("./layouts/AdminLayout"));
+const DashboardPage = lazy(() => import("./pages/DashboardPage"));
+const PortfolioListPage = lazy(() => import("./pages/PortfolioListPage"));
+const PortfolioEditPage = lazy(() => import("./pages/PortfolioEditPage"));
+const PortfolioCreatePage = lazy(() => import("./pages/PortfolioCreatePage"));
+const ContactListPage = lazy(() => import("./pages/ContactListPage"));
+
+// Enhanced loading component with better UX
+const LoadingSpinner = ({ message = "Loading..." }: { message?: string }) => (
   <div className="flex h-screen w-full items-center justify-center bg-white">
     <div className="text-center">
-      <div className="h-10 w-10 animate-spin rounded-full border-4 border-primary border-t-transparent mx-auto mb-4"></div>
-      <p className="text-gray-600">Loading...</p>
+      <div className="relative mb-4">
+        <div className="h-10 w-10 animate-spin rounded-full border-4 border-primary border-t-transparent mx-auto"></div>
+        <div className="absolute inset-0 h-10 w-10 mx-auto animate-ping rounded-full border-2 border-primary/20"></div>
+      </div>
+      <p className="text-gray-600 animate-pulse">{message}</p>
     </div>
   </div>
 );
 
-const queryClient = new QueryClient();
+// Specific loading components for different sections
+const AdminLoadingSpinner = () => <LoadingSpinner message="Loading admin panel..." />;
+const PageLoadingSpinner = () => <LoadingSpinner message="Loading page..." />;
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      // Optimize query caching
+      staleTime: 5 * 60 * 1000, // 5 minutes
+      gcTime: 10 * 60 * 1000, // 10 minutes
+    },
+  },
+});
 
 // Use BrowserRouter for clean URLs
 const RouterComponent = BrowserRouter;
@@ -69,7 +84,7 @@ class ErrorBoundary extends Component<{children: ReactNode}, {hasError: boolean}
             <p className="text-gray-600 mb-4">Please refresh the page to try again.</p>
             <button 
               onClick={() => window.location.reload()}
-              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
             >
               Refresh Page
             </button>
@@ -91,76 +106,147 @@ const App = () => (
             <Toaster />
             <Sonner />
             <RouterComponent>
-              <Suspense fallback={<LoadingSpinner />}>
-                <Routes>
-                  {/* Public Routes */}
-                  <Route path="/" element={<MainLayout />}>
-                    <Route index element={<HomePage />} />
-                    <Route path="about" element={<AboutPage />} />
-                    <Route path="portfolio" element={<PortfolioPage />} />
-                    <Route path="portfolio/:id" element={<PortfolioDetailPage />} />
-                    <Route path="blog" element={<BlogPage />} />
-                    <Route path="blog/:id" element={<BlogPostPage />} />
-                    <Route path="contact" element={<ContactPage />} />
-                    <Route path="login" element={<LoginPage />} />
-                  </Route>
-
-                  {/* Protected Admin Routes */}
-                  <Route
-                    path="/admin"
+              <Routes>
+                {/* Public Routes with optimized loading */}
+                <Route path="/" element={<MainLayout />}>
+                  <Route 
+                    index 
                     element={
-                      <ProtectedRoute>
+                      <Suspense fallback={<PageLoadingSpinner />}>
+                        <HomePage />
+                      </Suspense>
+                    } 
+                  />
+                  <Route 
+                    path="about" 
+                    element={
+                      <Suspense fallback={<PageLoadingSpinner />}>
+                        <AboutPage />
+                      </Suspense>
+                    } 
+                  />
+                  <Route 
+                    path="portfolio" 
+                    element={
+                      <Suspense fallback={<PageLoadingSpinner />}>
+                        <PortfolioPage />
+                      </Suspense>
+                    } 
+                  />
+                  <Route 
+                    path="portfolio/:id" 
+                    element={
+                      <Suspense fallback={<PageLoadingSpinner />}>
+                        <PortfolioDetailPage />
+                      </Suspense>
+                    } 
+                  />
+                  <Route 
+                    path="blog" 
+                    element={
+                      <Suspense fallback={<PageLoadingSpinner />}>
+                        <BlogPage />
+                      </Suspense>
+                    } 
+                  />
+                  <Route 
+                    path="blog/:id" 
+                    element={
+                      <Suspense fallback={<PageLoadingSpinner />}>
+                        <BlogPostPage />
+                      </Suspense>
+                    } 
+                  />
+                  <Route 
+                    path="contact" 
+                    element={
+                      <Suspense fallback={<PageLoadingSpinner />}>
+                        <ContactPage />
+                      </Suspense>
+                    } 
+                  />
+                  <Route 
+                    path="login" 
+                    element={
+                      <Suspense fallback={<PageLoadingSpinner />}>
+                        <LoginPage />
+                      </Suspense>
+                    } 
+                  />
+                </Route>
+
+                {/* Protected Admin Routes with separate loading */}
+                <Route
+                  path="/admin"
+                  element={
+                    <ProtectedRoute>
+                      <Suspense fallback={<AdminLoadingSpinner />}>
                         <AdminLayout>
                           <DashboardPage />
                         </AdminLayout>
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/admin/portfolio"
-                    element={
-                      <ProtectedRoute>
+                      </Suspense>
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/admin/portfolio"
+                  element={
+                    <ProtectedRoute>
+                      <Suspense fallback={<AdminLoadingSpinner />}>
                         <AdminLayout>
                           <PortfolioListPage />
                         </AdminLayout>
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/admin/portfolio/create"
-                    element={
-                      <ProtectedRoute>
+                      </Suspense>
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/admin/portfolio/create"
+                  element={
+                    <ProtectedRoute>
+                      <Suspense fallback={<AdminLoadingSpinner />}>
                         <AdminLayout>
                           <PortfolioCreatePage />
                         </AdminLayout>
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/admin/portfolio/:id/edit"
-                    element={
-                      <ProtectedRoute>
+                      </Suspense>
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/admin/portfolio/:id/edit"
+                  element={
+                    <ProtectedRoute>
+                      <Suspense fallback={<AdminLoadingSpinner />}>
                         <AdminLayout>
                           <PortfolioEditPage />
                         </AdminLayout>
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/admin/contact"
-                    element={
-                      <ProtectedRoute>
+                      </Suspense>
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/admin/contact"
+                  element={
+                    <ProtectedRoute>
+                      <Suspense fallback={<AdminLoadingSpinner />}>
                         <AdminLayout>
                           <ContactListPage />
                         </AdminLayout>
-                      </ProtectedRoute>
-                    }
-                  />
+                      </Suspense>
+                    </ProtectedRoute>
+                  }
+                />
 
-                  {/* Catch all route */}
-                  <Route path="*" element={<NotFoundPage />} />
-                </Routes>
-              </Suspense>
+                {/* Catch all route */}
+                <Route 
+                  path="*" 
+                  element={
+                    <Suspense fallback={<PageLoadingSpinner />}>
+                      <NotFoundPage />
+                    </Suspense>
+                  } 
+                />
+              </Routes>
             </RouterComponent>
           </AuthProvider>
         </TooltipProvider>

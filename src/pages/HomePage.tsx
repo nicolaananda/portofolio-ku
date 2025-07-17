@@ -228,11 +228,19 @@ const HomePage = () => {
                   <div className="relative h-full w-full overflow-hidden rounded-full border-4 border-white/80 shadow-2xl shadow-gray-900/20 group-hover:shadow-3xl group-hover:shadow-primary/20 transition-all duration-700 backdrop-blur-sm">
                     <LazyImage
                       src="/profile_optimized.jpg"
-                      webpSrc="/profile.webp"
+                      webpSrc="/profile_hero.webp"
+                      responsiveVariants={{
+                        mobile: "/profile_320.webp",
+                        tablet: "/profile_640.webp", 
+                        desktop: "/profile_hero.webp"
+                      }}
                       alt="Nicola Ananda - Data Analyst & Web Developer"
                       className="h-full w-full object-cover transition-all duration-700 group-hover:scale-105"
-                      sizes="(max-width: 768px) 320px, 384px"
+                      sizes="(max-width: 768px) 320px, (max-width: 1024px) 640px, 800px"
                       loading="eager"
+                      priority={true}
+                      width={384}
+                      height={384}
                     />
                     <div className="absolute inset-0 rounded-full ring-1 ring-white/30 ring-inset"></div>
                   </div>
