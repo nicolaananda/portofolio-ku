@@ -24,7 +24,11 @@
     "test:lighthouse": "npx lighthouse-ci collect --numberOfRuns=3",
     "type-check": "tsc --noEmit",
     "clean": "rm -rf dist node_modules/.vite",
-    "clean:install": "npm run clean && npm install"
+    "clean:install": "npm run clean && npm install",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "docker:logs": "docker-compose logs -f",
+    "docker:build-serve": "npm run build && docker-compose up -d"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.0.1",
