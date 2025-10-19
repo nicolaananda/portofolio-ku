@@ -65,6 +65,18 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				coral: {
+					'50': '#fff4ed',
+					'100': '#ffe6d5',
+					'200': '#fec9aa',
+					'300': '#fda474',
+					'400': '#fc733c',
+					'500': '#ff7a59',
+					'600': '#ec4a0a',
+					'700': '#c43809',
+					'800': '#9c2f0f',
+					'900': '#7e2a10'
 				}
 			},
 			borderRadius: {
@@ -185,6 +197,10 @@ export default {
 			fontFamily: {
 				sans: ['"Plus Jakarta Sans"', 'sans-serif'],
 				jakarta: ['"Plus Jakarta Sans"', 'sans-serif']
+			},
+			backgroundImage: {
+				'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+				'gradient-mesh': 'radial-gradient(at 40% 20%, hsla(160, 84%, 39%, 0.3) 0px, transparent 50%), radial-gradient(at 80% 0%, hsla(14, 100%, 66%, 0.2) 0px, transparent 50%), radial-gradient(at 0% 50%, hsla(160, 84%, 50%, 0.15) 0px, transparent 50%), radial-gradient(at 80% 50%, hsla(14, 100%, 70%, 0.15) 0px, transparent 50%)'
 			}
 		}
 	},

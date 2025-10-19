@@ -6,32 +6,56 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
   
   return (
-    <footer className="bg-muted/30 py-10">
-      <div className="container px-4">
-        <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
-          <div className="flex flex-col items-center gap-4 md:items-start">
-            <Link to="/" className="font-montserrat text-xl font-bold">
-              ./Nicola
+    <footer className="relative bg-slate-950 py-16 border-t border-cyan-500/10">
+      {/* Background glow */}
+      <div className="absolute inset-0 bg-gradient-to-t from-cyan-500/5 to-transparent"></div>
+      
+      <div className="container px-4 relative">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+          {/* Brand */}
+          <div className="lg:col-span-2">
+            <Link to="/" className="inline-block mb-6">
+              <span className="text-3xl font-black bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent">
+                {'<'}Nicola{' />'}
+              </span>
             </Link>
-            <p className="text-muted-foreground text-center md:text-left">
-              Data Analyst & Web Developer creating data-driven, responsive applications.
+            <p className="text-slate-400 text-lg leading-relaxed max-w-md mb-6">
+              Data Analyst & Full Stack Developer crafting data-driven solutions and exceptional digital experiences.
             </p>
+            <SocialIcons />
           </div>
           
-          <div className="flex flex-col items-center gap-4 md:items-end">
-            <SocialIcons />
-            <p className="text-sm text-muted-foreground">
-              © {currentYear} All rights reserved.
-            </p>
+          {/* Quick Links */}
+          <div>
+            <h3 className="text-white font-black text-lg mb-6">Quick Links</h3>
+            <ul className="space-y-3">
+              <li><Link to="/" className="text-slate-400 hover:text-cyan-400 transition-colors font-medium">Home</Link></li>
+              <li><Link to="/about" className="text-slate-400 hover:text-cyan-400 transition-colors font-medium">About</Link></li>
+              <li><Link to="/portfolio" className="text-slate-400 hover:text-cyan-400 transition-colors font-medium">Portfolio</Link></li>
+              <li><Link to="/contact" className="text-slate-400 hover:text-cyan-400 transition-colors font-medium">Contact</Link></li>
+            </ul>
+          </div>
+
+          {/* Contact */}
+          <div>
+            <h3 className="text-white font-black text-lg mb-6">Get in Touch</h3>
+            <ul className="space-y-3">
+              <li className="text-slate-400 font-medium">Malang, Indonesia</li>
+              <li><a href="mailto:gmail@nicola.id" className="text-slate-400 hover:text-cyan-400 transition-colors font-medium">gmail@nicola.id</a></li>
+            </ul>
           </div>
         </div>
         
-        <div className="mx-auto mt-8 flex justify-center space-x-6 text-sm text-muted-foreground">
-          <Link to="/" className="hover:text-accent transition-colors duration-200">Home</Link>
-          <Link to="/about" className="hover:text-accent transition-colors duration-200">About</Link>
-          <Link to="/portfolio" className="hover:text-accent transition-colors duration-200">Portfolio</Link>
-          <Link to="/blog" className="hover:text-accent transition-colors duration-200">Blog</Link>
-          <Link to="/contact" className="hover:text-accent transition-colors duration-200">Contact</Link>
+        {/* Bottom bar */}
+        <div className="pt-8 border-t border-slate-800">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+            <p className="text-slate-500 text-sm font-semibold">
+              © {currentYear} Nicola Ananda. All rights reserved.
+            </p>
+            <p className="text-slate-600 text-sm">
+              Built with <span className="text-cyan-400">❤️</span> and <span className="text-purple-400">React</span>
+            </p>
+          </div>
         </div>
       </div>
     </footer>

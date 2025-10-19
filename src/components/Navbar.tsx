@@ -20,11 +20,13 @@ const Navbar = ({ isScrolled }: NavbarProps) => {
   
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-      isScrolled ? 'bg-white/95 backdrop-blur-sm shadow-sm border-b border-gray-100 py-4' : 'bg-transparent py-6'
+      isScrolled ? 'bg-slate-950/80 backdrop-blur-xl shadow-2xl border-b border-cyan-500/10 py-4' : 'bg-transparent py-6'
     }`}>
       <div className="container flex items-center justify-between px-4">
-        <Link to="/" className="text-xl font-bold text-gray-900 hover:text-primary transition-colors duration-300">
-          <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">./Nicola</span>
+        <Link to="/" className="group text-2xl font-black transition-all duration-300">
+          <span className="bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent group-hover:from-cyan-300 group-hover:to-purple-500">
+            {'<'}Nicola{' />'}
+          </span>
         </Link>
         
         {/* Desktop Navigation */}
@@ -45,7 +47,7 @@ const Navbar = ({ isScrolled }: NavbarProps) => {
           variant="ghost" 
           size="icon"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="md:hidden"
+          className="md:hidden hover:bg-cyan-500/10 text-white"
         >
           {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </Button>
@@ -53,14 +55,14 @@ const Navbar = ({ isScrolled }: NavbarProps) => {
       
               {/* Mobile Navigation */}
       {isMenuOpen && (
-        <div className="absolute top-full left-0 right-0 bg-white/95 backdrop-blur-sm shadow-lg border-b border-gray-100 md:hidden animate-fade-in">
+        <div className="absolute top-full left-0 right-0 bg-slate-950/95 backdrop-blur-xl shadow-2xl border-b border-cyan-500/20 md:hidden animate-fade-in">
           <nav className="container flex flex-col space-y-4 p-6">
             <MobileNavLink to="/" label="Home" currentPath={location.pathname} />
             <MobileNavLink to="/about" label="About" currentPath={location.pathname} />
             <MobileNavLink to="/portfolio" label="Portfolio" currentPath={location.pathname} />
             <MobileNavLink to="/contact" label="Contact" currentPath={location.pathname} />
             
-            <div className="flex justify-center pt-4 border-t border-muted">
+            <div className="flex justify-center pt-4 border-t border-slate-800">
               <SocialIcons />
             </div>
           </nav>
@@ -82,9 +84,12 @@ const NavLink = ({ to, label, currentPath }: NavLinkProps) => {
   return (
     <Link 
       to={to} 
-      className={`text-gray-700 hover:text-primary transition-colors duration-200 font-medium ${isActive ? 'text-primary' : ''}`}
+      className={`relative text-slate-300 hover:text-cyan-400 transition-colors duration-200 font-bold ${isActive ? 'text-cyan-400' : ''}`}
     >
       {label}
+      {isActive && (
+        <span className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-cyan-400 to-purple-600 rounded-full"></span>
+      )}
     </Link>
   );
 };
@@ -95,8 +100,8 @@ const MobileNavLink = ({ to, label, currentPath }: NavLinkProps) => {
   return (
     <Link 
       to={to} 
-      className={`py-2 text-lg font-medium transition-colors duration-200 ${
-        isActive ? 'text-primary font-semibold' : 'text-gray-700'
+      className={`py-3 text-lg font-black transition-all duration-200 rounded-xl px-4 ${
+        isActive ? 'text-cyan-400 bg-cyan-500/10 border-l-4 border-cyan-400' : 'text-slate-300 hover:text-white hover:bg-slate-800/50'
       }`}
     >
       {label}
