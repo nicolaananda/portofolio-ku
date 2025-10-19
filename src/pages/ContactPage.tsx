@@ -76,11 +76,11 @@ const ContactPage = () => {
   };
   
   return (
-    <div className="min-h-screen overflow-hidden bg-black">
+    <div className="min-h-screen overflow-hidden bg-white dark:bg-black">
       {/* Enhanced Liquid Glass Background */}
-      <div className="liquid-bg"></div>
+      <div className="dark:opacity-100 opacity-30 liquid-bg"></div>
       <div className="fixed inset-0 -z-10 gradient-mesh"></div>
-      <div className="noise-texture"></div>
+      <div className="noise-texture dark:opacity-100 opacity-50"></div>
       <SEOHead
         title="Contact Me - Nicola Ananda | Get In Touch"
         description="Ready to collaborate? Get in touch with Nicola Ananda for data analysis and web development projects."
@@ -92,7 +92,7 @@ const ContactPage = () => {
       {/* SPLIT SCREEN LAYOUT */}
       <div className="min-h-screen flex flex-col lg:flex-row">
         {/* LEFT SIDE - Contact Info */}
-        <div className="lg:w-5/12 bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 relative overflow-hidden lg:fixed lg:h-screen">
+        <div className="lg:w-5/12 dark:bg-gradient-to-br dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 bg-gradient-to-br from-gray-50 via-white to-gray-50 relative overflow-hidden lg:fixed lg:h-screen">
           <div className="absolute inset-0 gradient-dark-mesh"></div>
           <div className="absolute top-20 right-0 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl animate-pulse"></div>
           <div className="absolute bottom-0 left-0 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl animate-pulse" style={{animationDelay: '2s'}}></div>
@@ -100,12 +100,12 @@ const ContactPage = () => {
           <div className="relative z-10 h-full flex flex-col justify-center p-8 lg:p-16">
             <AnimatedSection>
               <div className="mb-12">
-                <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 font-bold mb-8">
+                <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full liquid-glass text-cyan-400 font-bold mb-8">
                   <MessageCircle className="w-5 h-5" />
                   Get In Touch
                 </div>
                 
-                <h1 className="text-5xl lg:text-6xl font-black text-white mb-6 leading-tight">
+                <h1 className="text-5xl lg:text-6xl font-black dark:text-white text-gray-900 mb-6 leading-tight">
                   Let's Create
                   <br />
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-600">
@@ -113,7 +113,7 @@ const ContactPage = () => {
                   </span>
                 </h1>
                 
-                <p className="text-xl text-slate-400 leading-relaxed">
+                <p className="text-xl dark:text-slate-400 text-gray-600 leading-relaxed">
                   Have a project in mind? I'd love to hear about it. Send me a message and let's make it happen.
                 </p>
               </div>
@@ -125,8 +125,8 @@ const ContactPage = () => {
                     <Mail className="w-6 h-6 text-cyan-400" />
                   </div>
                   <div>
-                    <p className="text-sm text-slate-500 font-bold uppercase tracking-wider mb-1">Email</p>
-                    <a href="mailto:gmail@nicola.id" className="text-lg text-white hover:text-cyan-400 transition-colors font-bold">
+                    <p className="text-sm dark:text-slate-500 text-gray-500 font-bold uppercase tracking-wider mb-1">Email</p>
+                    <a href="mailto:gmail@nicola.id" className="text-lg dark:text-white text-gray-900 hover:text-cyan-400 transition-colors font-bold">
                       gmail@nicola.id
                     </a>
                   </div>
@@ -137,8 +137,8 @@ const ContactPage = () => {
                     <MapPin className="w-6 h-6 text-purple-400" />
                   </div>
                   <div>
-                    <p className="text-sm text-slate-500 font-bold uppercase tracking-wider mb-1">Location</p>
-                    <p className="text-lg text-white font-bold">
+                    <p className="text-sm dark:text-slate-500 text-gray-500 font-bold uppercase tracking-wider mb-1">Location</p>
+                    <p className="text-lg dark:text-white text-gray-900 font-bold">
                       Malang, East Java<br />Indonesia
                     </p>
                   </div>
@@ -149,8 +149,8 @@ const ContactPage = () => {
                     <CheckCircle className="w-6 h-6 text-emerald-400" />
                   </div>
                   <div>
-                    <p className="text-sm text-slate-500 font-bold uppercase tracking-wider mb-1">Response Time</p>
-                    <p className="text-lg text-white font-bold">
+                    <p className="text-sm dark:text-slate-500 text-gray-500 font-bold uppercase tracking-wider mb-1">Response Time</p>
+                    <p className="text-lg dark:text-white text-gray-900 font-bold">
                       Usually within 24 hours
                     </p>
                   </div>
@@ -159,7 +159,7 @@ const ContactPage = () => {
 
               {/* Social Links */}
               <div>
-                <p className="text-sm text-slate-500 font-bold uppercase tracking-wider mb-4">Connect With Me</p>
+                <p className="text-sm dark:text-slate-500 text-gray-500 font-bold uppercase tracking-wider mb-4">Connect With Me</p>
                 <div className="flex gap-4">
                   <a 
                     href="https://linkedin.com/in/nicola-ananda" 
@@ -197,12 +197,12 @@ const ContactPage = () => {
             <AnimatedSection delay={200}>
               {/* Form Header */}
               <div className="mb-12">
-                <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-400 font-bold mb-8">
+                <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full liquid-glass text-purple-400 font-bold mb-8">
                   <Sparkles className="w-5 h-5" />
                   Send a Message
                 </div>
-                <h2 className="text-4xl font-black text-white mb-4">Drop Me a Line</h2>
-                <p className="text-lg text-slate-400">
+                <h2 className="text-4xl font-black dark:text-white text-gray-900 mb-4">Drop Me a Line</h2>
+                <p className="text-lg dark:text-slate-400 text-gray-600">
                   Fill out the form below and I'll get back to you as soon as possible.
                 </p>
               </div>
@@ -216,12 +216,12 @@ const ContactPage = () => {
                       name="name"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-base font-bold text-white">Your Name</FormLabel>
+                          <FormLabel className="text-base font-bold dark:text-white text-gray-900">Your Name</FormLabel>
                           <FormControl>
                             <Input 
                               placeholder="John Doe" 
                               {...field} 
-                              className="h-14 text-base rounded-2xl liquid-glass focus:border-white/30 text-white placeholder:text-white/30"
+                              className="h-14 text-base rounded-2xl liquid-glass focus:border-white/30 dark:text-white text-gray-900 dark:placeholder:text-white/30 placeholder:text-gray-400"
                             />
                           </FormControl>
                           <FormMessage className="text-red-400" />
@@ -234,12 +234,12 @@ const ContactPage = () => {
                       name="email"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-base font-bold text-white">Email Address</FormLabel>
+                          <FormLabel className="text-base font-bold dark:text-white text-gray-900">Email Address</FormLabel>
                           <FormControl>
                             <Input 
                               placeholder="john@example.com" 
                               {...field} 
-                              className="h-14 text-base rounded-2xl liquid-glass focus:border-white/30 text-white placeholder:text-white/30"
+                              className="h-14 text-base rounded-2xl liquid-glass focus:border-white/30 dark:text-white text-gray-900 dark:placeholder:text-white/30 placeholder:text-gray-400"
                             />
                           </FormControl>
                           <FormMessage className="text-red-400" />
@@ -253,12 +253,12 @@ const ContactPage = () => {
                     name="subject"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-base font-bold text-white">Subject</FormLabel>
+                        <FormLabel className="text-base font-bold dark:text-white text-gray-900">Subject</FormLabel>
                         <FormControl>
                           <Input 
                             placeholder="What's this about?" 
                             {...field} 
-                            className="h-14 text-base rounded-2xl bg-slate-950/50 border-slate-800 focus:border-cyan-500/50 text-white placeholder:text-slate-600"
+                            className="h-14 text-base rounded-2xl liquid-glass focus:border-white/30 dark:text-white text-gray-900 dark:placeholder:text-white/30 placeholder:text-gray-400"
                           />
                         </FormControl>
                         <FormMessage className="text-red-400" />
@@ -271,11 +271,11 @@ const ContactPage = () => {
                     name="message"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-base font-bold text-white">Your Message</FormLabel>
+                        <FormLabel className="text-base font-bold dark:text-white text-gray-900">Your Message</FormLabel>
                         <FormControl>
                           <Textarea 
                             placeholder="Tell me about your project..." 
-                            className="min-h-48 text-base rounded-2xl liquid-glass focus:border-white/30 text-white placeholder:text-white/30 resize-none" 
+                            className="min-h-48 text-base rounded-2xl liquid-glass focus:border-white/30 dark:text-white text-gray-900 dark:placeholder:text-white/30 placeholder:text-gray-400 resize-none" 
                             {...field} 
                           />
                         </FormControl>
@@ -308,11 +308,11 @@ const ContactPage = () => {
 
               {/* Map Section */}
               <div className="mt-16">
-                <h3 className="text-2xl font-black text-white mb-6 flex items-center">
+                <h3 className="text-2xl font-black dark:text-white text-gray-900 mb-6 flex items-center">
                   <MapPin className="w-6 h-6 text-cyan-400 mr-3" />
                   Find Me Here
                 </h3>
-                <div className="rounded-3xl overflow-hidden border-2 border-slate-800 hover:border-cyan-500/30 transition-all duration-500">
+                <div className="rounded-3xl overflow-hidden border-2 dark:border-slate-800 border-gray-200 hover:border-cyan-500/30 transition-all duration-500">
                   <LazyGoogleMap
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d63245.97055414067!2d112.56767803777092!3d-7.9827956694741045!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd62822063dc2fb%3A0x78879446481a4da2!2sMalang%2C%20Malang%20City%2C%20East%20Java!5e0!3m2!1sen!2sid!4v1718539284037!5m2!1sen!2sid"
                     title="Malang, East Java Map"
@@ -323,24 +323,24 @@ const ContactPage = () => {
 
               {/* FAQ or Additional Info */}
               <div className="mt-16 liquid-glass-strong rounded-3xl p-8">
-                <h3 className="text-2xl font-black text-white mb-6">Quick Info</h3>
+                <h3 className="text-2xl font-black dark:text-white text-gray-900 mb-6">Quick Info</h3>
                 <div className="space-y-4">
                   <div className="flex items-start gap-3">
                     <div className="w-2 h-2 bg-cyan-400 rounded-full mt-2"></div>
-                    <p className="text-slate-300 leading-relaxed">
-                      <span className="text-white font-bold">Response Time:</span> I typically respond within 24 hours on business days.
+                    <p className="dark:text-slate-300 text-gray-600 leading-relaxed">
+                      <span className="dark:text-white text-gray-900 font-bold">Response Time:</span> I typically respond within 24 hours on business days.
                     </p>
                   </div>
                   <div className="flex items-start gap-3">
                     <div className="w-2 h-2 bg-purple-400 rounded-full mt-2"></div>
-                    <p className="text-slate-300 leading-relaxed">
-                      <span className="text-white font-bold">Project Discussion:</span> Free initial consultation to understand your needs.
+                    <p className="dark:text-slate-300 text-gray-600 leading-relaxed">
+                      <span className="dark:text-white text-gray-900 font-bold">Project Discussion:</span> Free initial consultation to understand your needs.
                     </p>
                   </div>
                   <div className="flex items-start gap-3">
                     <div className="w-2 h-2 bg-fuchsia-400 rounded-full mt-2"></div>
-                    <p className="text-slate-300 leading-relaxed">
-                      <span className="text-white font-bold">Availability:</span> Open to both short-term and long-term projects.
+                    <p className="dark:text-slate-300 text-gray-600 leading-relaxed">
+                      <span className="dark:text-white text-gray-900 font-bold">Availability:</span> Open to both short-term and long-term projects.
                     </p>
                   </div>
                 </div>

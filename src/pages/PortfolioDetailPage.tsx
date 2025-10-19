@@ -53,13 +53,13 @@ const PortfolioDetailPage = () => {
   
   if (isLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center pt-20 bg-slate-950">
+      <div className="flex min-h-screen items-center justify-center pt-20 bg-white dark:bg-slate-950">
         <div className="text-center">
           <div className="relative mb-8">
-            <div className="h-20 w-20 animate-spin rounded-full border-4 border-slate-800 border-t-cyan-500 mx-auto"></div>
+            <div className="h-20 w-20 animate-spin rounded-full border-4 dark:border-slate-800 border-gray-200 border-t-cyan-500 mx-auto"></div>
             <div className="absolute inset-0 h-20 w-20 animate-ping rounded-full border-2 border-cyan-500/20 mx-auto"></div>
           </div>
-          <p className="text-lg text-slate-400 font-bold">Loading project details...</p>
+          <p className="text-lg dark:text-slate-400 text-gray-600 font-bold">Loading project details...</p>
         </div>
       </div>
     );
@@ -67,14 +67,14 @@ const PortfolioDetailPage = () => {
   
   if (error) {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center pt-20 bg-slate-950">
-        <div className="glass-dark rounded-3xl p-12 border border-slate-800 text-center max-w-md">
+      <div className="flex min-h-screen flex-col items-center justify-center pt-20 bg-white dark:bg-slate-950">
+        <div className="liquid-glass-strong rounded-3xl p-12 text-center max-w-md">
           <div className="w-20 h-20 bg-red-500/10 rounded-full flex items-center justify-center mx-auto mb-6 border-2 border-red-500/20">
             <Sparkles className="w-10 h-10 text-red-500" />
           </div>
-          <h2 className="text-3xl font-black text-white mb-4">Error Loading Project</h2>
-          <p className="text-slate-400 mb-8 leading-relaxed">{error}</p>
-          <Button asChild className="rounded-2xl px-8 py-3 bg-gradient-to-r from-cyan-500 to-purple-600 font-bold">
+          <h2 className="text-3xl font-black dark:text-white text-gray-900 mb-4">Error Loading Project</h2>
+          <p className="dark:text-slate-400 text-gray-600 mb-8 leading-relaxed">{error}</p>
+          <Button asChild className="rounded-2xl px-8 py-3 bg-gradient-to-r from-cyan-500 to-purple-600 font-bold text-white">
             <Link to="/portfolio">
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Portfolio
@@ -87,14 +87,14 @@ const PortfolioDetailPage = () => {
   
   if (!currentProject) {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center pt-20 bg-slate-950">
-        <div className="glass-dark rounded-3xl p-12 border border-slate-800 text-center max-w-md">
-          <div className="w-20 h-20 bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-6 border-2 border-slate-700">
-            <Sparkles className="w-10 h-10 text-slate-500" />
+      <div className="flex min-h-screen flex-col items-center justify-center pt-20 bg-white dark:bg-slate-950">
+        <div className="liquid-glass-strong rounded-3xl p-12 text-center max-w-md">
+          <div className="w-20 h-20 dark:bg-slate-800 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6 border-2 dark:border-slate-700 border-gray-200">
+            <Sparkles className="w-10 h-10 dark:text-slate-500 text-gray-400" />
           </div>
-          <h2 className="text-3xl font-black text-white mb-4">Project Not Found</h2>
-          <p className="text-slate-400 mb-8 leading-relaxed">The project you're looking for doesn't exist or has been removed.</p>
-          <Button asChild className="rounded-2xl px-8 py-3 bg-gradient-to-r from-cyan-500 to-purple-600 font-bold">
+          <h2 className="text-3xl font-black dark:text-white text-gray-900 mb-4">Project Not Found</h2>
+          <p className="dark:text-slate-400 text-gray-600 mb-8 leading-relaxed">The project you're looking for doesn't exist or has been removed.</p>
+          <Button asChild className="rounded-2xl px-8 py-3 bg-gradient-to-r from-cyan-500 to-purple-600 font-bold text-white">
             <Link to="/portfolio">
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Portfolio
@@ -106,7 +106,7 @@ const PortfolioDetailPage = () => {
   }
   
   return (
-    <div className="min-h-screen pt-20 overflow-hidden bg-slate-950">
+    <div className="min-h-screen pt-20 overflow-hidden bg-white dark:bg-slate-950">
       <SEOHead
         title={`${currentProject.title} - Project Details | Nicola Ananda`}
         description={currentProject.description}
@@ -115,19 +115,22 @@ const PortfolioDetailPage = () => {
         image={currentProject.imageUrls[0]}
       />
 
+      {/* Background Effects */}
+      <div className="dark:opacity-100 opacity-30 liquid-bg"></div>
+      <div className="fixed inset-0 -z-10 gradient-mesh"></div>
+      <div className="noise-texture dark:opacity-100 opacity-50"></div>
+
       {/* Hero Section */}
       <section className="relative py-32">
-        <div className="absolute inset-0 gradient-dark-mesh"></div>
-        
         <div className="container px-4 relative z-10">
           <AnimatedSection>
-            <Link to="/portfolio" className="group mb-12 inline-flex items-center text-base font-bold text-slate-400 hover:text-cyan-400 transition-colors">
+            <Link to="/portfolio" className="group mb-12 inline-flex items-center text-base font-bold dark:text-slate-400 text-gray-600 hover:text-cyan-400 transition-colors">
               <ArrowLeft className="mr-3 h-5 w-5 group-hover:-translate-x-1 transition-transform" />
               Back to Portfolio
             </Link>
             
             <div className="max-w-5xl">
-              <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 font-bold mb-8">
+              <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full liquid-glass text-cyan-400 font-bold mb-8">
                 <Sparkles className="w-5 h-5" />
                 Project Case Study
               </div>
@@ -148,7 +151,7 @@ const PortfolioDetailPage = () => {
                 </span>
               </h1>
 
-              <p className="text-xl text-slate-400 leading-relaxed max-w-3xl">
+              <p className="text-xl dark:text-slate-400 text-gray-600 leading-relaxed max-w-3xl">
                 {currentProject.description}
               </p>
             </div>
@@ -157,7 +160,7 @@ const PortfolioDetailPage = () => {
       </section>
       
       {/* Main Content */}
-      <section className="py-24 bg-slate-900">
+      <section className="py-24 dark:bg-slate-900/50 bg-gray-50/50">
         <div className="container px-4">
           <div className="max-w-7xl mx-auto">
             <div className="grid gap-12 lg:grid-cols-3 lg:gap-16">
@@ -165,14 +168,14 @@ const PortfolioDetailPage = () => {
               <div className="lg:col-span-2">
                 <AnimatedSection delay={100}>
                   {/* Main Image */}
-                  <div className="relative glass-dark rounded-3xl p-4 border border-slate-800 hover:border-cyan-500/30 transition-all duration-500 mb-8">
+                  <div className="relative liquid-glass-strong rounded-3xl p-4 hover:shadow-2xl transition-all duration-500 mb-8">
                     <div className="relative overflow-hidden rounded-2xl">
                       <img
                         src={currentProject.imageUrls[currentImageIndex]}
                         alt={currentProject.title}
                         className="w-full aspect-video object-cover"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/50 to-transparent"></div>
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
                     </div>
                   </div>
                   
@@ -181,10 +184,10 @@ const PortfolioDetailPage = () => {
                     {currentProject.imageUrls.map((img: string, idx: number) => (
                       <div 
                         key={idx} 
-                        className={`group cursor-pointer overflow-hidden rounded-2xl transition-all duration-300 border ${
+                        className={`group cursor-pointer overflow-hidden rounded-2xl transition-all duration-300 ${
                           idx === currentImageIndex 
-                            ? 'ring-4 ring-cyan-500/50 scale-105 border-cyan-500/50' 
-                            : 'border-slate-800 hover:border-cyan-500/30 hover:scale-105'
+                            ? 'ring-4 ring-cyan-500/50 scale-105' 
+                            : 'liquid-glass hover:scale-105'
                         }`}
                         onClick={() => setCurrentImageIndex(idx)}
                       >
@@ -194,7 +197,7 @@ const PortfolioDetailPage = () => {
                             alt={`${currentProject.title} ${idx + 1}`}
                             className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
                           />
-                          <div className="absolute inset-0 bg-slate-950/30 group-hover:bg-slate-950/10 transition-colors"></div>
+                          <div className="absolute inset-0 dark:bg-slate-950/30 bg-black/20 dark:group-hover:bg-slate-950/10 group-hover:bg-black/10 transition-colors"></div>
                         </AspectRatio>
                       </div>
                     ))}
@@ -205,36 +208,36 @@ const PortfolioDetailPage = () => {
                 <AnimatedSection delay={200}>
                   <div className="space-y-8">
                     {/* Description */}
-                    <div className="glass-dark rounded-3xl p-8 border border-slate-800 hover:border-purple-500/30 transition-all duration-500">
+                    <div className="liquid-glass-strong rounded-3xl p-8 transition-all duration-500 hover:shadow-xl">
                       <div className="flex items-center gap-4 mb-6">
                         <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-blue-500/20 border border-cyan-500/30 flex items-center justify-center">
                           <Sparkles className="w-7 h-7 text-cyan-400" />
                         </div>
-                        <h2 className="text-3xl font-black text-white">Overview</h2>
+                        <h2 className="text-3xl font-black dark:text-white text-gray-900">Overview</h2>
                       </div>
-                      <p className="text-lg text-slate-300 leading-relaxed">{currentProject.description}</p>
+                      <p className="text-lg dark:text-slate-300 text-gray-600 leading-relaxed">{currentProject.description}</p>
                     </div>
 
                     {/* Challenge */}
-                    <div className="glass-dark rounded-3xl p-8 border border-slate-800 hover:border-orange-500/30 transition-all duration-500">
+                    <div className="liquid-glass-strong rounded-3xl p-8 transition-all duration-500 hover:shadow-xl">
                       <div className="flex items-center gap-4 mb-6">
                         <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-orange-500/20 to-red-500/20 border border-orange-500/30 flex items-center justify-center">
                           <Target className="w-7 h-7 text-orange-400" />
                         </div>
-                        <h2 className="text-3xl font-black text-white">The Challenge</h2>
+                        <h2 className="text-3xl font-black dark:text-white text-gray-900">The Challenge</h2>
                       </div>
-                      <p className="text-lg text-slate-300 leading-relaxed">{currentProject.challenge}</p>
+                      <p className="text-lg dark:text-slate-300 text-gray-600 leading-relaxed">{currentProject.challenge}</p>
                     </div>
                     
                     {/* Solution */}
-                    <div className="glass-dark rounded-3xl p-8 border border-slate-800 hover:border-emerald-500/30 transition-all duration-500">
+                    <div className="liquid-glass-strong rounded-3xl p-8 transition-all duration-500 hover:shadow-xl">
                       <div className="flex items-center gap-4 mb-6">
                         <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500/20 to-teal-500/20 border border-emerald-500/30 flex items-center justify-center">
                           <Award className="w-7 h-7 text-emerald-400" />
                         </div>
-                        <h2 className="text-3xl font-black text-white">The Solution</h2>
+                        <h2 className="text-3xl font-black dark:text-white text-gray-900">The Solution</h2>
                       </div>
-                      <p className="text-lg text-slate-300 leading-relaxed">{currentProject.solution}</p>
+                      <p className="text-lg dark:text-slate-300 text-gray-600 leading-relaxed">{currentProject.solution}</p>
                     </div>
                   </div>
                 </AnimatedSection>
@@ -243,36 +246,36 @@ const PortfolioDetailPage = () => {
               {/* Right Column - Info Sidebar */}
               <div>
                 <AnimatedSection delay={150}>
-                  <div className="glass-dark rounded-3xl p-8 border border-slate-800 hover:border-purple-500/30 transition-all duration-500 sticky top-24">
-                    <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-400 font-bold mb-8">
+                  <div className="liquid-glass-strong rounded-3xl p-8 transition-all duration-500 hover:shadow-xl sticky top-24">
+                    <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full liquid-glass text-purple-400 font-bold mb-8">
                       <Zap className="w-5 h-5" />
                       Project Info
                     </div>
                     
                     <div className="space-y-6 mb-8">
                       {/* Client */}
-                      <div className="p-5 rounded-2xl bg-slate-950/50 border border-slate-800">
+                      <div className="p-5 rounded-2xl liquid-glass">
                         <div className="flex items-center mb-3">
                           <User className="w-5 h-5 text-cyan-400 mr-3" />
-                          <h4 className="text-sm font-black text-slate-400 uppercase tracking-wider">Client</h4>
+                          <h4 className="text-sm font-black dark:text-slate-400 text-gray-500 uppercase tracking-wider">Client</h4>
                         </div>
-                        <p className="text-lg font-bold text-white">{currentProject.client}</p>
+                        <p className="text-lg font-bold dark:text-white text-gray-900">{currentProject.client}</p>
                       </div>
                       
                       {/* Date */}
-                      <div className="p-5 rounded-2xl bg-slate-950/50 border border-slate-800">
+                      <div className="p-5 rounded-2xl liquid-glass">
                         <div className="flex items-center mb-3">
                           <Calendar className="w-5 h-5 text-purple-400 mr-3" />
-                          <h4 className="text-sm font-black text-slate-400 uppercase tracking-wider">Completed</h4>
+                          <h4 className="text-sm font-black dark:text-slate-400 text-gray-500 uppercase tracking-wider">Completed</h4>
                         </div>
-                        <p className="text-lg font-bold text-white">{currentProject.completionDate}</p>
+                        <p className="text-lg font-bold dark:text-white text-gray-900">{currentProject.completionDate}</p>
                       </div>
                       
                       {/* Technologies */}
-                      <div className="p-5 rounded-2xl bg-slate-950/50 border border-slate-800">
+                      <div className="p-5 rounded-2xl liquid-glass">
                         <div className="flex items-center mb-4">
                           <Code className="w-5 h-5 text-emerald-400 mr-3" />
-                          <h4 className="text-sm font-black text-slate-400 uppercase tracking-wider">Tech Stack</h4>
+                          <h4 className="text-sm font-black dark:text-slate-400 text-gray-500 uppercase tracking-wider">Tech Stack</h4>
                         </div>
                         <div className="flex flex-wrap gap-2">
                           {currentProject.technologies.map((tech: string, idx: number) => (
@@ -288,9 +291,9 @@ const PortfolioDetailPage = () => {
                     </div>
                     
                     {/* Action Buttons */}
-                    <div className="space-y-4 pt-6 border-t border-slate-800">
+                    <div className="space-y-4 pt-6 border-t dark:border-slate-800 border-gray-200">
                       {currentProject.liveUrl && (
-                        <Button asChild className="w-full h-14 rounded-2xl bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700 font-black text-lg shadow-lg neon-cyan">
+                        <Button asChild className="w-full h-14 rounded-2xl bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700 font-black text-lg shadow-lg text-white">
                           <a href={currentProject.liveUrl} target="_blank" rel="noopener noreferrer">
                             <ExternalLink className="mr-3 h-5 w-5" />
                             Live Preview
@@ -300,7 +303,7 @@ const PortfolioDetailPage = () => {
                       )}
                       
                       {currentProject.githubUrl && (
-                        <Button asChild variant="outline" className="w-full h-14 rounded-2xl border-2 border-purple-500/50 text-purple-400 hover:bg-purple-500/10 font-black text-lg">
+                        <Button asChild className="w-full h-14 rounded-2xl liquid-glass-button font-black text-lg dark:text-purple-400 text-purple-600 border border-purple-500/30">
                           <a href={currentProject.githubUrl} target="_blank" rel="noopener noreferrer">
                             <Github className="mr-3 h-5 w-5" />
                             View Source
@@ -317,34 +320,38 @@ const PortfolioDetailPage = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="relative py-32 bg-slate-950">
-        <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 to-purple-500/5"></div>
-        
-        <div className="container px-4 relative">
+      <section className="relative py-20">
+        <div className="container px-4">
           <AnimatedSection>
-            <div className="max-w-4xl mx-auto text-center">
-              <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-400 font-bold mb-8">
-                <Eye className="w-5 h-5" />
-                Interested in Similar Work?
-              </div>
-              <h2 className="text-5xl lg:text-6xl font-black text-white mb-6 leading-tight">
-                Let's Create Something <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-600">Amazing</span>
-              </h2>
-              <p className="text-xl text-slate-400 mb-12 leading-relaxed">
-                Inspired by this project? Let's collaborate and bring your vision to life with the same dedication and expertise.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-6 justify-center">
-                <Button asChild size="lg" className="rounded-2xl px-10 py-8 text-xl font-black bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700 shadow-lg neon-cyan">
-                  <Link to="/contact">
-                    Start Your Project
-                    <ChevronRight size={24} className="ml-3" />
-                  </Link>
-                </Button>
-                <Button asChild variant="outline" size="lg" className="rounded-2xl px-10 py-8 text-xl font-black border-2 border-purple-500/50 text-purple-400 hover:bg-purple-500/10">
-                  <Link to="/portfolio">
-                    View More Projects
-                  </Link>
-                </Button>
+            <div className="relative max-w-5xl mx-auto">
+              {/* Glow Effect */}
+              <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 via-purple-500/20 to-fuchsia-500/20 rounded-3xl blur-3xl"></div>
+              
+              {/* CTA Card */}
+              <div className="relative liquid-glass-strong rounded-3xl p-12 text-center">
+                <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full liquid-glass text-purple-400 font-bold mb-6">
+                  <Eye className="w-5 h-5" />
+                  Interested?
+                </div>
+                <h2 className="text-4xl lg:text-5xl font-black dark:text-white text-gray-900 mb-4 leading-tight">
+                  Let's Create Something <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-600">Amazing</span>
+                </h2>
+                <p className="text-lg dark:text-slate-400 text-gray-600 mb-8 max-w-2xl mx-auto">
+                  Inspired by this project? Let's collaborate and bring your vision to life.
+                </p>
+                <div className="flex flex-wrap gap-4 justify-center">
+                  <Button asChild size="lg" className="rounded-2xl px-8 py-6 text-lg font-black bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700 shadow-lg text-white">
+                    <Link to="/contact" className="flex items-center gap-2">
+                      Start Your Project
+                      <ChevronRight size={20} />
+                    </Link>
+                  </Button>
+                  <Button asChild size="lg" className="rounded-2xl px-8 py-6 text-lg font-black liquid-glass-button dark:text-white text-gray-900">
+                    <Link to="/portfolio">
+                      View More Projects
+                    </Link>
+                  </Button>
+                </div>
               </div>
             </div>
           </AnimatedSection>

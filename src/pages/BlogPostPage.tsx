@@ -979,7 +979,7 @@ const BlogPostPage = () => {
         <div className="glass-effect rounded-2xl p-12 text-center max-w-md">
           <h1 className="text-3xl font-bold mb-4">Article Not Found</h1>
           <p className="text-muted-foreground mb-8">The article you're looking for doesn't exist or has been removed.</p>
-          <Button asChild className="bg-gradient-to-r from-primary to-accent text-white px-8 py-3 hover:shadow-xl transition-all duration-300">
+          <Button asChild className="bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700 text-white px-8 py-3 rounded-xl font-medium">
             <Link to="/blog">Back to Blog</Link>
           </Button>
         </div>
@@ -1077,7 +1077,7 @@ const BlogPostPage = () => {
               <div className="glass-effect rounded-2xl p-8">
                 <h3 className="text-2xl font-bold mb-4">Enjoyed this article?</h3>
                 <p className="text-muted-foreground mb-6">Check out more articles on our blog for insights on data analysis and web development.</p>
-                <Button asChild className="bg-gradient-to-r from-primary to-accent text-white px-8 py-3 hover:shadow-xl transition-all duration-300">
+                <Button asChild className="bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700 text-white px-8 py-3 rounded-xl font-medium">
                   <Link to="/blog">Read More Articles</Link>
                 </Button>
               </div>

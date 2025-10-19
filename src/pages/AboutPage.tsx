@@ -34,7 +34,7 @@ const AboutPage = () => {
   ];
 
   return (
-    <div className="min-h-screen pt-20 overflow-hidden bg-black">
+    <div className="min-h-screen pt-20 overflow-hidden bg-white dark:bg-black">
       <SEOHead
         title="About Me - Nicola Ananda | Data Analyst & Web Developer"
         description="Learn more about Nicola Ananda, a professional Data Analyst and Full Stack Web Developer with expertise in Python, React, TypeScript, and business intelligence."
@@ -45,9 +45,9 @@ const AboutPage = () => {
       />
 
       {/* Enhanced Liquid Glass Background */}
-      <div className="liquid-bg"></div>
+      <div className="dark:opacity-100 opacity-30 liquid-bg"></div>
       <div className="fixed inset-0 -z-10 gradient-mesh"></div>
-      <div className="noise-texture"></div>
+      <div className="noise-texture dark:opacity-100 opacity-50"></div>
 
       {/* BENTO GRID HERO */}
       <section className="relative py-32">
@@ -55,14 +55,14 @@ const AboutPage = () => {
           {/* Header */}
           <AnimatedSection>
             <div className="text-center mb-16">
-              <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 font-bold mb-8">
+              <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full liquid-glass text-cyan-400 font-bold mb-8">
                 <Sparkles className="w-5 h-5" />
                 About Me
               </div>
-              <h1 className="text-6xl lg:text-7xl font-black text-white mb-6">
+              <h1 className="text-6xl lg:text-7xl font-black dark:text-white text-gray-900 mb-6">
                 Meet <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-600">Nicola</span>
               </h1>
-              <p className="text-xl text-slate-400 max-w-3xl mx-auto">
+              <p className="text-xl dark:text-slate-400 text-gray-600 max-w-3xl mx-auto">
                 Passionate about transforming data into insights and code into experiences
               </p>
             </div>
@@ -86,10 +86,10 @@ const AboutPage = () => {
                     </div>
                   </div>
                   <div className="text-center mt-6">
-                    <h2 className="text-3xl font-black text-white mb-2">Nicola Ananda</h2>
+                    <h2 className="text-3xl font-black dark:text-white text-gray-900 mb-2">Nicola Ananda</h2>
                     <p className="text-cyan-400 font-bold mb-4">Data Scientist & Full Stack Developer</p>
                     <div className="flex justify-center gap-2">
-                      <span className="px-4 py-2 bg-cyan-500/10 border border-cyan-500/30 rounded-xl text-cyan-400 text-sm font-bold">🇮🇩 Malang, Indonesia</span>
+                      <span className="px-4 py-2 liquid-glass rounded-xl text-cyan-400 text-sm font-bold">🇮🇩 Malang, Indonesia</span>
                     </div>
                   </div>
                 </div>
@@ -105,8 +105,8 @@ const AboutPage = () => {
                       {stat.icon}
                     </div>
                     <div>
-                      <div className="text-4xl font-black text-white mb-1">{stat.value}</div>
-                      <div className="text-slate-400 font-medium">{stat.label}</div>
+                      <div className="text-4xl font-black dark:text-white text-gray-900 mb-1">{stat.value}</div>
+                      <div className="dark:text-slate-400 text-gray-600 font-medium">{stat.label}</div>
                     </div>
                   </div>
                 </div>
@@ -121,11 +121,11 @@ const AboutPage = () => {
                     <Users className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h3 className="text-2xl font-black text-white mb-2">Who I Am</h3>
+                    <h3 className="text-2xl font-black dark:text-white text-gray-900 mb-2">Who I Am</h3>
                     <div className="h-1 w-20 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-full"></div>
                   </div>
                 </div>
-                <div className="space-y-4 text-slate-300 leading-relaxed">
+                <div className="space-y-4 dark:text-slate-300 text-gray-600 leading-relaxed">
                   <p>
                     I am a passionate <span className="text-cyan-400 font-bold">Data Scientist</span> dedicated to transforming raw data into valuable business insights. My analytical skills include data interpretation, trend identification, and creating comprehensive reports that support informed decision-making.
                   </p>
@@ -141,16 +141,16 @@ const AboutPage = () => {
               <div className="relative liquid-glass-strong rounded-3xl p-8 transition-glass h-full overflow-hidden group">
                 <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-gradient-to-br from-purple-500/30 to-fuchsia-500/30 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-700"></div>
                 <div className="relative">
-                  <h3 className="text-2xl font-black text-white mb-4">Let's Work Together</h3>
-                  <p className="text-slate-400 mb-6">Ready to bring your ideas to life? Let's collaborate!</p>
+                  <h3 className="text-2xl font-black dark:text-white text-gray-900 mb-4">Let's Work Together</h3>
+                  <p className="dark:text-slate-400 text-gray-600 mb-6">Ready to bring your ideas to life? Let's collaborate!</p>
                   <div className="flex flex-col sm:flex-row gap-4">
-                    <Button asChild className="rounded-2xl bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700 font-bold">
+                    <Button asChild className="rounded-2xl bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700 font-bold text-white">
                       <a href="/resume.pdf" download>
                         <Download size={18} className="mr-2" />
                         Download CV
                       </a>
                     </Button>
-                    <Button asChild variant="outline" className="rounded-2xl border-2 border-purple-500/50 text-purple-400 hover:bg-purple-500/10">
+                    <Button asChild className="rounded-2xl liquid-glass-button font-bold dark:text-white text-gray-900">
                       <a href="/contact">
                         <Mail size={18} className="mr-2" />
                         Contact Me
@@ -169,11 +169,11 @@ const AboutPage = () => {
         <div className="container px-4">
           <AnimatedSection>
             <div className="text-center mb-16">
-              <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-400 font-bold mb-8">
+              <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full liquid-glass text-purple-400 font-bold mb-8">
                 <Code className="w-5 h-5" />
                 Technical Skills
               </div>
-              <h2 className="text-5xl lg:text-6xl font-black text-white mb-6">
+              <h2 className="text-5xl lg:text-6xl font-black dark:text-white text-gray-900 mb-6">
                 My <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-600">Arsenal</span>
               </h2>
             </div>
@@ -187,13 +187,13 @@ const AboutPage = () => {
                     <div className="flex items-center gap-4">
                       <span className="text-5xl">{skill.icon}</span>
                       <div>
-                        <h3 className="text-xl font-black text-white">{skill.name}</h3>
-                        <p className="text-sm text-slate-400">{skill.category}</p>
+                        <h3 className="text-xl font-black dark:text-white text-gray-900">{skill.name}</h3>
+                        <p className="text-sm dark:text-slate-400 text-gray-600">{skill.category}</p>
                       </div>
                     </div>
                     <span className="text-3xl font-black text-cyan-400">{skill.level}%</span>
                   </div>
-                  <div className="relative w-full h-3 bg-slate-800 rounded-full overflow-hidden">
+                  <div className="relative w-full h-3 dark:bg-slate-800 bg-gray-200 rounded-full overflow-hidden">
                     <div 
                       className="absolute top-0 left-0 h-full bg-gradient-to-r from-cyan-500 to-purple-600 rounded-full transition-all duration-1000"
                       style={{ width: `${skill.level}%` }}
@@ -211,11 +211,11 @@ const AboutPage = () => {
         <div className="container px-4">
           <AnimatedSection>
             <div className="text-center mb-16">
-              <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 font-bold mb-8">
+              <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full liquid-glass text-cyan-400 font-bold mb-8">
                 <Briefcase className="w-5 h-5" />
                 Work Experience
               </div>
-              <h2 className="text-5xl lg:text-6xl font-black text-white mb-6">
+              <h2 className="text-5xl lg:text-6xl font-black dark:text-white text-gray-900 mb-6">
                 Career <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-600">Journey</span>
               </h2>
             </div>
@@ -281,22 +281,22 @@ const AboutPage = () => {
               <AnimatedSection key={exp.title} delay={100 + index * 100}>
                 <div className="relative liquid-glass-strong rounded-3xl p-8 transition-glass group">
                   {/* Timeline dot */}
-                  <div className="absolute -left-4 top-8 w-8 h-8 rounded-full bg-gradient-to-r from-cyan-500 to-purple-600 border-4 border-black"></div>
+                  <div className="absolute -left-4 top-8 w-8 h-8 rounded-full bg-gradient-to-r from-cyan-500 to-purple-600 border-4 dark:border-black border-white"></div>
                   
                   <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-4">
                     <div className="flex-1">
                       <div className="flex flex-wrap items-center gap-3 mb-2">
-                        <h3 className="text-2xl font-black text-white">{exp.title}</h3>
+                        <h3 className="text-2xl font-black dark:text-white text-gray-900">{exp.title}</h3>
                         <span className={`px-4 py-1.5 rounded-full text-xs font-black bg-gradient-to-r ${exp.gradient} text-white`}>
                           {exp.type}
                         </span>
                       </div>
                       <p className="text-cyan-400 font-bold text-lg">{exp.company}</p>
                     </div>
-                    <span className="text-slate-400 font-bold mt-3 lg:mt-0">{exp.period}</span>
+                    <span className="dark:text-slate-400 text-gray-600 font-bold mt-3 lg:mt-0">{exp.period}</span>
                   </div>
                   
-                  <p className="text-slate-300 leading-relaxed text-lg mb-6">{exp.description}</p>
+                  <p className="dark:text-slate-300 text-gray-600 leading-relaxed text-lg mb-6">{exp.description}</p>
                   
                   <div className="space-y-3">
                     {exp.achievements.map((achievement, idx) => (
@@ -304,7 +304,7 @@ const AboutPage = () => {
                         <div className="mt-1.5">
                           <CheckCircle className="w-5 h-5 text-emerald-400" />
                         </div>
-                        <p className="text-slate-300 leading-relaxed">{achievement}</p>
+                        <p className="dark:text-slate-300 text-gray-600 leading-relaxed">{achievement}</p>
                       </div>
                     ))}
                   </div>
@@ -320,11 +320,11 @@ const AboutPage = () => {
         <div className="container px-4">
           <AnimatedSection>
             <div className="text-center mb-16">
-              <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-400 font-bold mb-8">
+              <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full liquid-glass text-purple-400 font-bold mb-8">
                 <Award className="w-5 h-5" />
                 Education & Certifications
               </div>
-              <h2 className="text-5xl lg:text-6xl font-black text-white mb-6">
+              <h2 className="text-5xl lg:text-6xl font-black dark:text-white text-gray-900 mb-6">
                 Learning <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-600">Path</span>
               </h2>
             </div>
@@ -368,17 +368,17 @@ const AboutPage = () => {
                       <Award className="w-8 h-8 text-white" />
                     </div>
                     <div className="flex-1">
-                      <h3 className="text-xl font-black text-white mb-2 leading-tight">{edu.title}</h3>
+                      <h3 className="text-xl font-black dark:text-white text-gray-900 mb-2 leading-tight">{edu.title}</h3>
                       <p className="text-cyan-400 font-bold">{edu.institution}</p>
-                      <p className="text-slate-500 text-sm font-bold mt-1">{edu.year}</p>
+                      <p className="dark:text-slate-500 text-gray-500 text-sm font-bold mt-1">{edu.year}</p>
                     </div>
                   </div>
                   
-                  <p className="text-slate-300 leading-relaxed mb-6 flex-1 text-justify">
+                  <p className="dark:text-slate-300 text-gray-600 leading-relaxed mb-6 flex-1 text-justify">
                     {edu.description}
                   </p>
                   
-                  <Button size="sm" className={`w-full rounded-xl bg-gradient-to-r ${edu.gradient} font-bold h-12`}>
+                  <Button size="sm" className={`w-full rounded-xl bg-gradient-to-r ${edu.gradient} font-bold h-12 text-white`}>
                     <Download className="w-4 h-4 mr-2" />
                     View Certificate
                   </Button>
@@ -394,14 +394,14 @@ const AboutPage = () => {
         <div className="container px-4 relative">
           <AnimatedSection>
             <div className="max-w-4xl mx-auto text-center">
-              <h2 className="text-5xl lg:text-6xl font-black text-white mb-6 leading-tight">
+              <h2 className="text-5xl lg:text-6xl font-black dark:text-white text-gray-900 mb-6 leading-tight">
                 Ready to Collaborate?
               </h2>
-              <p className="text-xl text-slate-400 mb-12">
+              <p className="text-xl dark:text-slate-400 text-gray-600 mb-12">
                 Let's discuss how my skills can help bring your project to life.
               </p>
               <div className="flex flex-col sm:flex-row gap-6 justify-center">
-                <Button asChild size="lg" className="rounded-2xl px-10 py-8 text-xl font-black bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700 shadow-lg neon-cyan">
+                <Button asChild size="lg" className="rounded-2xl px-10 py-8 text-xl font-black bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700 shadow-lg text-white">
                   <a href="/contact">
                     <Mail size={24} className="mr-3" />
                     Get in Touch
