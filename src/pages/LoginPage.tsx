@@ -18,12 +18,41 @@ export default function LoginPage() {
     setError('');
     setIsLoading(true);
 
+    // Debug environment
+    console.log('Environment:', {
+      mode: import.meta.env.MODE,
+      apiUrl: import.meta.env.VITE_API_URL,
+      baseUrl: import.meta.env.VITE_BASE_URL,
+      email: formData.email,
+      passwordLength: formData.password.length
+    });
+
     // Check form validation
     const form = e.target as HTMLFormElement;
     if (!form.checkValidity()) {
       console.log('Form validation failed');
       const emailInput = form.querySelector('#email') as HTMLInputElement;
       const passwordInput = form.querySelector('#password') as HTMLInputElement;
+      
+      console.log('Email validity:', {
+        valid: emailInput.validity.valid,
+        valueMissing: emailInput.validity.valueMissing,
+        typeMismatch: emailInput.validity.typeMismatch,
+        patternMismatch: emailInput.validity.patternMismatch,
+        tooShort: emailInput.validity.tooShort,
+        tooLong: emailInput.validity.tooLong,
+        validationMessage: emailInput.validationMessage
+      });
+      
+      console.log('Password validity:', {
+        valid: passwordInput.validity.valid,
+        valueMissing: passwordInput.validity.valueMissing,
+        typeMismatch: passwordInput.validity.typeMismatch,
+        patternMismatch: passwordInput.validity.patternMismatch,
+        tooShort: passwordInput.validity.tooShort,
+        tooLong: passwordInput.validity.tooLong,
+        validationMessage: passwordInput.validationMessage
+      });
       
       if (!emailInput.validity.valid) {
         console.log('Email validation error:', emailInput.validationMessage);
