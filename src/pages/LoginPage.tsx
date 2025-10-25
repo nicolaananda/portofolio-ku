@@ -27,6 +27,15 @@ export default function LoginPage() {
       passwordLength: formData.password.length
     });
 
+    // Custom email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      console.log('Custom email validation failed');
+      setError('Please enter a valid email address');
+      setIsLoading(false);
+      return;
+    }
+
     // Check form validation
     const form = e.target as HTMLFormElement;
     if (!form.checkValidity()) {
@@ -102,7 +111,7 @@ export default function LoginPage() {
               <input
                 id="email"
                 name="email"
-                type="email"
+                type="text"
                 required
                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 placeholder="Email address"
@@ -122,7 +131,7 @@ export default function LoginPage() {
               <input
                 id="password"
                 name="password"
-                type="password"
+                type="text"
                 required
                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 placeholder="Password"
@@ -130,6 +139,9 @@ export default function LoginPage() {
                 onChange={(e) =>
                   setFormData({ ...formData, password: e.target.value })
                 }
+                onInvalid={(e) => {
+                  console.log('Password validation failed:', e.target.validationMessage);
+                }}
               />
             </div>
           </div>
