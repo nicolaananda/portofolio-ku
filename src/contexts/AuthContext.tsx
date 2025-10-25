@@ -54,6 +54,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const login = async (email: string, password: string) => {
     try {
+      console.log('AuthContext: Starting login process');
       const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/login`, {
         method: 'POST',
         headers: {
@@ -63,7 +64,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         body: JSON.stringify({ email, password }),
       });
 
+      console.log('AuthContext: Login response status:', response.status);
       const data = await response.json();
+      console.log('AuthContext: Login response data:', data);
 
       if (!response.ok) {
         throw new Error(data.message || 'Login failed');
@@ -73,6 +76,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       localStorage.setItem('accessToken', data.accessToken);
       setIsAuthenticated(true);
     } catch (error) {
+      console.error('AuthContext: Login error:', error);
       throw error;
     }
   };

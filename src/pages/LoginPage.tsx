@@ -19,11 +19,14 @@ export default function LoginPage() {
     setIsLoading(true);
 
     try {
+      console.log('Attempting login with:', { email: formData.email, password: '***' });
       await login(formData.email, formData.password);
+      console.log('Login successful');
       // Redirect to the page they tried to visit or admin dashboard
       const from = location.state?.from?.pathname || '/admin';
       navigate(from, { replace: true });
     } catch (err) {
+      console.error('Login error:', err);
       setError(err instanceof Error ? err.message : 'Login failed');
     } finally {
       setIsLoading(false);

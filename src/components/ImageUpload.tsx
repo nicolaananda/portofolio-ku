@@ -49,7 +49,15 @@ export default function ImageUpload({
       })
       .then(response => {
         if (!response.ok) {
-          throw new Error(`Upload failed: ${response.status}`);
+          if (response.status === 503) {
+            throw new Error('Server is temporarily unavailable. Please try again later.');
+          } else if (response.status === 401) {
+            throw new Error('Authentication required. Please login again.');
+          } else if (response.status === 413) {
+            throw new Error('File too large. Please choose a smaller image.');
+          } else {
+            throw new Error(`Upload failed: ${response.status} ${response.statusText}`);
+          }
         }
         return response.json();
       })
