@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useTheme } from '@/contexts/ThemeContext';
 
 interface AdminLayoutProps {
   children: React.ReactNode;
@@ -11,6 +12,7 @@ interface AdminLayoutProps {
 export default function AdminLayout({ children }: AdminLayoutProps) {
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { theme } = useTheme();
 
   const navItems = [
     { path: '/admin', label: 'Dashboard', icon: '📊' },
@@ -19,23 +21,28 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-white dark:bg-slate-950">
+      {/* Background Effects */}
+      <div className="dark:opacity-100 opacity-30 liquid-bg"></div>
+      <div className="fixed inset-0 -z-10 gradient-mesh"></div>
+      <div className="noise-texture dark:opacity-100 opacity-50"></div>
+
       {/* Mobile Menu Button */}
       <button
         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        className="fixed top-4 left-4 z-50 p-2 rounded-lg bg-white shadow-lg md:hidden"
+        className="fixed top-4 left-4 z-50 p-2 rounded-xl liquid-glass-button dark:text-white text-gray-900 md:hidden"
       >
-        {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+        {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
       </button>
 
       {/* Sidebar */}
       <aside className={cn(
-        "fixed inset-y-0 left-0 w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out z-40",
+        "fixed inset-y-0 left-0 w-64 liquid-glass-strong transform transition-transform duration-300 ease-in-out z-40",
         "md:translate-x-0",
         isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
       )}>
-        <div className="flex h-16 items-center justify-center border-b">
-          <h1 className="text-xl font-bold">Admin Panel</h1>
+        <div className="flex h-16 items-center justify-center border-b dark:border-slate-800 border-gray-200">
+          <h1 className="text-xl font-bold dark:text-white text-gray-900">Admin Panel</h1>
         </div>
         <nav className="p-4">
           <ul className="space-y-2">
@@ -45,11 +52,13 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                   to={item.path}
                   onClick={() => setIsMobileMenuOpen(false)}
                   className={cn(
-                    'flex items-center gap-2 rounded-lg px-4 py-2 text-gray-700 hover:bg-gray-100',
-                    location.pathname === item.path && 'bg-gray-100 font-medium'
+                    'flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-colors',
+                    location.pathname === item.path 
+                      ? 'liquid-glass dark:text-white text-gray-900' 
+                      : 'dark:text-slate-400 text-gray-600 hover:liquid-glass'
                   )}
                 >
-                  <span>{item.icon}</span>
+                  <span className="text-lg">{item.icon}</span>
                   <span>{item.label}</span>
                 </Link>
               </li>

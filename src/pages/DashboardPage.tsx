@@ -18,6 +18,7 @@ import {
   Search,
   Filter
 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 interface DashboardStats {
   totalPortfolios: number;
@@ -92,8 +93,8 @@ export default function DashboardPage() {
     return (
       <div className="flex h-full items-center justify-center">
         <div className="space-y-4 text-center">
-          <div className="h-12 w-12 animate-spin rounded-full border-4 border-primary border-t-transparent mx-auto"></div>
-          <p className="text-gray-500">Loading dashboard...</p>
+          <div className="h-12 w-12 animate-spin rounded-full border-4 dark:border-slate-800 border-gray-200 border-t-cyan-500 mx-auto"></div>
+          <p className="dark:text-slate-400 text-gray-600">Loading dashboard...</p>
         </div>
       </div>
     );
@@ -107,39 +108,38 @@ export default function DashboardPage() {
       initial="initial"
       animate="animate"
       variants={staggerContainer}
-      className="space-y-8"
+      className="space-y-6"
     >
       {/* Welcome Header */}
       <motion.div 
         variants={fadeIn}
-        className="bg-gradient-to-r from-primary to-primary/80 rounded-xl p-8 text-white relative overflow-hidden"
+        className="liquid-glass-strong rounded-2xl p-6 text-center"
       >
-        <div className="absolute inset-0 bg-grid-white/10 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))]"></div>
-        <div className="relative">
-          <h1 className="text-3xl font-bold mb-2">Welcome to Dashboard</h1>
-          <p className="opacity-90">Here's what's happening with your portfolio today.</p>
-        </div>
+        <h1 className="text-2xl font-bold dark:text-white text-gray-900 mb-2">Admin Dashboard</h1>
+        <p className="dark:text-slate-400 text-gray-600">Manage your portfolio and messages</p>
       </motion.div>
       
       {/* Search and Filter Bar */}
       <motion.div 
         variants={fadeIn}
-        className="flex items-center gap-4 bg-white rounded-xl border border-gray-200 p-4"
+        className="liquid-glass rounded-xl p-4"
       >
-        <div className="flex-1 relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-          <input
-            type="text"
-            placeholder="Search portfolios or messages..."
-            className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
+        <div className="flex items-center gap-4">
+          <div className="flex-1 relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 dark:text-slate-400 text-gray-400" />
+            <input
+              type="text"
+              placeholder="Search portfolios or messages..."
+              className="w-full pl-10 pr-4 py-2 rounded-lg liquid-glass dark:text-white text-gray-900 dark:placeholder:text-white/30 placeholder:text-gray-400"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+          <Button className="liquid-glass-button dark:text-white text-gray-900">
+            <Filter className="h-4 w-4 mr-2" />
+            Filter
+          </Button>
         </div>
-        <button className="flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-200 hover:bg-gray-50">
-          <Filter className="h-4 w-4" />
-          <span>Filter</span>
-        </button>
       </motion.div>
 
       {/* Stats Grid */}
@@ -150,78 +150,78 @@ export default function DashboardPage() {
         {/* Total Portfolios */}
         <motion.div 
           variants={fadeIn}
-          className="bg-white rounded-xl border border-gray-200 p-4 sm:p-6 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1"
+          className="liquid-glass-strong rounded-xl p-4 sm:p-6 hover:-translate-y-1 transition-transform"
         >
           <div className="flex items-center justify-between mb-4">
-            <div className="rounded-lg bg-blue-50 p-2 sm:p-3">
-              <Briefcase className="h-5 w-5 sm:h-6 sm:w-6 text-blue-600" />
+            <div className="rounded-lg bg-blue-500/20 p-2 sm:p-3">
+              <Briefcase className="h-5 w-5 sm:h-6 sm:w-6 text-blue-400" />
             </div>
-            <span className="flex items-center text-sm text-green-600">
+            <span className="flex items-center text-sm text-green-400">
               <TrendingUp className="h-4 w-4 mr-1" />
               {portfolioGrowth}%
             </span>
           </div>
-          <h3 className="text-xl sm:text-2xl font-bold text-gray-900">{stats.totalPortfolios}</h3>
-          <p className="text-sm text-gray-600 mt-1">Total Portfolios</p>
+          <h3 className="text-xl sm:text-2xl font-bold dark:text-white text-gray-900">{stats.totalPortfolios}</h3>
+          <p className="text-sm dark:text-slate-400 text-gray-600 mt-1">Total Portfolios</p>
         </motion.div>
 
         {/* Total Messages */}
         <motion.div 
           variants={fadeIn}
-          className="bg-white rounded-xl border border-gray-200 p-4 sm:p-6 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1"
+          className="liquid-glass-strong rounded-xl p-4 sm:p-6 hover:-translate-y-1 transition-transform"
         >
           <div className="flex items-center justify-between mb-4">
-            <div className="rounded-lg bg-green-50 p-2 sm:p-3">
-              <Mail className="h-5 w-5 sm:h-6 sm:w-6 text-green-600" />
+            <div className="rounded-lg bg-green-500/20 p-2 sm:p-3">
+              <Mail className="h-5 w-5 sm:h-6 sm:w-6 text-green-400" />
             </div>
-            <span className="flex items-center text-sm text-green-600">
+            <span className="flex items-center text-sm text-green-400">
               <TrendingUp className="h-4 w-4 mr-1" />
               {contactGrowth}%
             </span>
           </div>
-          <h3 className="text-xl sm:text-2xl font-bold text-gray-900">{stats.totalContacts}</h3>
-          <p className="text-sm text-gray-600 mt-1">Total Messages</p>
+          <h3 className="text-xl sm:text-2xl font-bold dark:text-white text-gray-900">{stats.totalContacts}</h3>
+          <p className="text-sm dark:text-slate-400 text-gray-600 mt-1">Total Messages</p>
         </motion.div>
 
         {/* Unread Messages */}
         <motion.div 
           variants={fadeIn}
-          className="bg-white rounded-xl border border-gray-200 p-4 sm:p-6 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1"
+          className="liquid-glass-strong rounded-xl p-4 sm:p-6 hover:-translate-y-1 transition-transform"
         >
           <div className="flex items-center justify-between mb-4">
-            <div className="rounded-lg bg-orange-50 p-2 sm:p-3">
-              <MessageCircle className="h-5 w-5 sm:h-6 sm:w-6 text-orange-600" />
+            <div className="rounded-lg bg-orange-500/20 p-2 sm:p-3">
+              <MessageCircle className="h-5 w-5 sm:h-6 sm:w-6 text-orange-400" />
             </div>
             {stats.unreadContacts > 0 && (
-              <span className="px-2 py-1 text-xs font-medium bg-orange-100 text-orange-600 rounded-full animate-pulse">
+              <span className="px-2 py-1 text-xs font-medium bg-orange-500/20 text-orange-400 rounded-full animate-pulse">
                 New
               </span>
             )}
           </div>
-          <h3 className="text-xl sm:text-2xl font-bold text-gray-900">{stats.unreadContacts}</h3>
-          <p className="text-sm text-gray-600 mt-1">Unread Messages</p>
+          <h3 className="text-xl sm:text-2xl font-bold dark:text-white text-gray-900">{stats.unreadContacts}</h3>
+          <p className="text-sm dark:text-slate-400 text-gray-600 mt-1">Unread Messages</p>
         </motion.div>
 
         {/* Quick Actions */}
         <motion.div 
           variants={fadeIn}
-          className="bg-gradient-to-br from-primary to-primary/90 rounded-xl p-4 sm:p-6 text-white shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1"
+          className="liquid-glass-strong rounded-xl p-4 sm:p-6 hover:-translate-y-1 transition-transform"
         >
-          <h3 className="text-lg font-semibold mb-4">Quick Actions</h3>
+          <h3 className="text-lg font-semibold dark:text-white text-gray-900 mb-4">Quick Actions</h3>
           <div className="space-y-3">
             <Link
               to="/admin/portfolio/create"
-              className="flex items-center justify-between p-2 rounded-lg bg-white/20 hover:bg-white/30 transition-colors group"
+              className="flex items-center justify-between p-2 rounded-lg liquid-glass hover:scale-105 transition-transform group"
             >
-              <span className="text-sm font-medium">Add Portfolio</span>
-              <Plus className="h-4 w-4 transform group-hover:rotate-90 transition-transform" />
+              <span className="text-sm font-medium dark:text-white text-gray-900">Add Portfolio</span>
+              <Plus className="h-4 w-4 dark:text-white text-gray-900 transform group-hover:rotate-90 transition-transform" />
             </Link>
             <Link
               to="/admin/contact"
-              className="flex items-center justify-between p-2 rounded-lg bg-white/20 hover:bg-white/30 transition-colors group"
+              className="flex items-center justify-between p-2 rounded-lg liquid-glass hover:scale-105 transition-transform group"
             >
-              <span className="text-sm font-medium">View Messages</span>
-              <ArrowUpRight className="h-4 w-4 transform group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+              <span className="text-sm font-medium dark:text-white text-gray-900">View Messages</span>
+              <ArrowUpRight className="h-4 w-4 dark:text-white text-gray-900 transform group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
             </Link>
           </div>
         </motion.div>
@@ -235,14 +235,14 @@ export default function DashboardPage() {
         {/* Recent Portfolios */}
         <motion.div 
           variants={fadeIn}
-          className="bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300"
+          className="liquid-glass-strong rounded-xl hover:-translate-y-1 transition-transform"
         >
-          <div className="p-4 sm:p-6 border-b border-gray-200">
+          <div className="p-4 sm:p-6 border-b dark:border-slate-800 border-gray-200">
             <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-gray-900">Recent Portfolios</h2>
+              <h2 className="text-lg font-semibold dark:text-white text-gray-900">Recent Portfolios</h2>
               <Link
                 to="/admin/portfolio"
-                className="text-sm text-primary hover:text-primary/80 font-medium flex items-center gap-1 group"
+                className="text-sm text-cyan-400 hover:text-cyan-300 font-medium flex items-center gap-1 group"
               >
                 View all
                 <ArrowUpRight className="h-4 w-4 transform group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
@@ -256,19 +256,19 @@ export default function DashboardPage() {
                   <motion.div 
                     key={portfolio._id}
                     whileHover={{ x: 5 }}
-                    className="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors"
+                    className="flex items-center justify-between p-3 rounded-lg liquid-glass hover:scale-105 transition-transform"
                   >
                     <div className="flex-1 min-w-0">
-                      <h3 className="font-medium text-gray-900 truncate">{portfolio.title}</h3>
+                      <h3 className="font-medium dark:text-white text-gray-900 truncate">{portfolio.title}</h3>
                       <div className="flex items-center gap-2 mt-1 flex-wrap">
-                        <span className="text-sm text-gray-500">{portfolio.category}</span>
-                        <span className="text-sm text-gray-400">•</span>
-                        <span className="text-sm text-gray-500 truncate">{portfolio.client}</span>
+                        <span className="text-sm dark:text-slate-400 text-gray-600">{portfolio.category}</span>
+                        <span className="text-sm dark:text-slate-400 text-gray-400">•</span>
+                        <span className="text-sm dark:text-slate-400 text-gray-600 truncate">{portfolio.client}</span>
                       </div>
                     </div>
                     <Link
                       to={`/admin/portfolio/${portfolio._id}/edit`}
-                      className="text-sm text-primary hover:text-primary/80 flex items-center gap-1 group ml-4"
+                      className="text-sm text-cyan-400 hover:text-cyan-300 flex items-center gap-1 group ml-4"
                     >
                       Edit
                       <ArrowUpRight className="h-4 w-4 transform group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
@@ -277,7 +277,7 @@ export default function DashboardPage() {
                 ))}
               </div>
             ) : (
-              <p className="text-gray-500 text-sm">No portfolios yet</p>
+              <p className="dark:text-slate-400 text-gray-600 text-sm">No portfolios yet</p>
             )}
           </div>
         </motion.div>
@@ -285,14 +285,14 @@ export default function DashboardPage() {
         {/* Recent Messages */}
         <motion.div 
           variants={fadeIn}
-          className="bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300"
+          className="liquid-glass-strong rounded-xl hover:-translate-y-1 transition-transform"
         >
-          <div className="p-4 sm:p-6 border-b border-gray-200">
+          <div className="p-4 sm:p-6 border-b dark:border-slate-800 border-gray-200">
             <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-gray-900">Recent Messages</h2>
+              <h2 className="text-lg font-semibold dark:text-white text-gray-900">Recent Messages</h2>
               <Link
                 to="/admin/contact"
-                className="text-sm text-primary hover:text-primary/80 font-medium flex items-center gap-1 group"
+                className="text-sm text-cyan-400 hover:text-cyan-300 font-medium flex items-center gap-1 group"
               >
                 View all
                 <ArrowUpRight className="h-4 w-4 transform group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
@@ -306,26 +306,26 @@ export default function DashboardPage() {
                   <motion.div 
                     key={contact._id}
                     whileHover={{ x: 5 }}
-                    className="flex items-start gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors"
+                    className="flex items-start gap-3 p-3 rounded-lg liquid-glass hover:scale-105 transition-transform"
                   >
                     <div className={`mt-1 h-2 w-2 rounded-full flex-shrink-0 ${
-                      contact.isRead ? 'bg-gray-300' : 'bg-primary animate-pulse'
+                      contact.isRead ? 'bg-gray-300' : 'bg-cyan-400 animate-pulse'
                     }`} />
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between">
-                        <h3 className="font-medium text-gray-900 truncate">{contact.name}</h3>
-                        <span className="text-xs text-gray-500 ml-2">
+                        <h3 className="font-medium dark:text-white text-gray-900 truncate">{contact.name}</h3>
+                        <span className="text-xs dark:text-slate-400 text-gray-600 ml-2">
                           {new Date(contact.createdAt).toLocaleDateString()}
                         </span>
                       </div>
-                      <p className="text-sm text-gray-600 truncate">{contact.subject}</p>
-                      <p className="text-sm text-gray-500 truncate mt-1">{contact.email}</p>
+                      <p className="text-sm dark:text-slate-400 text-gray-600 truncate">{contact.subject}</p>
+                      <p className="text-sm dark:text-slate-400 text-gray-600 truncate mt-1">{contact.email}</p>
                     </div>
                   </motion.div>
                 ))}
               </div>
             ) : (
-              <p className="text-gray-500 text-sm">No messages yet</p>
+              <p className="dark:text-slate-400 text-gray-600 text-sm">No messages yet</p>
             )}
           </div>
         </motion.div>
@@ -334,10 +334,10 @@ export default function DashboardPage() {
       {/* Activity Chart */}
       <motion.div 
         variants={fadeIn}
-        className="bg-white rounded-xl border border-gray-200 p-4 sm:p-6 shadow-sm hover:shadow-md transition-all duration-300"
+        className="liquid-glass-strong rounded-xl p-4 sm:p-6 hover:-translate-y-1 transition-transform"
       >
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-          <h2 className="text-lg font-semibold text-gray-900">Activity Overview</h2>
+          <h2 className="text-lg font-semibold dark:text-white text-gray-900">Activity Overview</h2>
           <div className="flex items-center gap-2">
             {['week', 'month', 'year'].map((timeframe) => (
               <button
@@ -345,8 +345,8 @@ export default function DashboardPage() {
                 onClick={() => setActiveTimeframe(timeframe)}
                 className={`px-3 py-1 text-sm font-medium rounded-lg transition-colors ${
                   activeTimeframe === timeframe
-                    ? 'bg-primary text-white'
-                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                    ? 'liquid-glass dark:text-white text-gray-900'
+                    : 'dark:text-slate-400 text-gray-600 hover:liquid-glass'
                 }`}
               >
                 {timeframe.charAt(0).toUpperCase() + timeframe.slice(1)}
@@ -354,10 +354,10 @@ export default function DashboardPage() {
             ))}
           </div>
         </div>
-        <div className="h-64 flex items-center justify-center bg-gray-50 rounded-lg">
+        <div className="h-64 flex items-center justify-center liquid-glass rounded-lg">
           <div className="text-center">
-            <BarChart3 className="h-12 w-12 text-gray-400 mx-auto mb-3" />
-            <p className="text-gray-500 text-sm">Chart visualization coming soon</p>
+            <BarChart3 className="h-12 w-12 dark:text-slate-400 text-gray-400 mx-auto mb-3" />
+            <p className="dark:text-slate-400 text-gray-600 text-sm">Chart visualization coming soon</p>
           </div>
         </div>
       </motion.div>
