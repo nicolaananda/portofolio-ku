@@ -13,6 +13,8 @@ import {
   Plus,
   X
 } from 'lucide-react';
+import ImageUpload from '@/components/ImageUpload';
+import { Button } from '@/components/ui/button';
 
 interface PortfolioFormData {
   title: string;
@@ -264,58 +266,14 @@ export default function PortfolioCreatePage() {
           </div>
 
           <div className="space-y-2">
-            <label htmlFor="imageUrls" className="text-sm font-medium">
-              Image URLs
+            <label className="text-sm font-medium dark:text-white text-gray-900">
+              Project Images
             </label>
-            <div className="space-y-2">
-              <div className="flex gap-2">
-                <input
-                  id="imageUrls"
-                  type="text"
-                  className="flex-1 rounded-lg border px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary/20"
-                  placeholder="Add an image URL"
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') {
-                      e.preventDefault();
-                      handleAddArrayItem('imageUrls', e.currentTarget.value);
-                      e.currentTarget.value = '';
-                    }
-                  }}
-                />
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    const input = e.currentTarget.previousElementSibling as HTMLInputElement;
-                    handleAddArrayItem('imageUrls', input.value);
-                    input.value = '';
-                  }}
-                  className="px-3 py-2 rounded-lg bg-primary/10 text-primary hover:bg-primary/20 transition-colors"
-                >
-                  <Plus className="h-4 w-4" />
-                </button>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                {formData.imageUrls.map((url, index) => (
-                  <div
-                    key={index}
-                    className="relative group aspect-video rounded-lg overflow-hidden border"
-                  >
-                    <img
-                      src={url}
-                      alt={`Portfolio image ${index + 1}`}
-                      className="w-full h-full object-cover"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => handleRemoveArrayItem('imageUrls', index)}
-                      className="absolute top-2 right-2 p-1 rounded-full bg-red-500 text-white opacity-0 group-hover:opacity-100 transition-opacity"
-                    >
-                      <X className="h-4 w-4" />
-                    </button>
-                  </div>
-                ))}
-              </div>
-            </div>
+            <ImageUpload
+              images={formData.imageUrls}
+              onImagesChange={(images) => setFormData({ ...formData, imageUrls: images })}
+              maxImages={10}
+            />
           </div>
 
           <div className="space-y-2">

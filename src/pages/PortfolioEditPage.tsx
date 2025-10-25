@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
+import ImageUpload from '@/components/ImageUpload';
 
 interface PortfolioFormData {
   title: string;
@@ -199,16 +200,13 @@ export default function PortfolioEditPage() {
           </div>
 
           <div className="space-y-2">
-            <label htmlFor="imageUrls" className="text-sm font-medium">
-              Image URLs (comma-separated)
+            <label className="text-sm font-medium dark:text-white text-gray-900">
+              Project Images
             </label>
-            <input
-              id="imageUrls"
-              type="text"
-              required
-              className="w-full rounded-md border px-3 py-2"
-              value={formData.imageUrls.join(', ')}
-              onChange={(e) => handleArrayInput('imageUrls', e.target.value)}
+            <ImageUpload
+              images={formData.imageUrls}
+              onImagesChange={(images) => setFormData({ ...formData, imageUrls: images })}
+              maxImages={10}
             />
           </div>
 
