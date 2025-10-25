@@ -55,12 +55,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const login = async (email: string, password: string) => {
     try {
       console.log('AuthContext: Starting login process');
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/login`, {
+      
+      // Smart environment detection
+      const apiUrl = import.meta.env.VITE_API_URL || '/api';
+      const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+      
+      console.log('AuthContext: Environment:', {
+        apiUrl,
+        hostname: window.location.hostname,
+        isLocalhost,
+        mode: import.meta.env.MODE
+      });
+      
+      const response = await fetch(`${apiUrl}/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        credentials: isProduction ? 'same-origin' : 'include',
+        credentials: isLocalhost ? 'include' : 'omit',
         body: JSON.stringify({ email, password }),
       });
 
