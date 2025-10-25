@@ -1,10 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import { motion } from 'framer-motion';
-import { ArrowLeft, Save, X } from 'lucide-react';
-import ImageUpload from '@/components/ImageUpload';
-import { Button } from '@/components/ui/button';
 
 interface PortfolioFormData {
   title: string;
@@ -19,20 +15,6 @@ interface PortfolioFormData {
   liveUrl?: string;
   githubUrl?: string;
 }
-
-const fadeIn = {
-  initial: { opacity: 0, y: 20 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.5 }
-};
-
-const staggerContainer = {
-  animate: {
-    transition: {
-      staggerChildren: 0.1
-    }
-  }
-};
 
 export default function PortfolioEditPage() {
   const navigate = useNavigate();
@@ -86,16 +68,6 @@ export default function PortfolioEditPage() {
     setIsSaving(true);
 
     try {
-      // Validate required fields
-      if (!formData.title || !formData.category || !formData.client || !formData.completionDate) {
-        setError('Please fill in all required fields');
-        setIsSaving(false);
-        return;
-      }
-
-      // Log the data being sent for debugging
-      console.log('Updating portfolio data:', formData);
-
       const response = await fetch(`${import.meta.env.VITE_API_URL}/portfolio/${id}`, {
         method: 'PATCH',
         headers: {
@@ -110,89 +82,53 @@ export default function PortfolioEditPage() {
       if (response.ok) {
         navigate('/admin/portfolio');
       } else {
-        console.error('API Error:', data);
         setError(data.message || 'Failed to update portfolio');
       }
     } catch (error) {
-      console.error('Network Error:', error);
       setError('An error occurred while updating the portfolio');
     } finally {
       setIsSaving(false);
     }
   };
 
-  const handleAddArrayItem = (field: 'technologies', value: string) => {
-    if (!value.trim()) return;
+  const handleArrayInput = (field: 'technologies' | 'imageUrls', value: string) => {
     setFormData({
       ...formData,
-      [field]: [...formData[field], value.trim()],
-    });
-  };
-
-  const handleRemoveArrayItem = (field: 'technologies', index: number) => {
-    setFormData({
-      ...formData,
-      [field]: formData[field].filter((_, i) => i !== index),
+      [field]: value.split(',').map((item) => item.trim()),
     });
   };
 
   if (isLoading) {
     return (
       <div className="flex h-full items-center justify-center">
-        <div className="space-y-4 text-center">
-          <div className="h-12 w-12 animate-spin rounded-full border-4 dark:border-slate-800 border-gray-200 border-t-cyan-500 mx-auto"></div>
-          <p className="dark:text-slate-400 text-gray-600">Loading portfolio...</p>
-        </div>
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
       </div>
     );
   }
 
   return (
-    <motion.div 
-      initial="initial"
-      animate="animate"
-      variants={staggerContainer}
-      className="space-y-6"
-    >
-      {/* Header */}
-      <motion.div variants={fadeIn} className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold dark:text-white text-gray-900">Edit Portfolio</h1>
-          <p className="dark:text-slate-400 text-gray-600 mt-1">Update your project details</p>
-        </div>
-        <Button
-          onClick={() => navigate('/admin/portfolio')}
-          variant="outline"
-          className="liquid-glass-button dark:text-white text-gray-900"
-        >
-          <ArrowLeft className="h-4 w-4 mr-2" />
-          Back to List
-        </Button>
-      </motion.div>
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <h1 className="text-3xl font-bold">Edit Portfolio</h1>
+      </div>
 
       {error && (
-        <motion.div 
-          variants={fadeIn}
-          className="liquid-glass-strong rounded-xl p-4 text-red-500"
-        >
+        <div className="rounded-md bg-red-50 p-4 text-red-500">
           {error}
-        </motion.div>
+        </div>
       )}
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        <motion.div 
-          variants={fadeIn}
-          className="grid gap-6 md:grid-cols-2"
-        >
+        <div className="grid gap-6 md:grid-cols-2">
           <div className="space-y-2">
-            <label htmlFor="title" className="text-sm font-medium dark:text-white text-gray-900">
+            <label htmlFor="title" className="text-sm font-medium">
               Title
             </label>
             <input
               id="title"
               type="text"
               required
-              className="w-full rounded-lg liquid-glass dark:text-white text-gray-900 dark:placeholder:text-white/30 placeholder:text-gray-400 px-4 py-2"
+              className="w-full rounded-md border px-3 py-2"
               value={formData.title}
               onChange={(e) =>
                 setFormData({ ...formData, title: e.target.value })
@@ -201,14 +137,14 @@ export default function PortfolioEditPage() {
           </div>
 
           <div className="space-y-2">
-            <label htmlFor="category" className="text-sm font-medium dark:text-white text-gray-900">
+            <label htmlFor="category" className="text-sm font-medium">
               Category
             </label>
             <input
               id="category"
               type="text"
               required
-              className="w-full rounded-lg liquid-glass dark:text-white text-gray-900 dark:placeholder:text-white/30 placeholder:text-gray-400 px-4 py-2"
+              className="w-full rounded-md border px-3 py-2"
               value={formData.category}
               onChange={(e) =>
                 setFormData({ ...formData, category: e.target.value })
@@ -217,14 +153,14 @@ export default function PortfolioEditPage() {
           </div>
 
           <div className="space-y-2">
-            <label htmlFor="client" className="text-sm font-medium dark:text-white text-gray-900">
+            <label htmlFor="client" className="text-sm font-medium">
               Client
             </label>
             <input
               id="client"
               type="text"
               required
-              className="w-full rounded-lg liquid-glass dark:text-white text-gray-900 dark:placeholder:text-white/30 placeholder:text-gray-400 px-4 py-2"
+              className="w-full rounded-md border px-3 py-2"
               value={formData.client}
               onChange={(e) =>
                 setFormData({ ...formData, client: e.target.value })
@@ -233,14 +169,14 @@ export default function PortfolioEditPage() {
           </div>
 
           <div className="space-y-2">
-            <label htmlFor="completionDate" className="text-sm font-medium dark:text-white text-gray-900">
+            <label htmlFor="completionDate" className="text-sm font-medium">
               Completion Date
             </label>
             <input
               id="completionDate"
               type="date"
               required
-              className="w-full rounded-lg liquid-glass dark:text-white text-gray-900 px-4 py-2"
+              className="w-full rounded-md border px-3 py-2"
               value={formData.completionDate}
               onChange={(e) =>
                 setFormData({ ...formData, completionDate: e.target.value })
@@ -249,64 +185,41 @@ export default function PortfolioEditPage() {
           </div>
 
           <div className="space-y-2">
-            <label htmlFor="technologies" className="text-sm font-medium dark:text-white text-gray-900">
-              Technologies
+            <label htmlFor="technologies" className="text-sm font-medium">
+              Technologies (comma-separated)
             </label>
-            <div className="space-y-2">
-              <div className="flex gap-2">
-                <input
-                  id="technologies"
-                  type="text"
-                  className="flex-1 rounded-lg liquid-glass dark:text-white text-gray-900 dark:placeholder:text-white/30 placeholder:text-gray-400 px-4 py-2"
-                  placeholder="Add a technology"
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') {
-                      e.preventDefault();
-                      handleAddArrayItem('technologies', e.currentTarget.value);
-                      e.currentTarget.value = '';
-                    }
-                  }}
-                />
-                <Button
-                  type="button"
-                  onClick={(e) => {
-                    const input = e.currentTarget.previousElementSibling as HTMLInputElement;
-                    handleAddArrayItem('technologies', input.value);
-                    input.value = '';
-                  }}
-                  className="liquid-glass-button dark:text-white text-gray-900"
-                >
-                  <X className="h-4 w-4" />
-                </Button>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {formData.technologies.map((tech, index) => (
-                  <span
-                    key={index}
-                    className="flex items-center gap-1 px-3 py-1 liquid-glass dark:text-white text-gray-900 rounded-full text-sm"
-                  >
-                    {tech}
-                    <button
-                      type="button"
-                      onClick={() => handleRemoveArrayItem('technologies', index)}
-                      className="hover:text-red-400"
-                    >
-                      <X className="h-3 w-3" />
-                    </button>
-                  </span>
-                ))}
-              </div>
-            </div>
+            <input
+              id="technologies"
+              type="text"
+              required
+              className="w-full rounded-md border px-3 py-2"
+              value={formData.technologies.join(', ')}
+              onChange={(e) => handleArrayInput('technologies', e.target.value)}
+            />
           </div>
 
           <div className="space-y-2">
-            <label htmlFor="liveUrl" className="text-sm font-medium dark:text-white text-gray-900">
+            <label htmlFor="imageUrls" className="text-sm font-medium">
+              Image URLs (comma-separated)
+            </label>
+            <input
+              id="imageUrls"
+              type="text"
+              required
+              className="w-full rounded-md border px-3 py-2"
+              value={formData.imageUrls.join(', ')}
+              onChange={(e) => handleArrayInput('imageUrls', e.target.value)}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label htmlFor="liveUrl" className="text-sm font-medium">
               Live URL (optional)
             </label>
             <input
               id="liveUrl"
               type="url"
-              className="w-full rounded-lg liquid-glass dark:text-white text-gray-900 dark:placeholder:text-white/30 placeholder:text-gray-400 px-4 py-2"
+              className="w-full rounded-md border px-3 py-2"
               value={formData.liveUrl}
               onChange={(e) =>
                 setFormData({ ...formData, liveUrl: e.target.value })
@@ -315,105 +228,86 @@ export default function PortfolioEditPage() {
           </div>
 
           <div className="space-y-2">
-            <label htmlFor="githubUrl" className="text-sm font-medium dark:text-white text-gray-900">
+            <label htmlFor="githubUrl" className="text-sm font-medium">
               GitHub URL (optional)
             </label>
             <input
               id="githubUrl"
               type="url"
-              className="w-full rounded-lg liquid-glass dark:text-white text-gray-900 dark:placeholder:text-white/30 placeholder:text-gray-400 px-4 py-2"
+              className="w-full rounded-md border px-3 py-2"
               value={formData.githubUrl}
               onChange={(e) =>
                 setFormData({ ...formData, githubUrl: e.target.value })
               }
             />
           </div>
-        </motion.div>
+        </div>
 
-        {/* Image Upload Section */}
-        <motion.div variants={fadeIn} className="space-y-2">
-          <label className="text-sm font-medium dark:text-white text-gray-900">
-            Project Images
+        <div className="space-y-2">
+          <label htmlFor="description" className="text-sm font-medium">
+            Description
           </label>
-          <ImageUpload
-            images={formData.imageUrls}
-            onImagesChange={(images) => setFormData({ ...formData, imageUrls: images })}
-            maxImages={10}
+          <textarea
+            id="description"
+            required
+            rows={4}
+            className="w-full rounded-md border px-3 py-2"
+            value={formData.description}
+            onChange={(e) =>
+              setFormData({ ...formData, description: e.target.value })
+            }
           />
-        </motion.div>
+        </div>
 
-        <motion.div variants={fadeIn} className="space-y-6">
-          <div className="space-y-2">
-            <label htmlFor="description" className="text-sm font-medium dark:text-white text-gray-900">
-              Description
-            </label>
-            <textarea
-              id="description"
-              required
-              rows={4}
-              className="w-full rounded-lg liquid-glass dark:text-white text-gray-900 dark:placeholder:text-white/30 placeholder:text-gray-400 px-4 py-2"
-              value={formData.description}
-              onChange={(e) =>
-                setFormData({ ...formData, description: e.target.value })
-              }
-            />
-          </div>
+        <div className="space-y-2">
+          <label htmlFor="challenge" className="text-sm font-medium">
+            Challenge
+          </label>
+          <textarea
+            id="challenge"
+            required
+            rows={4}
+            className="w-full rounded-md border px-3 py-2"
+            value={formData.challenge}
+            onChange={(e) =>
+              setFormData({ ...formData, challenge: e.target.value })
+            }
+          />
+        </div>
 
-          <div className="space-y-2">
-            <label htmlFor="challenge" className="text-sm font-medium dark:text-white text-gray-900">
-              Challenge
-            </label>
-            <textarea
-              id="challenge"
-              required
-              rows={4}
-              className="w-full rounded-lg liquid-glass dark:text-white text-gray-900 dark:placeholder:text-white/30 placeholder:text-gray-400 px-4 py-2"
-              value={formData.challenge}
-              onChange={(e) =>
-                setFormData({ ...formData, challenge: e.target.value })
-              }
-            />
-          </div>
+        <div className="space-y-2">
+          <label htmlFor="solution" className="text-sm font-medium">
+            Solution
+          </label>
+          <textarea
+            id="solution"
+            required
+            rows={4}
+            className="w-full rounded-md border px-3 py-2"
+            value={formData.solution}
+            onChange={(e) =>
+              setFormData({ ...formData, solution: e.target.value })
+            }
+          />
+        </div>
 
-          <div className="space-y-2">
-            <label htmlFor="solution" className="text-sm font-medium dark:text-white text-gray-900">
-              Solution
-            </label>
-            <textarea
-              id="solution"
-              required
-              rows={4}
-              className="w-full rounded-lg liquid-glass dark:text-white text-gray-900 dark:placeholder:text-white/30 placeholder:text-gray-400 px-4 py-2"
-              value={formData.solution}
-              onChange={(e) =>
-                setFormData({ ...formData, solution: e.target.value })
-              }
-            />
-          </div>
-        </motion.div>
-
-        <motion.div 
-          variants={fadeIn}
-          className="flex justify-end gap-4 pt-6 border-t dark:border-slate-800 border-gray-200"
-        >
-          <Button
+        <div className="flex justify-end gap-4">
+          <button
             type="button"
             onClick={() => navigate('/admin/portfolio')}
-            variant="outline"
-            className="liquid-glass-button dark:text-white text-gray-900"
+            className="rounded-md border px-4 py-2 text-sm font-medium hover:bg-gray-50"
           >
             Cancel
-          </Button>
-          <Button
+          </button>
+          <button
             type="submit"
             disabled={isSaving}
-            className="bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700 text-white"
+            className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary/90 disabled:opacity-50"
           >
-            <Save className="h-4 w-4 mr-2" />
             {isSaving ? 'Saving...' : 'Save Changes'}
-          </Button>
-        </motion.div>
+          </button>
+        </div>
       </form>
-    </motion.div>
+    </div>
   );
 }
