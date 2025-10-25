@@ -18,6 +18,24 @@ export default function LoginPage() {
     setError('');
     setIsLoading(true);
 
+    // Check form validation
+    const form = e.target as HTMLFormElement;
+    if (!form.checkValidity()) {
+      console.log('Form validation failed');
+      const emailInput = form.querySelector('#email') as HTMLInputElement;
+      const passwordInput = form.querySelector('#password') as HTMLInputElement;
+      
+      if (!emailInput.validity.valid) {
+        console.log('Email validation error:', emailInput.validationMessage);
+        setError(`Email: ${emailInput.validationMessage}`);
+      } else if (!passwordInput.validity.valid) {
+        console.log('Password validation error:', passwordInput.validationMessage);
+        setError(`Password: ${passwordInput.validationMessage}`);
+      }
+      setIsLoading(false);
+      return;
+    }
+
     try {
       console.log('Attempting login with:', { email: formData.email, password: '***' });
       await login(formData.email, formData.password);
@@ -63,6 +81,9 @@ export default function LoginPage() {
                 onChange={(e) =>
                   setFormData({ ...formData, email: e.target.value })
                 }
+                onInvalid={(e) => {
+                  console.log('Email validation failed:', e.target.validationMessage);
+                }}
               />
             </div>
             <div>
