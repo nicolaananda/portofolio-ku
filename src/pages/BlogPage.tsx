@@ -1,208 +1,246 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Search } from 'lucide-react';
+import { Search, ArrowRight, Sparkles, ArrowUpRight, Loader2 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import AnimatedSection from '../components/AnimatedSection';
-import { Separator } from '@/components/ui/separator';
+import SEOHead from '../components/SEOHead';
 
-// Mock blog data (would come from API in production)
-const blogPosts = [
-  {
-    id: 1,
-    title: "Data Analyst with Python: A Comprehensive Guide",
-    excerpt: "Learn how to leverage Python libraries like Pandas, NumPy, and Matplotlib for effective Data Analyst and visualization.",
-    coverImage: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&auto=format&fit=crop&q=80",
-    category: "Data Analyst",
-    date: "May 15, 2023",
-    readTime: "8 min read"
-  },
-  {
-    id: 2,
-    title: "Building Modern Web Applications with React",
-    excerpt: "A deep dive into creating scalable and maintainable web applications using React and modern development practices.",
-    coverImage: "https://images.unsplash.com/photo-1587620962725-abab7fe55159?w=800&auto=format&fit=crop&q=80",
-    category: "Web Development",
-    date: "June 3, 2023",
-    readTime: "7 min read"
-  },
-  {
-    id: 3,
-    title: "SQL for Data Analyst: Advanced Techniques",
-    excerpt: "Master advanced SQL techniques for Data Analyst, including window functions, CTEs, and complex joins.",
-    coverImage: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&auto=format&fit=crop&q=80",
-    category: "Data Analyst",
-    date: "July 12, 2023",
-    readTime: "10 min read"
-  },
-  {
-    id: 4,
-    title: "Data Visualization Best Practices",
-    excerpt: "Learn how to create effective and insightful data visualizations that communicate your findings clearly.",
-    coverImage: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop&q=80",
-    category: "Data Analyst",
-    date: "August 22, 2023",
-    readTime: "6 min read"
-  },
-  {
-    id: 5,
-    title: "Full-Stack Development with TypeScript",
-    excerpt: "Building robust full-stack applications using TypeScript, React, and Node.js with best practices.",
-    coverImage: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&auto=format&fit=crop&q=80",
-    category: "Web Development",
-    date: "September 5, 2023",
-    readTime: "9 min read"
-  },
-  {
-    id: 6,
-    title: "Data-Driven Decision Making",
-    excerpt: "How to use Data Analyst to make informed business decisions and drive organizational success.",
-    coverImage: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&auto=format&fit=crop&q=80",
-    category: "Data Analyst",
-    date: "October 18, 2023",
-    readTime: "7 min read"
-  },
-  {
-    id: 7,
-    title: "Building RESTful APIs with Node.js",
-    excerpt: "A comprehensive guide to creating scalable and secure RESTful APIs using Node.js and Express.",
-    coverImage: "https://images.unsplash.com/photo-1581276879432-15e50529f34b?w=800&auto=format&fit=crop&q=80",
-    category: "Web Development",
-    date: "November 7, 2023",
-    readTime: "8 min read"
-  },
-  {
-    id: 8,
-    title: "Data Analyst Workflow Optimization",
-    excerpt: "Tips and techniques for streamlining your Data Analyst workflow and improving productivity.",
-    coverImage: "https://images.unsplash.com/photo-1517134191118-9d595e4c8c2b?w=800&auto=format&fit=crop&q=80",
-    category: "Data Analyst",
-    date: "December 12, 2023",
-    readTime: "6 min read"
-  },
-];
+interface BlogPost {
+  _id: string;
+  slug?: string;
+  title: string;
+  excerpt: string;
+  content: string;
+  coverImage: string;
+  category: string;
+  createdAt: string;
+  readTime?: string;
+  featured?: boolean;
+  author?: {
+    name: string;
+    avatar: string;
+  };
+}
 
-// Extract unique categories
-const categories = ['All', ...Array.from(new Set(blogPosts.map(post => post.category)))];
+interface ApiResponse {
+  status: string;
+  message?: string;
+  data: BlogPost[];
+}
 
 const BlogPage = () => {
+  const [posts, setPosts] = useState<BlogPost[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
-  
+  const [categories, setCategories] = useState<string[]>(['All']);
+
+  const API_URL = import.meta.env.VITE_API_URL;
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const response = await fetch(`${API_URL}/blog`);
+        const data: ApiResponse = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.message || 'Failed to fetch blog posts');
+        }
+
+        const fetchedPosts = data.data.map(post => ({
+          ...post,
+          // Ensure date is formatted nicely if needed, or use as is
+          date: new Date(post.createdAt).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+          }),
+          readTime: post.readTime || '5 min read' // Fallback if not provided
+        }));
+
+        setPosts(fetchedPosts);
+
+        // Extract categories
+        const uniqueCategories = ['All', ...new Set(fetchedPosts.map(post => post.category))];
+        setCategories(uniqueCategories);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to fetch blog posts');
+        // Fallback to empty state or mock data if critical
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchPosts();
+  }, []);
+
   // Filter posts based on search term and selected category
-  const filteredPosts = blogPosts.filter(post => {
-    const matchesSearch = post.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                          post.excerpt.toLowerCase().includes(searchTerm.toLowerCase());
+  const filteredPosts = posts.filter(post => {
+    const matchesSearch = post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      post.excerpt.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = selectedCategory === 'All' || post.category === selectedCategory;
-    
+
     return matchesSearch && matchesCategory;
   });
-  
+
+  const featuredPost = filteredPosts.find(post => post.featured) || filteredPosts[0];
+  const otherPosts = filteredPosts.filter(post => post._id !== featuredPost?._id);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <Loader2 className="h-10 w-10 animate-spin" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-background gap-4">
+        <h2 className="text-2xl font-bold">Error Loading Journal</h2>
+        <p className="text-gray-500">{error}</p>
+        <Button onClick={() => window.location.reload()}>Try Again</Button>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen pt-20 pb-16">
-      {/* Hero Section */}
-      <section className="relative py-20 overflow-hidden hero-gradient">
-        <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-accent/10"></div>
-          <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center opacity-20 [mask-image:radial-gradient(ellipse_at_center,white,transparent)]"></div>
-          
-          {/* Floating shapes */}
-          <div className="absolute top-16 left-16 w-20 h-20 bg-gradient-to-br from-primary/20 to-accent/20 rounded-full blur-xl floating-animation"></div>
-          <div className="absolute bottom-16 right-16 w-28 h-28 bg-gradient-to-br from-accent/15 to-primary/15 rounded-lg rotate-45 blur-xl floating-animation" style={{animationDelay: '2.5s'}}></div>
-        </div>
-        
-        <div className="relative container px-4 z-10">
-          <AnimatedSection>
-            <h1 className="text-5xl md:text-6xl font-bold text-center mb-8">
-              My <span className="gradient-text">Blog</span>
+    <div className="bg-background text-foreground min-h-screen pt-24 pb-20">
+      <SEOHead
+        title="Journal - Nicola Ananda"
+        description="Thoughts, insights, and perspectives on data analysis, web development, and modern technology trends."
+        keywords="Blog, Data Analysis, Web Development, Tech Trends"
+        url="https://nicola.id/blog"
+      />
+
+      <div className="container max-w-7xl mx-auto px-4">
+        {/* Header */}
+        <div className="mb-20 border-b border-black/10 dark:border-white/10 pb-12">
+          <div className="flex flex-col md:flex-row justify-between items-end gap-8 mb-12">
+            <h1 className="text-[15vw] leading-[0.8] font-black tracking-tighter">
+              JOURNAL
             </h1>
-            <p className="mx-auto mt-6 max-w-3xl text-center text-xl text-muted-foreground leading-relaxed">
-              Thoughts, insights, and perspectives on data analysis, web development, and modern technology trends.
-            </p>
-          </AnimatedSection>
-        </div>
-      </section>
-      
-      <div className="container px-4">
-        
-        <AnimatedSection delay={100} className="py-20">
-          <div className="flex flex-col items-center gap-8 md:flex-row md:justify-between">
-            <div className="relative w-full max-w-md">
-              <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
+            <div className="text-right hidden md:block">
+              <p className="text-sm font-bold uppercase tracking-widest text-gray-500 mb-1">Issue 01</p>
+              <p className="text-sm font-bold uppercase tracking-widest text-gray-500">2024 Edition</p>
+            </div>
+          </div>
+
+          {/* Controls */}
+          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+            <div className="flex flex-wrap gap-2">
+              {categories.map(category => (
+                <button
+                  key={category}
+                  onClick={() => setSelectedCategory(category)}
+                  className={`px-4 py-2 rounded-full text-sm font-bold border transition-all duration-300 ${selectedCategory === category
+                      ? 'bg-black text-white dark:bg-white dark:text-black border-black dark:border-white'
+                      : 'bg-transparent border-black/10 dark:border-white/10 hover:border-black dark:hover:border-white'
+                    }`}
+                >
+                  {category}
+                </button>
+              ))}
+            </div>
+
+            <div className="relative w-full md:w-auto">
+              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500" />
               <Input
                 type="text"
                 placeholder="Search articles..."
-                className="pl-12 py-3 rounded-2xl border-2 focus:border-primary/50 transition-colors"
+                className="pl-10 w-full md:w-64 bg-transparent border-black/10 dark:border-white/10 focus:border-black dark:focus:border-white rounded-full"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
-            
-            <div className="flex flex-wrap justify-center gap-3">
-              {categories.map(category => (
-                <Button
-                  key={category}
-                  variant={selectedCategory === category ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setSelectedCategory(category)}
-                  className={`rounded-full px-6 py-2 text-sm font-medium transition-all duration-300 ${
-                    selectedCategory === category 
-                      ? 'bg-gradient-to-r from-primary to-accent text-white shadow-lg hover:shadow-xl' 
-                      : 'hover:bg-primary/10 hover:text-primary'
-                  }`}
-                >
-                  {category}
-                </Button>
-              ))}
-            </div>
           </div>
-        </AnimatedSection>
-        
+        </div>
+
         {filteredPosts.length > 0 ? (
-          <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-3">
-            {filteredPosts.map((post, index) => (
-              <AnimatedSection key={post.id} delay={150 + index * 50}>
-                <Link to={`/blog/${post.id}`} className="group block overflow-hidden rounded-2xl glass-effect transition-all hover:shadow-2xl hover:-translate-y-3">
-                  <div className="relative aspect-video overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-10"></div>
+          <div className="space-y-20">
+            {/* Featured Hero Post */}
+            {featuredPost && (
+              <Link to={`/blog/${featuredPost.slug || featuredPost._id}`} className="group block relative">
+                <div className="grid lg:grid-cols-12 gap-8 items-center">
+                  <div className="lg:col-span-8 relative overflow-hidden rounded-3xl aspect-[16/9] lg:aspect-[21/9] bg-gray-100 dark:bg-gray-900">
                     <img
-                      src={post.coverImage}
-                      alt={post.title}
-                      className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                      src={featuredPost.coverImage}
+                      alt={featuredPost.title}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                     />
-                    <div className="absolute top-4 left-4 z-20">
-                      <span className="inline-block rounded-full bg-gradient-to-r from-primary to-accent px-3 py-1 text-xs font-semibold text-white shadow-lg">
-                        {post.category}
+                    <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors" />
+                  </div>
+                  <div className="lg:col-span-4 flex flex-col justify-center">
+                    <div className="flex items-center gap-3 text-sm font-bold text-gray-500 mb-4">
+                      <span className="px-3 py-1 rounded-full bg-black text-white dark:bg-white dark:text-black">
+                        Featured
                       </span>
+                      <span>{new Date(featuredPost.createdAt).toLocaleDateString()}</span>
                     </div>
-                    <div className="absolute bottom-4 right-4 z-20">
-                      <span className="text-xs text-white/90 bg-black/30 backdrop-blur-sm px-2 py-1 rounded-full">{post.date}</span>
-                    </div>
-                  </div>
-                  <div className="p-8">
-                    <h2 className="text-2xl font-bold mb-3 transition-colors group-hover:text-primary leading-tight">
-                      {post.title}
+                    <h2 className="text-3xl md:text-5xl font-black leading-tight mb-6 group-hover:underline decoration-4 underline-offset-8">
+                      {featuredPost.title}
                     </h2>
-                    <p className="text-muted-foreground leading-relaxed mb-4 line-clamp-3">
-                      {post.excerpt}
+                    <p className="text-lg text-gray-600 dark:text-gray-400 line-clamp-3 mb-6">
+                      {featuredPost.excerpt}
                     </p>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-muted-foreground font-medium">{post.readTime}</span>
-                      <span className="text-sm font-semibold text-primary group-hover:text-accent transition-colors">Read More →</span>
+                    <div className="flex items-center text-sm font-bold uppercase tracking-widest group-hover:translate-x-2 transition-transform">
+                      Read Story <ArrowRight className="ml-2 h-4 w-4" />
                     </div>
                   </div>
-                </Link>
-              </AnimatedSection>
-            ))}
+                </div>
+              </Link>
+            )}
+
+            {/* List View for Other Posts */}
+            {otherPosts.length > 0 && (
+              <div className="border-t border-black/10 dark:border-white/10">
+                {otherPosts.map((post) => (
+                  <Link
+                    to={`/blog/${post.slug || post._id}`}
+                    key={post._id}
+                    className="group block border-b border-black/10 dark:border-white/10 py-12 hover:bg-black/5 dark:hover:bg-white/5 transition-colors px-4 -mx-4"
+                  >
+                    <div className="grid md:grid-cols-12 gap-8 items-center">
+                      <div className="md:col-span-3 text-sm font-medium text-gray-500">
+                        {new Date(post.createdAt).toLocaleDateString()}
+                      </div>
+                      <div className="md:col-span-6">
+                        <div className="flex items-center gap-4 mb-2">
+                          <span className="text-xs font-bold uppercase tracking-wider text-gray-400">
+                            {post.category}
+                          </span>
+                        </div>
+                        <h3 className="text-2xl md:text-3xl font-bold group-hover:underline decoration-2 underline-offset-4 mb-2">
+                          {post.title}
+                        </h3>
+                        <p className="text-gray-600 dark:text-gray-400 line-clamp-2">
+                          {post.excerpt}
+                        </p>
+                      </div>
+                      <div className="md:col-span-3 flex justify-end">
+                        <div className="w-12 h-12 rounded-full border border-black/10 dark:border-white/10 flex items-center justify-center group-hover:bg-black group-hover:text-white dark:group-hover:bg-white dark:group-hover:text-black transition-all">
+                          <ArrowUpRight className="w-5 h-5" />
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            )}
           </div>
         ) : (
-          <div className="my-20 text-center">
-            <div className="glass-effect rounded-2xl p-12 max-w-md mx-auto">
-              <h2 className="text-3xl font-bold mb-4">No posts found</h2>
-              <p className="text-muted-foreground text-lg">
-                Try changing your search term or selecting a different category.
-              </p>
+          <div className="py-20 text-center border-t border-black/10 dark:border-white/10">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 dark:bg-gray-800 mb-6">
+              <Sparkles className="w-8 h-8 text-gray-400" />
             </div>
+            <h2 className="text-2xl font-bold mb-2">No stories found</h2>
+            <p className="text-gray-500 mb-6">
+              Try changing your search term or selecting a different category.
+            </p>
+            <Button onClick={() => { setSearchTerm(''); setSelectedCategory('All'); }} variant="outline">
+              Clear Filters
+            </Button>
           </div>
         )}
       </div>

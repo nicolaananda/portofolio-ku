@@ -131,17 +131,17 @@ export default function PortfolioListPage() {
       initial="initial"
       animate="animate"
       variants={staggerContainer}
-      className="space-y-6"
+      className="max-w-7xl mx-auto space-y-6"
     >
       {/* Header */}
       <motion.div variants={fadeIn} className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold">Portfolios</h1>
-          <p className="text-gray-500 mt-1">Manage your portfolio projects</p>
+          <h1 className="text-3xl font-bold text-white">Portfolios</h1>
+          <p className="text-slate-400 mt-1">Manage your portfolio projects</p>
         </div>
         <Link
           to="/admin/portfolio/create"
-          className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-white hover:bg-primary/90 transition-colors group"
+          className="flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-colors group"
         >
           <Plus className="h-4 w-4" />
           <span className="font-medium">Add New Portfolio</span>
@@ -151,7 +151,7 @@ export default function PortfolioListPage() {
       {error && (
         <motion.div 
           variants={fadeIn}
-          className="rounded-md bg-red-50 p-4 text-red-500"
+          className="rounded-lg bg-red-900/50 border border-red-800 p-4 text-red-300"
         >
           {error}
         </motion.div>
@@ -160,14 +160,14 @@ export default function PortfolioListPage() {
       {/* Search and Filter */}
       <motion.div 
         variants={fadeIn}
-        className="flex items-center gap-4 bg-white rounded-xl border border-gray-200 p-4"
+        className="flex items-center gap-4 bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700 shadow-xl p-4"
       >
         <div className="flex-1 relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
           <input
             type="text"
             placeholder="Search portfolios..."
-            className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20"
+            className="w-full pl-10 pr-4 py-2 rounded-lg border border-slate-600 bg-slate-700/50 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
@@ -179,8 +179,8 @@ export default function PortfolioListPage() {
               onClick={() => setFilterCategory(category)}
               className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                 filterCategory === category
-                  ? 'bg-primary text-white'
-                  : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                  ? 'bg-blue-600 text-white'
+                  : 'text-slate-300 hover:text-white hover:bg-slate-700'
               }`}
             >
               {category.charAt(0).toUpperCase() + category.slice(1)}
@@ -200,23 +200,36 @@ export default function PortfolioListPage() {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             whileHover={{ y: -5 }}
-            className="bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden"
+            className="bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700 shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden"
           >
-            {portfolio.imageUrls[0] && (
-              <div className="aspect-video overflow-hidden">
+            <div className="aspect-video overflow-hidden bg-slate-800">
+              {portfolio.imageUrls && portfolio.imageUrls.length > 0 && portfolio.imageUrls[0] ? (
                 <img
                   src={portfolio.imageUrls[0]}
                   alt={portfolio.title}
                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.style.display = 'none';
+                    target.nextElementSibling?.classList.remove('hidden');
+                  }}
                 />
+              ) : null}
+              <div className={`w-full h-full flex items-center justify-center ${portfolio.imageUrls && portfolio.imageUrls.length > 0 && portfolio.imageUrls[0] ? 'hidden' : ''}`}>
+                <div className="text-center text-slate-400">
+                  <div className="w-16 h-16 mx-auto mb-2 bg-slate-700 rounded-lg flex items-center justify-center">
+                    <span className="text-2xl">📷</span>
+                  </div>
+                  <p className="text-sm">No Image</p>
+                </div>
               </div>
-            )}
+            </div>
             <div className="p-6 space-y-4">
               <div>
-                <h3 className="text-lg font-semibold text-gray-900">{portfolio.title}</h3>
+                <h3 className="text-lg font-semibold text-white">{portfolio.title}</h3>
                 <div className="flex items-center gap-2 mt-1">
-                  <Tag className="h-4 w-4 text-gray-400" />
-                  <span className="text-sm text-gray-500">{portfolio.category}</span>
+                  <Tag className="h-4 w-4 text-slate-400" />
+                  <span className="text-sm text-slate-400">{portfolio.category}</span>
                 </div>
               </div>
               
@@ -224,14 +237,14 @@ export default function PortfolioListPage() {
                 {portfolio.technologies.map((tech) => (
                   <span
                     key={tech}
-                    className="px-2 py-1 text-xs font-medium bg-primary/10 text-primary rounded-full"
+                    className="px-2 py-1 text-xs font-medium bg-blue-900/50 text-blue-300 rounded-full border border-blue-800/50"
                   >
                     {tech}
                   </span>
                 ))}
               </div>
 
-              <div className="flex items-center gap-4 text-sm text-gray-500">
+              <div className="flex items-center gap-4 text-sm text-slate-400">
                 <div className="flex items-center gap-1">
                   <Calendar className="h-4 w-4" />
                   <span>{new Date(portfolio.completionDate).toLocaleDateString()}</span>
@@ -242,13 +255,13 @@ export default function PortfolioListPage() {
                 </div>
               </div>
 
-              <div className="flex items-center gap-2 pt-4 border-t">
+              <div className="flex items-center gap-2 pt-4 border-t border-slate-700">
                 {portfolio.liveUrl && (
                   <a
                     href={portfolio.liveUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex-1 flex items-center justify-center gap-1 px-3 py-2 rounded-lg bg-primary/10 text-primary hover:bg-primary/20 transition-colors"
+                    className="flex-1 flex items-center justify-center gap-1 px-3 py-2 rounded-lg bg-blue-600/20 text-blue-300 hover:bg-blue-600/30 transition-colors border border-blue-600/30"
                   >
                     <LinkIcon className="h-4 w-4" />
                     <span className="text-sm font-medium">Live Demo</span>
@@ -259,7 +272,7 @@ export default function PortfolioListPage() {
                     href={portfolio.githubUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex-1 flex items-center justify-center gap-1 px-3 py-2 rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors"
+                    className="flex-1 flex items-center justify-center gap-1 px-3 py-2 rounded-lg bg-slate-700/50 text-slate-300 hover:bg-slate-700 transition-colors border border-slate-600"
                   >
                     <Github className="h-4 w-4" />
                     <span className="text-sm font-medium">GitHub</span>
@@ -267,17 +280,17 @@ export default function PortfolioListPage() {
                 )}
               </div>
 
-              <div className="flex items-center gap-2 pt-4 border-t">
+              <div className="flex items-center gap-2 pt-4 border-t border-slate-700">
                 <Link
                   to={`/admin/portfolio/${portfolio._id}/edit`}
-                  className="flex-1 flex items-center justify-center gap-1 px-3 py-2 rounded-lg bg-primary/10 text-primary hover:bg-primary/20 transition-colors"
+                  className="flex-1 flex items-center justify-center gap-1 px-3 py-2 rounded-lg bg-blue-600/20 text-blue-300 hover:bg-blue-600/30 transition-colors border border-blue-600/30"
                 >
                   <Edit className="h-4 w-4" />
                   <span className="text-sm font-medium">Edit</span>
                 </Link>
                 <button
                   onClick={() => handleDelete(portfolio._id)}
-                  className="flex-1 flex items-center justify-center gap-1 px-3 py-2 rounded-lg bg-red-50 text-red-500 hover:bg-red-100 transition-colors"
+                  className="flex-1 flex items-center justify-center gap-1 px-3 py-2 rounded-lg bg-red-900/20 text-red-300 hover:bg-red-900/30 transition-colors border border-red-800/30"
                 >
                   <Trash2 className="h-4 w-4" />
                   <span className="text-sm font-medium">Delete</span>

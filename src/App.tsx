@@ -29,6 +29,9 @@ const PortfolioListPage = lazy(() => import("./pages/PortfolioListPage"));
 const PortfolioEditPage = lazy(() => import("./pages/PortfolioEditPage"));
 const PortfolioCreatePage = lazy(() => import("./pages/PortfolioCreatePage"));
 const ContactListPage = lazy(() => import("./pages/ContactListPage"));
+const BlogListPage = lazy(() => import("./pages/BlogListPage"));
+const BlogCreatePage = lazy(() => import("./pages/BlogCreatePage"));
+const BlogEditPage = lazy(() => import("./pages/BlogEditPage"));
 
 // Enhanced loading component with better UX
 const LoadingSpinner = ({ message = "Loading..." }: { message?: string }) => (
@@ -61,8 +64,8 @@ const queryClient = new QueryClient({
 const RouterComponent = BrowserRouter;
 
 // Error Boundary Component
-class ErrorBoundary extends Component<{children: ReactNode}, {hasError: boolean}> {
-  constructor(props: {children: ReactNode}) {
+class ErrorBoundary extends Component<{ children: ReactNode }, { hasError: boolean }> {
+  constructor(props: { children: ReactNode }) {
     super(props);
     this.state = { hasError: false };
   }
@@ -82,7 +85,7 @@ class ErrorBoundary extends Component<{children: ReactNode}, {hasError: boolean}
           <div className="text-center p-8">
             <h1 className="text-2xl font-bold text-gray-900 mb-4">Something went wrong</h1>
             <p className="text-gray-600 mb-4">Please refresh the page to try again.</p>
-            <button 
+            <button
               onClick={() => window.location.reload()}
               className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
             >
@@ -109,69 +112,69 @@ const App = () => (
               <Routes>
                 {/* Public Routes with optimized loading */}
                 <Route path="/" element={<MainLayout />}>
-                  <Route 
-                    index 
+                  <Route
+                    index
                     element={
                       <Suspense fallback={<PageLoadingSpinner />}>
                         <HomePage />
                       </Suspense>
-                    } 
+                    }
                   />
-                  <Route 
-                    path="about" 
+                  <Route
+                    path="about"
                     element={
                       <Suspense fallback={<PageLoadingSpinner />}>
                         <AboutPage />
                       </Suspense>
-                    } 
+                    }
                   />
-                  <Route 
-                    path="portfolio" 
+                  <Route
+                    path="portfolio"
                     element={
                       <Suspense fallback={<PageLoadingSpinner />}>
                         <PortfolioPage />
                       </Suspense>
-                    } 
+                    }
                   />
-                  <Route 
-                    path="portfolio/:id" 
+                  <Route
+                    path="portfolio/:id"
                     element={
                       <Suspense fallback={<PageLoadingSpinner />}>
                         <PortfolioDetailPage />
                       </Suspense>
-                    } 
+                    }
                   />
-                  <Route 
-                    path="blog" 
+                  <Route
+                    path="blog"
                     element={
                       <Suspense fallback={<PageLoadingSpinner />}>
                         <BlogPage />
                       </Suspense>
-                    } 
+                    }
                   />
-                  <Route 
-                    path="blog/:id" 
+                  <Route
+                    path="blog/:id"
                     element={
                       <Suspense fallback={<PageLoadingSpinner />}>
                         <BlogPostPage />
                       </Suspense>
-                    } 
+                    }
                   />
-                  <Route 
-                    path="contact" 
+                  <Route
+                    path="contact"
                     element={
                       <Suspense fallback={<PageLoadingSpinner />}>
                         <ContactPage />
                       </Suspense>
-                    } 
+                    }
                   />
-                  <Route 
-                    path="login" 
+                  <Route
+                    path="login"
                     element={
                       <Suspense fallback={<PageLoadingSpinner />}>
                         <LoginPage />
                       </Suspense>
-                    } 
+                    }
                   />
                 </Route>
 
@@ -195,6 +198,42 @@ const App = () => (
                       <Suspense fallback={<AdminLoadingSpinner />}>
                         <AdminLayout>
                           <PortfolioListPage />
+                        </AdminLayout>
+                      </Suspense>
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/admin/blog"
+                  element={
+                    <ProtectedRoute>
+                      <Suspense fallback={<AdminLoadingSpinner />}>
+                        <AdminLayout>
+                          <BlogListPage />
+                        </AdminLayout>
+                      </Suspense>
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/admin/blog/create"
+                  element={
+                    <ProtectedRoute>
+                      <Suspense fallback={<AdminLoadingSpinner />}>
+                        <AdminLayout>
+                          <BlogCreatePage />
+                        </AdminLayout>
+                      </Suspense>
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/admin/blog/:id/edit"
+                  element={
+                    <ProtectedRoute>
+                      <Suspense fallback={<AdminLoadingSpinner />}>
+                        <AdminLayout>
+                          <BlogEditPage />
                         </AdminLayout>
                       </Suspense>
                     </ProtectedRoute>
@@ -238,13 +277,13 @@ const App = () => (
                 />
 
                 {/* Catch all route */}
-                <Route 
-                  path="*" 
+                <Route
+                  path="*"
                   element={
                     <Suspense fallback={<PageLoadingSpinner />}>
                       <NotFoundPage />
                     </Suspense>
-                  } 
+                  }
                 />
               </Routes>
             </RouterComponent>

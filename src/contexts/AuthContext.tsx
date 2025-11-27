@@ -54,33 +54,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const login = async (email: string, password: string) => {
     try {
-      console.log('AuthContext: Starting login process');
-      
-      // Smart environment detection
-      const apiUrl = import.meta.env.VITE_API_URL || '/api';
-      const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-      
-      console.log('AuthContext: Environment:', {
-        apiUrl,
-        hostname: window.location.hostname,
-        isLocalhost,
-        mode: import.meta.env.MODE
-      });
-      
-      const response = await fetch(`${apiUrl}/auth/login`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        credentials: isLocalhost ? 'include' : 'omit',
+        credentials: 'include',
         body: JSON.stringify({ email, password }),
       });
 
-      console.log('AuthContext: Login response status:', response.status);
-      console.log('AuthContext: Response headers:', Object.fromEntries(response.headers.entries()));
-      
       const data = await response.json();
-      console.log('AuthContext: Login response data:', data);
 
       if (!response.ok) {
         throw new Error(data.message || 'Login failed');
@@ -90,7 +73,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       localStorage.setItem('accessToken', data.accessToken);
       setIsAuthenticated(true);
     } catch (error) {
-      console.error('AuthContext: Login error:', error);
       throw error;
     }
   };

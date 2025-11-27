@@ -67,9 +67,16 @@ npm install
 yarn install
 ```
 
-3. Create a `.env` file in the root directory and add your environment variables:
-```env
-VITE_API_URL=your_api_url
+3. Set up environment variables:
+```bash
+# For development
+npm run env:dev
+
+# For production
+npm run env:prod
+
+# For Docker deployment
+npm run env:docker
 ```
 
 4. Start the development server:
@@ -79,7 +86,17 @@ npm run dev
 yarn dev
 ```
 
-The application will be available at `http://localhost:3000`
+The application will be available at `http://localhost:8080`
+
+## Environment Configuration
+
+This project supports multiple environment configurations:
+
+- **Development**: Uses local API proxy and debug mode
+- **Production**: Uses production API and optimized settings
+- **Docker**: Configured for containerized deployment
+
+See [ENVIRONMENT_GUIDE.md](ENVIRONMENT_GUIDE.md) for detailed configuration instructions.
 
 ## Usage
 
@@ -110,6 +127,27 @@ The application will be available at `http://localhost:3000`
 - Global styles can be modified in the `src/styles` directory
 - Component-specific styles are located within their respective component folders
 - Tailwind configuration can be adjusted in `tailwind.config.js`
+
+## Docker Deployment
+
+The project includes Docker configuration for easy deployment:
+
+```bash
+# Build and deploy with Docker
+npm run docker:build-serve
+
+# Or manually:
+npm run build
+npm run docker:up
+
+# Stop Docker services
+npm run docker:down
+
+# View logs
+npm run docker:logs
+```
+
+The application will be available at `http://localhost:9999`
 
 ## Contributing
 

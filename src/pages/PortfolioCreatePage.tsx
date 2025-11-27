@@ -14,7 +14,6 @@ import {
   X
 } from 'lucide-react';
 import ImageUpload from '@/components/ImageUpload';
-import { Button } from '@/components/ui/button';
 
 interface PortfolioFormData {
   title: string;
@@ -92,14 +91,7 @@ export default function PortfolioCreatePage() {
     }
   };
 
-  const handleArrayInput = (field: 'technologies' | 'imageUrls', value: string) => {
-    setFormData({
-      ...formData,
-      [field]: value.split(',').map((item) => item.trim()),
-    });
-  };
-
-  const handleAddArrayItem = (field: 'technologies' | 'imageUrls', value: string) => {
+  const handleAddArrayItem = (field: 'technologies', value: string) => {
     if (!value.trim()) return;
     setFormData({
       ...formData,
@@ -107,7 +99,7 @@ export default function PortfolioCreatePage() {
     });
   };
 
-  const handleRemoveArrayItem = (field: 'technologies' | 'imageUrls', index: number) => {
+  const handleRemoveArrayItem = (field: 'technologies', index: number) => {
     setFormData({
       ...formData,
       [field]: formData[field].filter((_, i) => i !== index),
@@ -265,14 +257,15 @@ export default function PortfolioCreatePage() {
             </div>
           </div>
 
-          <div className="space-y-2">
-            <label className="text-sm font-medium dark:text-white text-gray-900">
+          <div className="space-y-2 md:col-span-2">
+            <label className="text-sm font-medium">
               Project Images
             </label>
             <ImageUpload
               images={formData.imageUrls}
-              onImagesChange={(images) => setFormData({ ...formData, imageUrls: images })}
+              onChange={(urls) => setFormData({ ...formData, imageUrls: urls })}
               maxImages={10}
+              disabled={isLoading}
             />
           </div>
 

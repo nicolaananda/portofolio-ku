@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
+import { motion } from 'framer-motion';
 import ImageUpload from '@/components/ImageUpload';
 
 interface PortfolioFormData {
@@ -108,199 +109,226 @@ export default function PortfolioEditPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="max-w-6xl mx-auto space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold">Edit Portfolio</h1>
+        <div>
+          <h1 className="text-3xl font-bold text-white">Edit Portfolio</h1>
+          <p className="text-slate-400 mt-1">Update your portfolio project details</p>
+        </div>
       </div>
 
       {error && (
-        <div className="rounded-md bg-red-50 p-4 text-red-500">
+        <div className="rounded-lg bg-red-900/50 border border-red-800 p-4 text-red-300">
           {error}
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="grid gap-6 md:grid-cols-2">
-          <div className="space-y-2">
-            <label htmlFor="title" className="text-sm font-medium">
-              Title
-            </label>
-            <input
-              id="title"
-              type="text"
-              required
-              className="w-full rounded-md border px-3 py-2"
-              value={formData.title}
-              onChange={(e) =>
-                setFormData({ ...formData, title: e.target.value })
-              }
-            />
-          </div>
+      <form onSubmit={handleSubmit} className="space-y-8">
+        <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700 shadow-xl p-6">
+          <h2 className="text-xl font-semibold text-white mb-6">Basic Information</h2>
+          <div className="grid gap-6 md:grid-cols-2">
+            <div className="space-y-2">
+              <label htmlFor="title" className="text-sm font-medium text-slate-300">
+                Title
+              </label>
+              <input
+                id="title"
+                type="text"
+                required
+                className="w-full rounded-lg border border-slate-600 bg-slate-700/50 px-3 py-2 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                value={formData.title}
+                onChange={(e) =>
+                  setFormData({ ...formData, title: e.target.value })
+                }
+              />
+            </div>
 
-          <div className="space-y-2">
-            <label htmlFor="category" className="text-sm font-medium">
-              Category
-            </label>
-            <input
-              id="category"
-              type="text"
-              required
-              className="w-full rounded-md border px-3 py-2"
-              value={formData.category}
-              onChange={(e) =>
-                setFormData({ ...formData, category: e.target.value })
-              }
-            />
-          </div>
+            <div className="space-y-2">
+              <label htmlFor="category" className="text-sm font-medium text-slate-300">
+                Category
+              </label>
+              <input
+                id="category"
+                type="text"
+                required
+                className="w-full rounded-lg border border-slate-600 bg-slate-700/50 px-3 py-2 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                value={formData.category}
+                onChange={(e) =>
+                  setFormData({ ...formData, category: e.target.value })
+                }
+              />
+            </div>
 
-          <div className="space-y-2">
-            <label htmlFor="client" className="text-sm font-medium">
-              Client
-            </label>
-            <input
-              id="client"
-              type="text"
-              required
-              className="w-full rounded-md border px-3 py-2"
-              value={formData.client}
-              onChange={(e) =>
-                setFormData({ ...formData, client: e.target.value })
-              }
-            />
-          </div>
+            <div className="space-y-2">
+              <label htmlFor="client" className="text-sm font-medium text-slate-300">
+                Client
+              </label>
+              <input
+                id="client"
+                type="text"
+                required
+                className="w-full rounded-lg border border-slate-600 bg-slate-700/50 px-3 py-2 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                value={formData.client}
+                onChange={(e) =>
+                  setFormData({ ...formData, client: e.target.value })
+                }
+              />
+            </div>
 
-          <div className="space-y-2">
-            <label htmlFor="completionDate" className="text-sm font-medium">
-              Completion Date
-            </label>
-            <input
-              id="completionDate"
-              type="date"
-              required
-              className="w-full rounded-md border px-3 py-2"
-              value={formData.completionDate}
-              onChange={(e) =>
-                setFormData({ ...formData, completionDate: e.target.value })
-              }
-            />
-          </div>
+            <div className="space-y-2">
+              <label htmlFor="completionDate" className="text-sm font-medium text-slate-300">
+                Completion Date
+              </label>
+              <input
+                id="completionDate"
+                type="date"
+                required
+                className="w-full rounded-lg border border-slate-600 bg-slate-700/50 px-3 py-2 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                value={formData.completionDate}
+                onChange={(e) =>
+                  setFormData({ ...formData, completionDate: e.target.value })
+                }
+              />
+            </div>
 
-          <div className="space-y-2">
-            <label htmlFor="technologies" className="text-sm font-medium">
-              Technologies (comma-separated)
-            </label>
-            <input
-              id="technologies"
-              type="text"
-              required
-              className="w-full rounded-md border px-3 py-2"
-              value={formData.technologies.join(', ')}
-              onChange={(e) => handleArrayInput('technologies', e.target.value)}
-            />
-          </div>
+            <div className="space-y-2">
+              <label htmlFor="technologies" className="text-sm font-medium text-slate-300">
+                Technologies (comma-separated)
+              </label>
+              <input
+                id="technologies"
+                type="text"
+                required
+                className="w-full rounded-lg border border-slate-600 bg-slate-700/50 px-3 py-2 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                value={formData.technologies.join(', ')}
+                onChange={(e) => handleArrayInput('technologies', e.target.value)}
+                placeholder="React, Node.js, MongoDB"
+              />
+            </div>
 
-          <div className="space-y-2">
-            <label className="text-sm font-medium dark:text-white text-gray-900">
-              Project Images
-            </label>
-            <ImageUpload
-              images={formData.imageUrls}
-              onImagesChange={(images) => setFormData({ ...formData, imageUrls: images })}
-              maxImages={10}
-            />
-          </div>
+            <div className="space-y-2 md:col-span-2">
+              <label htmlFor="imageUrls" className="text-sm font-medium text-slate-300">
+                Project Images
+              </label>
+              <ImageUpload
+                images={formData.imageUrls}
+                onChange={(urls) => setFormData({ ...formData, imageUrls: urls })}
+                maxImages={10}
+                disabled={isSaving}
+              />
+            </div>
 
-          <div className="space-y-2">
-            <label htmlFor="liveUrl" className="text-sm font-medium">
-              Live URL (optional)
-            </label>
-            <input
-              id="liveUrl"
-              type="url"
-              className="w-full rounded-md border px-3 py-2"
-              value={formData.liveUrl}
-              onChange={(e) =>
-                setFormData({ ...formData, liveUrl: e.target.value })
-              }
-            />
-          </div>
+            <div className="space-y-2">
+              <label htmlFor="liveUrl" className="text-sm font-medium text-slate-300">
+                Live URL (optional)
+              </label>
+              <input
+                id="liveUrl"
+                type="url"
+                className="w-full rounded-lg border border-slate-600 bg-slate-700/50 px-3 py-2 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                value={formData.liveUrl}
+                onChange={(e) =>
+                  setFormData({ ...formData, liveUrl: e.target.value })
+                }
+                placeholder="https://your-project.com"
+              />
+            </div>
 
-          <div className="space-y-2">
-            <label htmlFor="githubUrl" className="text-sm font-medium">
-              GitHub URL (optional)
-            </label>
-            <input
-              id="githubUrl"
-              type="url"
-              className="w-full rounded-md border px-3 py-2"
-              value={formData.githubUrl}
-              onChange={(e) =>
-                setFormData({ ...formData, githubUrl: e.target.value })
-              }
-            />
+            <div className="space-y-2">
+              <label htmlFor="githubUrl" className="text-sm font-medium text-slate-300">
+                GitHub URL (optional)
+              </label>
+              <input
+                id="githubUrl"
+                type="url"
+                className="w-full rounded-lg border border-slate-600 bg-slate-700/50 px-3 py-2 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                value={formData.githubUrl}
+                onChange={(e) =>
+                  setFormData({ ...formData, githubUrl: e.target.value })
+                }
+                placeholder="https://github.com/username/project"
+              />
+            </div>
           </div>
         </div>
 
-        <div className="space-y-2">
-          <label htmlFor="description" className="text-sm font-medium">
-            Description
-          </label>
-          <textarea
-            id="description"
-            required
-            rows={4}
-            className="w-full rounded-md border px-3 py-2"
-            value={formData.description}
-            onChange={(e) =>
-              setFormData({ ...formData, description: e.target.value })
-            }
-          />
+        <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700 shadow-xl p-6">
+          <h2 className="text-xl font-semibold text-white mb-6">Project Details</h2>
+          <div className="space-y-6">
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <label htmlFor="description" className="text-sm font-medium text-slate-300">
+                  Description
+                </label>
+                <span className="text-xs text-slate-400">HTML supported</span>
+              </div>
+              <textarea
+                id="description"
+                required
+                rows={6}
+                className="w-full rounded-lg border border-slate-600 bg-slate-700/50 px-3 py-2 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-vertical font-mono text-sm"
+                value={formData.description}
+                onChange={(e) =>
+                  setFormData({ ...formData, description: e.target.value })
+                }
+                placeholder="Use HTML for formatting:&#10;&lt;strong&gt;bold&lt;/strong&gt;, &lt;em&gt;italic&lt;/em&gt;&#10;&lt;ul&gt;&lt;li&gt;bullet point&lt;/li&gt;&lt;/ul&gt;&#10;&lt;br/&gt; for line breaks"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <label htmlFor="challenge" className="text-sm font-medium text-slate-300">
+                  Challenge
+                </label>
+                <span className="text-xs text-slate-400">HTML supported</span>
+              </div>
+              <textarea
+                id="challenge"
+                required
+                rows={6}
+                className="w-full rounded-lg border border-slate-600 bg-slate-700/50 px-3 py-2 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-vertical font-mono text-sm"
+                value={formData.challenge}
+                onChange={(e) =>
+                  setFormData({ ...formData, challenge: e.target.value })
+                }
+                placeholder="Use HTML for bullet points:&#10;&lt;ul&gt;&#10;  &lt;li&gt;Challenge 1&lt;/li&gt;&#10;  &lt;li&gt;Challenge 2&lt;/li&gt;&#10;&lt;/ul&gt;"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <label htmlFor="solution" className="text-sm font-medium text-slate-300">
+                  Solution
+                </label>
+                <span className="text-xs text-slate-400">HTML supported</span>
+              </div>
+              <textarea
+                id="solution"
+                required
+                rows={6}
+                className="w-full rounded-lg border border-slate-600 bg-slate-700/50 px-3 py-2 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-vertical font-mono text-sm"
+                value={formData.solution}
+                onChange={(e) =>
+                  setFormData({ ...formData, solution: e.target.value })
+                }
+                placeholder="Use HTML for bullet points:&#10;&lt;ul&gt;&#10;  &lt;li&gt;Solution 1&lt;/li&gt;&#10;  &lt;li&gt;Solution 2&lt;/li&gt;&#10;&lt;/ul&gt;"
+              />
+            </div>
+          </div>
         </div>
 
-        <div className="space-y-2">
-          <label htmlFor="challenge" className="text-sm font-medium">
-            Challenge
-          </label>
-          <textarea
-            id="challenge"
-            required
-            rows={4}
-            className="w-full rounded-md border px-3 py-2"
-            value={formData.challenge}
-            onChange={(e) =>
-              setFormData({ ...formData, challenge: e.target.value })
-            }
-          />
-        </div>
-
-        <div className="space-y-2">
-          <label htmlFor="solution" className="text-sm font-medium">
-            Solution
-          </label>
-          <textarea
-            id="solution"
-            required
-            rows={4}
-            className="w-full rounded-md border px-3 py-2"
-            value={formData.solution}
-            onChange={(e) =>
-              setFormData({ ...formData, solution: e.target.value })
-            }
-          />
-        </div>
-
-        <div className="flex justify-end gap-4">
+        <div className="flex justify-end gap-4 pt-6">
           <button
             type="button"
             onClick={() => navigate('/admin/portfolio')}
-            className="rounded-md border px-4 py-2 text-sm font-medium hover:bg-gray-50"
+            className="px-6 py-2 rounded-lg border border-slate-600 text-slate-300 hover:bg-slate-800 hover:text-white transition-colors"
           >
             Cancel
           </button>
           <button
             type="submit"
             disabled={isSaving}
-            className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary/90 disabled:opacity-50"
+            className="px-6 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             {isSaving ? 'Saving...' : 'Save Changes'}
           </button>

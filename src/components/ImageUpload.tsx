@@ -1,268 +1,201 @@
 import { useState, useRef } from 'react';
-import { Upload, X, Image as ImageIcon, Loader2, AlertCircle } from 'lucide-react';
+import { Upload, X, Loader2, Image as ImageIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { toast } from 'sonner';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface ImageUploadProps {
   images: string[];
-  onImagesChange: (images: string[]) => void;
+  onChange: (urls: string[]) => void;
   maxImages?: number;
-  className?: string;
+  disabled?: boolean;
 }
 
-export default function ImageUpload({ 
-  images, 
-  onImagesChange, 
+export default function ImageUpload({
+  images,
+  onChange,
   maxImages = 10,
-  className = ""
+  disabled = false,
 }: ImageUploadProps) {
-  const [isUploading, setIsUploading] = useState(false);
-  const [dragActive, setDragActive] = useState(false);
+  const { accessToken } = useAuth();
+  const [uploading, setUploading] = useState(false);
+  const [error, setError] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Server-side upload function
-  const uploadImage = async (file: File): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      // Validate file type
-      if (!file.type.startsWith('image/')) {
-        reject(new Error('File must be an image'));
-        return;
-      }
+  const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
 
-      // Validate file size (5MB max)
-      if (file.size > 5 * 1024 * 1024) {
-        reject(new Error('File size must be less than 5MB'));
-        return;
-      }
+    setError('');
 
-      // Create FormData for server upload
-      const formData = new FormData();
-      formData.append('image', file);
-
-      // Upload to server
-      fetch(`${import.meta.env.VITE_API_URL}/upload`, {
-        method: 'POST',
-        body: formData,
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
-        }
-      })
-      .then(response => {
-        if (!response.ok) {
-          if (response.status === 503) {
-            throw new Error('Server is temporarily unavailable. Please try again later.');
-          } else if (response.status === 401) {
-            throw new Error('Authentication required. Please login again.');
-          } else if (response.status === 413) {
-            throw new Error('File too large. Please choose a smaller image.');
-          } else {
-            throw new Error(`Upload failed: ${response.status} ${response.statusText}`);
-          }
-        }
-        return response.json();
-      })
-      .then(data => {
-        if (data.success && data.url) {
-          resolve(data.url);
-        } else {
-          reject(new Error(data.message || 'Upload failed'));
-        }
-      })
-      .catch(error => {
-        reject(error);
-      });
-    });
-  };
-
-  const handleFiles = async (files: FileList) => {
+    // Check image limit
     if (images.length + files.length > maxImages) {
-      toast.error(`Maximum ${maxImages} images allowed`);
+      setError(`Maximum ${maxImages} images allowed`);
       return;
     }
 
-    setIsUploading(true);
+    setUploading(true);
+
     try {
-      const uploadPromises = Array.from(files).map(file => uploadImage(file));
-      const uploadedUrls = await Promise.all(uploadPromises);
-      onImagesChange([...images, ...uploadedUrls]);
-      toast.success(`${uploadedUrls.length} image(s) uploaded successfully`);
-    } catch (error) {
-      console.error('Error uploading images:', error);
-      const errorMessage = error instanceof Error ? error.message : 'Error uploading images';
-      toast.error(errorMessage);
+      const uploadedUrls: string[] = [];
+
+      for (const file of Array.from(files)) {
+        // Validate file type
+        if (!file.type.startsWith('image/')) {
+          setError('Please select valid image files');
+          continue;
+        }
+
+        // Validate file size (max 5MB)
+        if (file.size > 5 * 1024 * 1024) {
+          setError('File size must be less than 5MB');
+          continue;
+        }
+
+        // Upload file
+        const url = await uploadImage(file);
+        uploadedUrls.push(url);
+      }
+
+      if (uploadedUrls.length > 0) {
+        onChange([...images, ...uploadedUrls]);
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to upload images');
     } finally {
-      setIsUploading(false);
+      setUploading(false);
+      // Reset file input
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
     }
   };
 
-  const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault();
-    setDragActive(false);
-    
-    const files = e.dataTransfer.files;
-    if (files.length > 0) {
-      handleFiles(files);
+  const uploadImage = async (file: File): Promise<string> => {
+    const formData = new FormData();
+    formData.append('image', file);
+
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/upload`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: formData,
+    });
+
+    const data = await response.json();
+
+    // Handle different response formats
+    if (!response.ok) {
+      const errorMessage = data.message || data.error || 'Failed to upload image';
+      throw new Error(errorMessage);
     }
-  };
 
-  const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault();
-    setDragActive(true);
-  };
-
-  const handleDragLeave = (e: React.DragEvent) => {
-    e.preventDefault();
-    setDragActive(false);
-  };
-
-  const handleFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (files && files.length > 0) {
-      handleFiles(files);
+    // Backend returns: { success: true, url: "...", message: "..." }
+    // Or legacy: { url: "..." }
+    if (data.success && data.url) {
+      return data.url;
     }
+
+    // Fallback to other possible formats
+    return data.url || data.imageUrl || data.data?.url || data.data?.imageUrl;
   };
 
-  const removeImage = (index: number) => {
-    onImagesChange(images.filter((_, i) => i !== index));
+  const handleRemoveImage = (index: number) => {
+    const newImages = images.filter((_, i) => i !== index);
+    onChange(newImages);
   };
 
-  const openFileDialog = () => {
-    fileInputRef.current?.click();
+  const handleButtonClick = () => {
+    if (!disabled && !uploading) {
+      fileInputRef.current?.click();
+    }
   };
 
   return (
-    <div className={`space-y-4 ${className}`}>
-      {/* Upload Area */}
-      <div
-        className={`
-          relative border-2 border-dashed rounded-xl p-8 text-center transition-colors
-          ${dragActive 
-            ? 'border-cyan-400 bg-cyan-50 dark:bg-cyan-950/20' 
-            : 'border-gray-300 dark:border-slate-600 hover:border-gray-400 dark:hover:border-slate-500'
-          }
-          ${isUploading ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
-        `}
-        onDrop={handleDrop}
-        onDragOver={handleDragOver}
-        onDragLeave={handleDragLeave}
-        onClick={openFileDialog}
-      >
+    <div className="space-y-4">
+      {/* Upload Button */}
+      <div>
         <input
           ref={fileInputRef}
           type="file"
-          multiple
           accept="image/*"
-          onChange={handleFileInput}
+          multiple
           className="hidden"
+          onChange={handleFileSelect}
+          disabled={disabled || uploading}
         />
-        
-        <div className="space-y-4">
-          {isUploading ? (
-            <Loader2 className="h-12 w-12 text-cyan-400 mx-auto animate-spin" />
+        <Button
+          type="button"
+          onClick={handleButtonClick}
+          disabled={disabled || uploading || images.length >= maxImages}
+          variant="outline"
+          className="w-full"
+        >
+          {uploading ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Uploading...
+            </>
           ) : (
-            <Upload className="h-12 w-12 text-gray-400 dark:text-slate-400 mx-auto" />
+            <>
+              <Upload className="mr-2 h-4 w-4" />
+              Upload Images
+              {images.length > 0 && ` (${images.length}/${maxImages})`}
+            </>
           )}
-          
-          <div>
-            <p className="text-lg font-medium dark:text-white text-gray-900">
-              {isUploading ? 'Uploading...' : 'Drop images here or click to upload'}
-            </p>
-            <p className="text-sm dark:text-slate-400 text-gray-600 mt-1">
-              PNG, JPG, WEBP up to 5MB each
-            </p>
-            <p className="text-xs dark:text-slate-500 text-gray-500 mt-1">
-              {images.length}/{maxImages} images uploaded
-            </p>
-          </div>
-          
-          {!isUploading && (
-            <Button 
-              type="button" 
-              variant="outline" 
-              className="liquid-glass-button dark:text-white text-gray-900"
-            >
-              <ImageIcon className="h-4 w-4 mr-2" />
-              Choose Images
-            </Button>
-          )}
-        </div>
+        </Button>
       </div>
+
+      {/* Error Message */}
+      {error && (
+        <div className="rounded-md bg-red-50 dark:bg-red-900/20 p-3 text-sm text-red-500 dark:text-red-400">
+          {error}
+        </div>
+      )}
 
       {/* Image Preview Grid */}
       {images.length > 0 && (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 gap-4">
           {images.map((url, index) => (
             <div
               key={index}
-              className="relative group aspect-square rounded-lg overflow-hidden liquid-glass"
+              className="group relative aspect-video overflow-hidden rounded-lg border bg-slate-100 dark:bg-slate-800"
             >
               <img
                 src={url}
                 alt={`Upload ${index + 1}`}
-                className="w-full h-full object-cover"
+                className="h-full w-full object-cover"
               />
               <button
                 type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  removeImage(index);
-                }}
-                className="absolute top-2 right-2 p-1.5 rounded-full bg-red-500 text-white opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600"
+                onClick={() => handleRemoveImage(index)}
+                disabled={disabled}
+                className="absolute right-2 top-2 rounded-full bg-red-500 p-1 opacity-0 shadow-lg transition-opacity group-hover:opacity-100 disabled:opacity-0"
               >
-                <X className="h-4 w-4" />
+                <X className="h-4 w-4 text-white" />
               </button>
-              <div className="absolute bottom-0 left-0 right-0 bg-black/50 text-white text-xs p-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                Image {index + 1}
-              </div>
             </div>
           ))}
         </div>
       )}
 
-      {/* Manual URL Input */}
-      <div className="space-y-2">
-        <label className="text-sm font-medium dark:text-white text-gray-900">
-          Or add image URLs manually:
-        </label>
-        <div className="flex gap-2">
-          <input
-            type="url"
-            placeholder="https://example.com/image.jpg"
-            className="flex-1 rounded-lg liquid-glass dark:text-white text-gray-900 dark:placeholder:text-white/30 placeholder:text-gray-400 px-4 py-2"
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                e.preventDefault();
-                const input = e.currentTarget;
-                if (input.value.trim() && images.length < maxImages) {
-                  onImagesChange([...images, input.value.trim()]);
-                  input.value = '';
-                }
-              }
-            }}
-          />
-          <Button
-            type="button"
-            onClick={(e) => {
-              const input = e.currentTarget.previousElementSibling as HTMLInputElement;
-              if (input.value.trim() && images.length < maxImages) {
-                onImagesChange([...images, input.value.trim()]);
-                input.value = '';
-              }
-            }}
-            className="liquid-glass-button dark:text-white text-gray-900"
-          >
-            Add URL
-          </Button>
+      {/* Placeholder when no images */}
+      {images.length === 0 && !uploading && (
+        <div className="flex aspect-video items-center justify-center rounded-lg border-2 border-dashed border-slate-300 dark:border-slate-700">
+          <div className="text-center">
+            <ImageIcon className="mx-auto h-12 w-12 text-slate-400" />
+            <p className="mt-2 text-sm text-slate-500">No images uploaded</p>
+          </div>
         </div>
-      </div>
+      )}
 
-      {/* Upload Status */}
-      {isUploading && (
-        <div className="flex items-center gap-2 text-sm text-blue-600 dark:text-blue-400">
-          <Loader2 className="h-4 w-4 animate-spin" />
-          Uploading images to server...
-        </div>
+      {/* Max Images Warning */}
+      {images.length >= maxImages && (
+        <p className="text-sm text-slate-500">
+          Maximum {maxImages} images reached
+        </p>
       )}
     </div>
   );
 }
+

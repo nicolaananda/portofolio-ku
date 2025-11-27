@@ -1,9 +1,7 @@
-
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Sun, Moon } from 'lucide-react';
+import { Menu, X, Sun, Moon, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import SocialIcons from './SocialIcons';
 import { useTheme } from '@/contexts/ThemeContext';
 
 interface NavbarProps {
@@ -14,125 +12,129 @@ const Navbar = ({ isScrolled }: NavbarProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
   const { theme, toggleTheme } = useTheme();
-  
+
   // Close mobile menu when route changes
   useEffect(() => {
     setIsMenuOpen(false);
   }, [location.pathname]);
-  
+
+  const navLinks = [
+    { to: '/', label: 'Home' },
+    { to: '/about', label: 'About' },
+    { to: '/portfolio', label: 'Work' },
+    { to: '/blog', label: 'Journal' },
+    { to: '/contact', label: 'Contact' },
+  ];
+
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-      isScrolled 
-        ? 'backdrop-blur-xl shadow-2xl py-4 dark:bg-slate-950/80 bg-white/80 dark:border-cyan-500/10 border-gray-200/50 border-b' 
-        : 'bg-transparent py-6'
-    }`}>
-      <div className="container flex items-center justify-between px-4">
-        <Link to="/" className="group text-2xl font-black transition-all duration-300">
-          <span className="bg-gradient-to-r from-cyan-400 to-purple-600 bg-clip-text text-transparent group-hover:from-cyan-300 group-hover:to-purple-500">
-            {'<'}Nicola{' />'}
-          </span>
-        </Link>
-        
-        {/* Desktop Navigation */}
-        <nav className="hidden space-x-8 md:flex">
-          <NavLink to="/" label="Home" currentPath={location.pathname} />
-          <NavLink to="/about" label="About" currentPath={location.pathname} />
-          <NavLink to="/portfolio" label="Portfolio" currentPath={location.pathname} />
-          <NavLink to="/contact" label="Contact" currentPath={location.pathname} />
-        </nav>
-        
-        {/* Right side - Theme Toggle & Social Icons - Desktop */}
-        <div className="hidden md:flex items-center gap-3">
-          <Button 
-            variant="ghost" 
-            size="icon"
-            onClick={toggleTheme}
-            className="hover:bg-cyan-500/10 dark:text-white text-gray-700"
-            aria-label="Toggle theme"
-          >
-            {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
-          </Button>
-          <SocialIcons />
+    <>
+      <header className={`fixed top-6 left-0 right-0 z-50 transition-all duration-500 flex justify-center px-4 pointer-events-none`}>
+        <div className={`pointer-events-auto transition-all duration-500 ease-[cubic-bezier(0.76,0,0.24,1)] ${isScrolled
+            ? 'w-auto rounded-full bg-white/80 dark:bg-black/80 backdrop-blur-xl border border-black/5 dark:border-white/10 shadow-lg py-2 px-2'
+            : 'w-full max-w-7xl rounded-none bg-transparent border-none py-4 px-0'
+          }`}>
+          <div className="flex items-center justify-between gap-4">
+            {/* Logo */}
+            <Link to="/" className={`group relative z-10 flex items-center gap-2 font-black text-xl tracking-tighter transition-all duration-300 ${isScrolled ? 'pl-4' : ''}`}>
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-black to-black/70 dark:from-white dark:to-white/70">
+                NICOLA
+              </span>
+              <div className="h-1.5 w-1.5 rounded-full bg-black dark:bg-white group-hover:scale-150 transition-transform duration-300"></div>
+            </Link>
+
+            {/* Desktop Navigation */}
+            <nav className={`hidden md:flex items-center gap-1 ${isScrolled ? '' : 'absolute left-1/2 -translate-x-1/2'}`}>
+              {navLinks.map((link) => (
+                <NavLink
+                  key={link.to}
+                  to={link.to}
+                  label={link.label}
+                  isActive={location.pathname === link.to}
+                  isScrolled={isScrolled}
+                />
+              ))}
+            </nav>
+
+            {/* Right Actions */}
+            <div className={`flex items-center gap-2 ${isScrolled ? 'pr-2' : ''}`}>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={toggleTheme}
+                className="rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
+              >
+                {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
+              </Button>
+
+              <Button
+                asChild
+                className={`hidden md:flex rounded-full font-medium transition-all duration-300 ${isScrolled
+                    ? 'h-9 px-4 text-xs'
+                    : 'h-10 px-6'
+                  }`}
+              >
+                <Link to="/contact">
+                  Let's Talk <ArrowRight size={14} className="ml-2" />
+                </Link>
+              </Button>
+
+              {/* Mobile Menu Toggle */}
+              <Button
+                variant="ghost"
+                size="icon"
+                className="md:hidden rounded-full hover:bg-black/5 dark:hover:bg-white/10"
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+              >
+                {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
+              </Button>
+            </div>
+          </div>
         </div>
-        
-        {/* Mobile menu buttons */}
-        <div className="flex items-center gap-2 md:hidden">
-          <Button 
-            variant="ghost" 
-            size="icon"
-            onClick={toggleTheme}
-            className="hover:bg-cyan-500/10 dark:text-white text-gray-700"
-            aria-label="Toggle theme"
-          >
-            {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
-          </Button>
-          <Button 
-            variant="ghost" 
-            size="icon"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="hover:bg-cyan-500/10 dark:text-white text-gray-700"
-          >
-            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </Button>
+      </header>
+
+      {/* Mobile Menu Overlay */}
+      <div className={`fixed inset-0 z-40 bg-white dark:bg-black transition-all duration-500 ease-[cubic-bezier(0.76,0,0.24,1)] ${isMenuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-full pointer-events-none'
+        }`}>
+        <div className="h-full flex flex-col justify-center items-center p-4">
+          <nav className="flex flex-col items-center gap-6">
+            {navLinks.map((link, idx) => (
+              <Link
+                key={link.to}
+                to={link.to}
+                className={`text-4xl md:text-6xl font-black tracking-tighter transition-all duration-500 hover:text-gray-500 ${isMenuOpen ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
+                  }`}
+                style={{ transitionDelay: `${idx * 50}ms` }}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
+
+          <div className={`mt-12 flex gap-4 transition-all duration-500 delay-300 ${isMenuOpen ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
+            }`}>
+            <div className="text-sm text-gray-500">
+              Based in Malang, Indonesia
+            </div>
+          </div>
         </div>
       </div>
-      
-              {/* Mobile Navigation */}
-      {isMenuOpen && (
-        <div className="absolute top-full left-0 right-0 dark:bg-slate-950/95 bg-white/95 backdrop-blur-xl shadow-2xl border-b dark:border-cyan-500/20 border-gray-200 md:hidden animate-fade-in">
-          <nav className="container flex flex-col space-y-4 p-6">
-            <MobileNavLink to="/" label="Home" currentPath={location.pathname} />
-            <MobileNavLink to="/about" label="About" currentPath={location.pathname} />
-            <MobileNavLink to="/portfolio" label="Portfolio" currentPath={location.pathname} />
-            <MobileNavLink to="/contact" label="Contact" currentPath={location.pathname} />
-            
-            <div className="flex justify-center pt-4 border-t dark:border-slate-800 border-gray-200">
-              <SocialIcons />
-            </div>
-          </nav>
-        </div>
-      )}
-    </header>
+    </>
   );
 };
 
-interface NavLinkProps {
-  to: string;
-  label: string;
-  currentPath: string;
-}
-
-const NavLink = ({ to, label, currentPath }: NavLinkProps) => {
-  const isActive = currentPath === to || (to !== '/' && currentPath.startsWith(to));
-  
-  return (
-    <Link 
-      to={to} 
-      className={`relative dark:text-slate-300 text-gray-700 hover:text-cyan-400 transition-colors duration-200 font-bold ${isActive ? 'text-cyan-400' : ''}`}
-    >
-      {label}
-      {isActive && (
-        <span className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-cyan-400 to-purple-600 rounded-full"></span>
-      )}
-    </Link>
-  );
-};
-
-const MobileNavLink = ({ to, label, currentPath }: NavLinkProps) => {
-  const isActive = currentPath === to || (to !== '/' && currentPath.startsWith(to));
-  
-  return (
-    <Link 
-      to={to} 
-      className={`py-3 text-lg font-black transition-all duration-200 rounded-xl px-4 ${
-        isActive 
-          ? 'text-cyan-400 bg-cyan-500/10 border-l-4 border-cyan-400' 
-          : 'dark:text-slate-300 text-gray-700 dark:hover:text-white hover:text-gray-900 dark:hover:bg-slate-800/50 hover:bg-gray-100'
+const NavLink = ({ to, label, isActive, isScrolled }: { to: string; label: string; isActive: boolean; isScrolled: boolean }) => (
+  <Link
+    to={to}
+    className={`relative px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 hover:text-black dark:hover:text-white ${isActive
+        ? 'text-black dark:text-white bg-black/5 dark:bg-white/10'
+        : 'text-gray-500 dark:text-gray-400'
       }`}
-    >
-      {label}
-    </Link>
-  );
-};
+  >
+    {label}
+    {isActive && (
+      <span className="absolute inset-0 rounded-full border border-black/5 dark:border-white/5 pointer-events-none"></span>
+    )}
+  </Link>
+);
 
 export default Navbar;
