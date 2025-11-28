@@ -9,23 +9,20 @@ import {
     Edit,
     Plus,
     Calendar,
-    User,
-    Eye,
-    Clock
+    Link as LinkIcon,
+    Tag,
+    Eye
 } from 'lucide-react';
 
 interface BlogPost {
     _id: string;
     title: string;
     category: string;
+    createdAt: string;
     excerpt: string;
     coverImage: string;
-    author: {
-        name: string;
-    };
-    createdAt: string;
-    featured: boolean;
-    readTime: string;
+    slug?: string;
+    featured?: boolean;
 }
 
 const fadeIn = {
@@ -42,7 +39,7 @@ const staggerContainer = {
     }
 };
 
-export default function BlogListPage() {
+export default function AdminBlogListPage() {
     const { accessToken } = useAuth();
     const [posts, setPosts] = useState<BlogPost[]>([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -132,22 +129,22 @@ export default function BlogListPage() {
             {/* Header */}
             <motion.div variants={fadeIn} className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-3xl font-bold text-white">Blog Posts</h1>
-                    <p className="text-slate-400 mt-1">Manage your journal entries</p>
+                    <h1 className="text-3xl font-bold text-gray-900">Blog Posts</h1>
+                    <p className="text-gray-500 mt-1">Manage your journal entries</p>
                 </div>
                 <Link
                     to="/admin/blog/create"
-                    className="flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-colors group"
+                    className="flex items-center gap-2 px-4 py-2 rounded-lg bg-black text-white hover:bg-gray-800 transition-colors group"
                 >
                     <Plus className="h-4 w-4" />
-                    <span className="font-medium">Add New Post</span>
+                    <span className="font-medium">New Post</span>
                 </Link>
             </motion.div>
 
             {error && (
                 <motion.div
                     variants={fadeIn}
-                    className="rounded-lg bg-red-900/50 border border-red-800 p-4 text-red-300"
+                    className="rounded-lg bg-red-50 border border-red-200 p-4 text-red-600"
                 >
                     {error}
                 </motion.div>
@@ -156,26 +153,26 @@ export default function BlogListPage() {
             {/* Search and Filter */}
             <motion.div
                 variants={fadeIn}
-                className="flex items-center gap-4 bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700 shadow-xl p-4"
+                className="flex items-center gap-4 bg-white rounded-xl border border-gray-200 shadow-sm p-4"
             >
                 <div className="flex-1 relative">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
                     <input
                         type="text"
                         placeholder="Search posts..."
-                        className="w-full pl-10 pr-4 py-2 rounded-lg border border-slate-600 bg-slate-700/50 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-200 bg-gray-50 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 overflow-x-auto">
                     {categories.map((category) => (
                         <button
                             key={category}
                             onClick={() => setFilterCategory(category)}
-                            className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${filterCategory === category
-                                    ? 'bg-blue-600 text-white'
-                                    : 'text-slate-300 hover:text-white hover:bg-slate-700'
+                            className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap ${filterCategory === category
+                                    ? 'bg-black text-white'
+                                    : 'text-gray-600 hover:text-black hover:bg-gray-100'
                                 }`}
                         >
                             {category.charAt(0).toUpperCase() + category.slice(1)}
@@ -195,67 +192,64 @@ export default function BlogListPage() {
                         initial={{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
                         whileHover={{ y: -5 }}
-                        className="bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700 shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden flex flex-col"
+                        className="bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col"
                     >
-                        <div className="aspect-video overflow-hidden bg-slate-800 relative">
-                            <img
-                                src={post.coverImage}
-                                alt={post.title}
-                                className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                                onError={(e) => {
-                                    const target = e.target as HTMLImageElement;
-                                    target.src = 'https://via.placeholder.com/800x400?text=No+Image';
-                                }}
-                            />
+                        <div className="aspect-video overflow-hidden bg-gray-100 relative">
+                            {post.coverImage ? (
+                                <img
+                                    src={post.coverImage}
+                                    alt={post.title}
+                                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                                />
+                            ) : (
+                                <div className="w-full h-full flex items-center justify-center text-gray-400">
+                                    <FileText className="w-12 h-12" />
+                                </div>
+                            )}
                             {post.featured && (
-                                <div className="absolute top-2 right-2 px-2 py-1 bg-yellow-500/90 text-black text-xs font-bold rounded shadow-lg">
-                                    FEATURED
+                                <div className="absolute top-2 right-2 px-2 py-1 bg-yellow-400 text-black text-xs font-bold uppercase rounded shadow-sm">
+                                    Featured
                                 </div>
                             )}
                         </div>
-                        <div className="p-6 space-y-4 flex-1 flex flex-col">
-                            <div className="flex-1">
+
+                        <div className="p-6 flex-1 flex flex-col">
+                            <div className="mb-4">
                                 <div className="flex items-center gap-2 mb-2">
-                                    <span className="px-2 py-1 text-xs font-medium bg-blue-900/50 text-blue-300 rounded-full border border-blue-800/50">
+                                    <span className="px-2 py-1 bg-gray-100 text-gray-600 text-xs font-bold uppercase rounded">
                                         {post.category}
                                     </span>
-                                    <span className="flex items-center gap-1 text-xs text-slate-400">
-                                        <Clock className="h-3 w-3" />
-                                        {post.readTime}
+                                    <span className="text-xs text-gray-400 flex items-center gap-1">
+                                        <Calendar className="w-3 h-3" />
+                                        {new Date(post.createdAt).toLocaleDateString()}
                                     </span>
                                 </div>
-                                <h3 className="text-lg font-semibold text-white line-clamp-2 mb-2">{post.title}</h3>
-                                <p className="text-slate-400 text-sm line-clamp-3">{post.excerpt}</p>
+                                <h3 className="text-lg font-bold text-gray-900 line-clamp-2 mb-2">{post.title}</h3>
+                                <p className="text-sm text-gray-500 line-clamp-2">{post.excerpt}</p>
                             </div>
 
-                            <div className="pt-4 border-t border-slate-700">
-                                <div className="flex items-center justify-between text-sm text-slate-400 mb-4">
-                                    <div className="flex items-center gap-2">
-                                        <User className="h-4 w-4" />
-                                        <span>{post.author.name}</span>
-                                    </div>
-                                    <div className="flex items-center gap-2">
-                                        <Calendar className="h-4 w-4" />
-                                        <span>{new Date(post.createdAt).toLocaleDateString()}</span>
-                                    </div>
-                                </div>
-
-                                <div className="flex items-center gap-2">
-                                    <Link
-                                        to={`/admin/blog/${post._id}/edit`}
-                                        className="flex-1 flex items-center justify-center gap-1 px-3 py-2 rounded-lg bg-blue-600/20 text-blue-300 hover:bg-blue-600/30 transition-colors border border-blue-600/30"
-                                    >
-                                        <Edit className="h-4 w-4" />
-                                        <span className="text-sm font-medium">Edit</span>
-                                    </Link>
-                                    <button
-                                        onClick={() => handleDelete(post._id)}
-                                        className="flex-1 flex items-center justify-center gap-1 px-3 py-2 rounded-lg bg-red-900/20 text-red-300 hover:bg-red-900/30 transition-colors border border-red-800/30"
-                                    >
-                                        <Trash2 className="h-4 w-4" />
-                                        <span className="text-sm font-medium">Delete</span>
-                                    </button>
-                                </div>
+                            <div className="mt-auto pt-4 border-t border-gray-100 flex items-center gap-2">
+                                <Link
+                                    to={`/blog/${post.slug || post._id}`}
+                                    target="_blank"
+                                    className="p-2 rounded-lg text-gray-400 hover:text-black hover:bg-gray-50 transition-colors"
+                                    title="View Live"
+                                >
+                                    <Eye className="w-4 h-4" />
+                                </Link>
+                                <div className="flex-1"></div>
+                                <Link
+                                    to={`/admin/blog/${post._id}/edit`}
+                                    className="flex items-center gap-1 px-3 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors text-sm font-medium"
+                                >
+                                    <Edit className="w-4 h-4" /> Edit
+                                </Link>
+                                <button
+                                    onClick={() => handleDelete(post._id)}
+                                    className="flex items-center gap-1 px-3 py-2 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 transition-colors text-sm font-medium"
+                                >
+                                    <Trash2 className="w-4 h-4" /> Delete
+                                </button>
                             </div>
                         </div>
                     </motion.div>

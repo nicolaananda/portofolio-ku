@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,66 +6,66 @@
 
 @layer base {
   :root {
-    /* High-Editorial / Neo-Brutalist Palette */
+    /* Dynamic Fresh Palette */
     --background: 0 0% 98%;
-    --foreground: 0 0% 9%;
+    --foreground: 0 0% 10%;
 
     --card: 0 0% 100%;
-    --card-foreground: 0 0% 9%;
+    --card-foreground: 0 0% 10%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 9%;
+    --popover-foreground: 0 0% 10%;
 
-    --primary: 0 0% 9%;
+    --primary: 0 0% 10%;
     --primary-foreground: 0 0% 98%;
 
     --secondary: 0 0% 96%;
-    --secondary-foreground: 0 0% 9%;
+    --secondary-foreground: 0 0% 10%;
 
     --muted: 0 0% 96%;
     --muted-foreground: 0 0% 45%;
 
-    --accent: 0 0% 9%;
-    --accent-foreground: 0 0% 98%;
+    --accent: 0 0% 96%;
+    --accent-foreground: 0 0% 10%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 0 0% 89.8%;
-    --input: 0 0% 89.8%;
-    --ring: 0 0% 9%;
+    --border: 0 0% 92%;
+    --input: 0 0% 92%;
+    --ring: 0 0% 10%;
 
-    --radius: 0rem;
-    /* Sharp edges for Brutalist feel */
+    --radius: 1.5rem;
+    /* Softer radius */
   }
 
   .dark {
-    --background: 0 0% 3%;
+    --background: 0 0% 4%;
     --foreground: 0 0% 98%;
 
-    --card: 0 0% 3%;
+    --card: 0 0% 4%;
     --card-foreground: 0 0% 98%;
 
-    --popover: 0 0% 3%;
+    --popover: 0 0% 4%;
     --popover-foreground: 0 0% 98%;
 
     --primary: 0 0% 98%;
-    --primary-foreground: 0 0% 9%;
+    --primary-foreground: 0 0% 4%;
 
-    --secondary: 0 0% 12%;
+    --secondary: 0 0% 10%;
     --secondary-foreground: 0 0% 98%;
 
-    --muted: 0 0% 12%;
-    --muted-foreground: 0 0% 63.9%;
+    --muted: 0 0% 10%;
+    --muted-foreground: 0 0% 60%;
 
-    --accent: 0 0% 98%;
-    --accent-foreground: 0 0% 9%;
+    --accent: 0 0% 10%;
+    --accent-foreground: 0 0% 98%;
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 0 0% 14.9%;
-    --input: 0 0% 14.9%;
+    --border: 0 0% 15%;
+    --input: 0 0% 15%;
     --ring: 0 0% 83.1%;
   }
 }
@@ -80,6 +80,7 @@
     font-family: 'Outfit', sans-serif;
   }
 
+  /* Unified Sans-Serif Typography */
   h1,
   h2,
   h3,
@@ -87,11 +88,9 @@
   h5,
   h6 {
     font-family: 'Outfit', sans-serif;
-    letter-spacing: -0.02em;
-  }
-
-  .font-serif {
-    font-family: 'Playfair Display', serif;
+    letter-spacing: -0.03em;
+    /* Tighter tracking for modern feel */
+    font-weight: 800;
   }
 }
 
@@ -100,25 +99,9 @@
     text-wrap: balance;
   }
 
-  /* Neo-Brutalist Utilities */
-  .border-brutal {
-    @apply border-2 border-black dark:border-white;
-  }
-
-  .shadow-brutal {
-    box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 1);
-  }
-
-  .dark .shadow-brutal {
-    box-shadow: 4px 4px 0px 0px rgba(255, 255, 255, 1);
-  }
-
-  .shadow-brutal-lg {
-    box-shadow: 8px 8px 0px 0px rgba(0, 0, 0, 1);
-  }
-
-  .dark .shadow-brutal-lg {
-    box-shadow: 8px 8px 0px 0px rgba(255, 255, 255, 1);
+  /* Glass Panel Utility */
+  .glass-panel {
+    @apply bg-white/50 dark:bg-black/50 backdrop-blur-xl border border-white/20 dark:border-white/10 shadow-xl;
   }
 
   /* Hide scrollbar */
@@ -130,25 +113,46 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
+
+  /* Blob Animation */
+  .blob {
+    @apply absolute rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob;
+  }
+
+  .dark .blob {
+    @apply mix-blend-screen opacity-20;
+  }
 }
 
 /* Animations */
-@keyframes marquee {
+@keyframes blob {
   0% {
-    transform: translateX(0%);
+    transform: translate(0px, 0px) scale(1);
+  }
+
+  33% {
+    transform: translate(30px, -50px) scale(1.1);
+  }
+
+  66% {
+    transform: translate(-20px, 20px) scale(0.9);
   }
 
   100% {
-    transform: translateX(-100%);
+    transform: translate(0px, 0px) scale(1);
   }
 }
 
-.animate-marquee {
-  animation: marquee 25s linear infinite;
+.animate-blob {
+  animation: blob 7s infinite;
 }
 
-.animate-marquee-reverse {
-  animation: marquee 25s linear infinite reverse;
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+.animation-delay-4000 {
+  animation-delay: 4s;
 }
 
 @keyframes reveal {
@@ -165,33 +169,24 @@
   animation: reveal 1s cubic-bezier(0.77, 0, 0.175, 1) forwards;
 }
 
-/* Magnetic Hover Effect */
-.magnetic-wrap {
-  display: inline-block;
-  position: relative;
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.magnetic-area {
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  z-index: 10;
-}
-
-/* Custom Cursor (Optional, can be added later via JS) */
-body {
-  cursor: default;
-}
-
-a,
-button,
-.cursor-pointer {
-  cursor: pointer;
+.animate-fadeInUp {
+  animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  opacity: 0;
 }
 
 /* Selection Color */
 ::selection {
-  @apply bg-black text-white dark:bg-white dark:text-black;
+  @apply bg-cyan-500/20 text-cyan-900 dark:text-cyan-100;
 }

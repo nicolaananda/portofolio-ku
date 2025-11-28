@@ -10,21 +10,26 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
-  // Default to dark mode
   const [theme, setTheme] = useState<Theme>(() => {
+    // Check localStorage first
     const savedTheme = localStorage.getItem('theme') as Theme;
-    return savedTheme || 'dark';
+    if (savedTheme) return savedTheme;
+
+    // If no saved theme, check time
+    const hour = new Date().getHours();
+    // Light mode from 6 AM to 6 PM (18:00)
+    return (hour >= 6 && hour < 18) ? 'light' : 'dark';
   });
 
   useEffect(() => {
     const root = window.document.documentElement;
-    
+
     // Remove both classes first
     root.classList.remove('light', 'dark');
-    
+
     // Add the current theme class
     root.classList.add(theme);
-    
+
     // Save to localStorage
     localStorage.setItem('theme', theme);
   }, [theme]);
@@ -47,4 +52,3 @@ export const useTheme = () => {
   }
   return context;
 };
-

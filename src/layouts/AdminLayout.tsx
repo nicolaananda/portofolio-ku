@@ -15,7 +15,6 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
 
   const navItems = [
     { path: '/admin', label: 'Dashboard', icon: '📊' },
-    { path: '/admin/blog', label: 'Blog', icon: '📝' },
     { path: '/admin/portfolio', label: 'Portfolio', icon: '🎨' },
     { path: '/admin/contact', label: 'Contact', icon: '📧' },
   ];

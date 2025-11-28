@@ -1,216 +1,213 @@
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Download, Mail, CheckCircle, Briefcase, Award, GraduationCap, Code, Database, Layout, Terminal } from 'lucide-react';
+import { Download, Mail, Database, Layout, Terminal, Calendar, MapPin, Award, BookOpen, Coffee, Heart, Zap, Github, Linkedin, ExternalLink } from 'lucide-react';
 import SEOHead from '../components/SEOHead';
 
 const AboutPage = () => {
+  // Using the content we have, structured for Bento Grid
+  const socialLinks = [
+    { icon: <Github className="w-6 h-6" />, url: "https://github.com/nicolaananda", label: "GitHub", bg: "bg-black text-white" },
+    { icon: <Linkedin className="w-6 h-6" />, url: "https://linkedin.com/in/nicolaananda", label: "LinkedIn", bg: "bg-[#0077b5] text-white" },
+    { icon: <Mail className="w-6 h-6" />, url: "mailto:gmail@nicola.id", label: "Email", bg: "bg-red-500 text-white" }
+  ];
+
   const skills = [
-    {
-      category: "Data Science & AI",
-      icon: <Database className="w-6 h-6" />,
-      items: [
-        { name: "Python", level: 95 },
-        { name: "SQL", level: 92 },
-        { name: "Pandas/NumPy", level: 90 },
-        { name: "Scikit-learn", level: 85 },
-        { name: "TensorFlow", level: 80 },
-        { name: "Tableau", level: 94 }
-      ]
-    },
-    {
-      category: "Frontend Development",
-      icon: <Layout className="w-6 h-6" />,
-      items: [
-        { name: "React", level: 90 },
-        { name: "TypeScript", level: 88 },
-        { name: "Tailwind CSS", level: 95 },
-        { name: "Next.js", level: 85 },
-        { name: "Framer Motion", level: 82 }
-      ]
-    },
-    {
-      category: "Backend & Tools",
-      icon: <Terminal className="w-6 h-6" />,
-      items: [
-        { name: "Node.js", level: 85 },
-        { name: "Express", level: 85 },
-        { name: "PostgreSQL", level: 88 },
-        { name: "Git/GitHub", level: 92 },
-        { name: "Docker", level: 75 }
-      ]
-    }
-  ];
-
-  const experience = [
-    {
-      title: "Production Support – Final Blend Section",
-      company: "PT. Gudang Garam Tbk",
-      period: "June 2025 - Present",
-      description: "Currently part of the production support team at PT. Gudang Garam Tbk, based in Unit 5 Processing. Assigned to the Final Blend section, assisting in one of the most vital stages of the cigarette production process."
-    },
-    {
-      title: "Engineering On Site (EOS)",
-      company: "PT. Jalin Mayantara",
-      period: "April 2025 - July 2025",
-      description: "Specialized in school data management and quality assurance for the PPDB (Student Admission) web application system."
-    },
-    {
-      title: "Data Analyst Associate",
-      company: "B2B Padi by Telkom",
-      period: "Feb 2024 - May 2024",
-      description: "Drove data-driven decision making through comprehensive analysis and visualization of key business metrics."
-    },
-    {
-      title: "Founder",
-      company: "iNyx Store",
-      period: "May 2021 - Dec 2024",
-      description: "Founded and scaled a successful e-commerce platform, demonstrating strong business acumen and technical expertise."
-    }
-  ];
-
-  const education = [
-    {
-      degree: "Bachelor of Computer Science",
-      school: "Universitas Brawijaya",
-      period: "2020 - 2024",
-      description: "Focused on Data Science and Software Engineering. Graduated with honors."
-    },
-    {
-      degree: "Data Science Bootcamp",
-      school: "Bangkit Academy led by Google, Tokopedia, Gojek, & Traveloka",
-      period: "2023",
-      description: "Intensive training in Machine Learning, Cloud Computing, and Mobile Development."
-    }
+    "Python", "SQL", "React", "TypeScript", "Node.js", "Next.js", "Tailwind", "Docker", "Tableau", "Pandas"
   ];
 
   return (
-    <div className="bg-background text-foreground pt-24 pb-20">
+    <div className="bg-background text-foreground min-h-screen relative overflow-x-hidden pb-20">
       <SEOHead
-        title="About Me - Nicola Ananda"
-        description="Learn more about Nicola Ananda, a professional Data Analyst and Full Stack Web Developer."
-        keywords="About Nicola Ananda, Data Analyst Profile, Web Developer Background"
+        title="About Nicola Ananda"
+        description="Data Analyst & Full Stack Developer. Discover my journey, skills, and experience."
+        keywords="About, Nicola Ananda, Bio, Skills, Experience"
         url="https://nicola.id/about"
-        image="/about.webp"
+        image="/about-og.webp"
       />
 
-      <div className="container max-w-5xl mx-auto px-4">
-        {/* Header */}
-        <div className="mb-24">
-          <h1 className="text-[10vw] leading-[0.8] font-black tracking-tighter mb-8">
-            ABOUT<br />ME
-          </h1>
-          <div className="grid md:grid-cols-2 gap-12">
-            <div className="text-xl md:text-2xl font-medium leading-relaxed">
-              I'm a Data Scientist who loves turning messy data into useful insights, and a Full Stack Developer who builds things for the web.
-            </div>
-            <div className="text-gray-500 dark:text-gray-400 leading-relaxed">
-              <p className="mb-6">
-                My journey started with a curiosity for how things work. Over the years, I've honed my skills in data analysis, machine learning, and web development to solve complex problems and create meaningful digital experiences.
+      {/* Background Blobs */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden -z-10">
+        <div className="blob bg-orange-500/10 w-[600px] h-[600px] top-[-100px] left-[-100px] mix-blend-multiply filter blur-[100px] animate-blob"></div>
+        <div className="blob bg-cyan-500/10 w-[600px] h-[600px] bottom-[-100px] right-[-100px] mix-blend-multiply filter blur-[100px] animate-blob animation-delay-2000"></div>
+      </div>
+
+      <div className="container max-w-6xl mx-auto px-4 pt-24">
+        <h1 className="text-5xl md:text-7xl font-black tracking-tighter mb-12 text-center animate-reveal">
+          Beyond the Code.
+        </h1>
+
+        {/* BENTO GRID */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 auto-rows-[minmax(180px,auto)]">
+
+          {/* 1. PROFILE TILE (Large) */}
+          <div className="md:col-span-2 md:row-span-2 glass-panel p-8 rounded-[2.5rem] flex flex-col justify-between relative overflow-hidden group animate-fadeInUp">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 group-hover:scale-110 transition-transform duration-700"></div>
+
+            <div className="relative z-10">
+              <div className="w-20 h-20 rounded-2xl bg-black dark:bg-white text-white dark:text-black flex items-center justify-center mb-6 text-3xl font-black">
+                N.
+              </div>
+              <h2 className="text-3xl font-bold mb-4 leading-tight">
+                I'm Nicola Ananda.
+              </h2>
+              <p className="text-gray-600 dark:text-gray-300 text-lg leading-relaxed mb-6">
+                A Data Analyst & Full Stack Developer based in Malang, ID. I bridge the gap between complex data and intuitive user experiences.
               </p>
-              <div className="flex gap-4">
-                <Button asChild className="rounded-full">
-                  <a href="/resume.pdf" download>
-                    <Download className="mr-2 h-4 w-4" /> Download CV
-                  </a>
+              <div className="flex gap-3">
+                <Button asChild className="rounded-full font-bold">
+                  <a href="/resume.pdf" download>Download CV</a>
                 </Button>
-                <Button asChild variant="outline" className="rounded-full">
-                  <a href="/contact">
-                    <Mail className="mr-2 h-4 w-4" /> Contact Me
-                  </a>
+                <Button asChild variant="outline" className="rounded-full font-bold border-2">
+                  <a href="/contact">Contact Me</a>
                 </Button>
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Image */}
-        <div className="mb-24 aspect-[16/9] overflow-hidden rounded-3xl bg-gray-100 dark:bg-gray-900">
-          <img
-            src="/about.webp"
-            alt="Nicola Ananda working"
-            className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
-          />
-        </div>
-
-        {/* Experience */}
-        <div className="mb-24">
-          <h2 className="text-4xl font-black tracking-tighter mb-12 flex items-center gap-4">
-            <Briefcase className="h-8 w-8" /> EXPERIENCE
-          </h2>
-          <div className="space-y-12 border-l-2 border-black/10 dark:border-white/10 ml-4 pl-8 md:pl-12">
-            {experience.map((exp, idx) => (
-              <div key={idx} className="relative group">
-                <div className="absolute -left-[41px] md:-left-[57px] top-2 h-4 w-4 rounded-full bg-black dark:bg-white border-4 border-white dark:border-black group-hover:scale-125 transition-transform"></div>
-                <div className="grid md:grid-cols-4 gap-4">
-                  <div className="md:col-span-1 text-sm font-bold text-gray-400 uppercase tracking-wider pt-1">
-                    {exp.period}
-                  </div>
-                  <div className="md:col-span-3">
-                    <h3 className="text-2xl font-bold mb-1">{exp.title}</h3>
-                    <div className="text-lg font-medium text-gray-500 dark:text-gray-400 mb-4">{exp.company}</div>
-                    <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-                      {exp.description}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            ))}
+          {/* 2. STATS TILE */}
+          <div className="md:col-span-1 md:row-span-1 glass-panel p-6 rounded-[2.5rem] flex flex-col justify-center items-center text-center hover:scale-[1.02] transition-transform animate-fadeInUp" style={{ animationDelay: '0.1s' }}>
+            <div className="text-5xl font-black mb-2 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-cyan-600">4+</div>
+            <div className="text-xs font-bold uppercase tracking-wider text-gray-500">Years Experience</div>
           </div>
-        </div>
 
-        {/* Education */}
-        <div className="mb-24">
-          <h2 className="text-4xl font-black tracking-tighter mb-12 flex items-center gap-4">
-            <GraduationCap className="h-8 w-8" /> EDUCATION
-          </h2>
-          <div className="grid md:grid-cols-2 gap-8">
-            {education.map((edu, idx) => (
-              <div key={idx} className="p-8 rounded-3xl bg-gray-50 dark:bg-gray-900/50 border border-black/5 dark:border-white/5 hover:border-black/20 dark:hover:border-white/20 transition-all">
-                <div className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-2">
-                  {edu.period}
-                </div>
-                <h3 className="text-2xl font-bold mb-2">{edu.school}</h3>
-                <div className="text-lg font-medium text-cyan-600 dark:text-cyan-400 mb-4">{edu.degree}</div>
-                <p className="text-gray-600 dark:text-gray-400">
-                  {edu.description}
-                </p>
-              </div>
-            ))}
+          {/* 3. LOCATION TILE */}
+          <div className="md:col-span-1 md:row-span-1 glass-panel p-6 rounded-[2.5rem] flex flex-col justify-center items-center text-center hover:scale-[1.02] transition-transform animate-fadeInUp" style={{ animationDelay: '0.2s' }}>
+            <div className="w-12 h-12 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center text-red-500 mb-3">
+              <MapPin className="w-6 h-6" />
+            </div>
+            <div className="font-bold">Malang, ID</div>
+            <div className="text-xs text-gray-500">Open to Remote</div>
           </div>
-        </div>
 
-        {/* Skills - Upgraded */}
-        <div className="mb-24">
-          <h2 className="text-4xl font-black tracking-tighter mb-12 flex items-center gap-4">
-            <Award className="h-8 w-8" /> SKILLS
-          </h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            {skills.map((category, idx) => (
-              <div key={idx} className="space-y-6">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="p-3 rounded-xl bg-black text-white dark:bg-white dark:text-black">
-                    {category.icon}
-                  </div>
-                  <h3 className="text-xl font-bold">{category.category}</h3>
-                </div>
-                <div className="space-y-4">
-                  {category.items.map((skill, sIdx) => (
-                    <div key={sIdx} className="group">
-                      <div className="flex justify-between mb-1">
-                        <span className="font-medium">{skill.name}</span>
-                        <span className="text-gray-400 text-sm">{skill.level}%</span>
-                      </div>
-                      <div className="h-2 w-full bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
-                        <div
-                          className="h-full bg-black dark:bg-white rounded-full transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-1000 ease-out"
-                          style={{ width: `${skill.level}%`, transform: 'scaleX(1)' }} // Force animation on mount/view
-                        ></div>
-                      </div>
+          {/* 4. SKILLS TILE (Wide) */}
+          <div className="md:col-span-2 md:row-span-1 glass-panel p-8 rounded-[2.5rem] flex flex-col justify-center animate-fadeInUp" style={{ animationDelay: '0.3s' }}>
+            <h3 className="text-sm font-bold uppercase tracking-wider text-gray-400 mb-4">Arsenal</h3>
+            <div className="flex flex-wrap gap-2">
+              {skills.map((skill) => (
+                <span key={skill} className="px-3 py-1 rounded-lg bg-gray-100 dark:bg-gray-800 text-sm font-bold border border-black/5 dark:border-white/5">
+                  {skill}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* 5. EXPERIENCE TILE (Left Side) */}
+          <div className="md:col-span-2 md:row-span-2 glass-panel p-8 rounded-[2.5rem] overflow-y-auto no-scrollbar animate-fadeInUp" style={{ animationDelay: '0.4s' }}>
+            <h3 className="text-sm font-bold uppercase tracking-wider text-gray-400 mb-6 sticky top-0 bg-white/80 dark:bg-black/80 backdrop-blur-md py-2 z-10">Career Journey</h3>
+            <div className="space-y-8">
+              {[
+                {
+                  role: "Production Support – Final Blend Section",
+                  company: "PT. Gudang Garam Tbk",
+                  year: "June 2025 - Present",
+                  desc: "Assisting in one of the most vital stages of the cigarette production process. Organizing tobacco materials, monitoring flow to prevent supply delays, and supporting day-to-day operational tasks."
+                },
+                {
+                  role: "Engineering On Site (EOS)",
+                  company: "PT. Jalin Mayantara",
+                  year: "April 2025 - July 2025",
+                  desc: "Specialized in school data management and QA for the PPDB system. Improved data integrity by 85% and identified 30+ critical bugs before public release."
+                },
+                {
+                  role: "Data Analyst Associate",
+                  company: "B2B Padi by Telkom",
+                  year: "Feb 2024 - May 2024",
+                  desc: "Drove data-driven decision making through comprehensive analysis. Developed K-means Clustering Analysis, improving marketing effectiveness by 25%."
+                },
+                {
+                  role: "Founder",
+                  company: "iNyx Store",
+                  year: "May 2021 - Dec 2024",
+                  desc: "Founded and scaled a successful e-commerce platform. Implemented data analytics for pricing optimization, achieving 10% monthly sales growth."
+                }
+              ].map((job, i) => (
+                <div key={i} className="group">
+                  <div className="flex justify-between items-start mb-2">
+                    <div>
+                      <div className="font-bold text-lg group-hover:text-blue-500 transition-colors">{job.role}</div>
+                      <div className="text-gray-500 text-sm font-bold">{job.company}</div>
                     </div>
-                  ))}
+                    <div className="px-3 py-1 rounded-full bg-gray-100 dark:bg-gray-800 text-xs font-bold whitespace-nowrap border border-black/5 dark:border-white/5">
+                      {job.year}
+                    </div>
+                  </div>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                    {job.desc}
+                  </p>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
+
+          {/* 6. EDUCATION TILE (Right Side) */}
+          <div className="md:col-span-2 md:row-span-2 glass-panel p-8 rounded-[2.5rem] overflow-y-auto no-scrollbar animate-fadeInUp" style={{ animationDelay: '0.5s' }}>
+            <h3 className="text-sm font-bold uppercase tracking-wider text-gray-400 mb-6 sticky top-0 bg-white/80 dark:bg-black/80 backdrop-blur-md py-2 z-10">Education & Certifications</h3>
+            <div className="space-y-8">
+              {[
+                {
+                  degree: "AI-Enabled Python Web Development",
+                  school: "Devscale.id",
+                  year: "2025",
+                  desc: "Advanced bootcamp specializing in AI-enabled Python web development. Mastered TensorFlow, PyTorch, Django/Flask, and intelligent API development."
+                },
+                {
+                  degree: "Fullstack MERN Development",
+                  school: "Devscale.id",
+                  year: "2024",
+                  desc: "Intensive certification focusing on MongoDB, Express.js, React, and Node.js. Built complex applications including real-time chat systems."
+                },
+                {
+                  degree: "Full Stack Data Analytics",
+                  school: "RevoU",
+                  year: "2024",
+                  desc: "Comprehensive program covering the data science lifecycle. Mastered Python (Pandas/NumPy), SQL, Tableau, Power BI, and Machine Learning algorithms."
+                },
+                {
+                  degree: "Bachelor of Sport Science",
+                  school: "State University of Malang",
+                  year: "2023",
+                  desc: "Strong foundation in scientific research methodology and statistical analysis. Expertise in data collection and systematic problem-solving."
+                }
+              ].map((edu, i) => (
+                <div key={i} className="group">
+                  <div className="flex justify-between items-start mb-2">
+                    <div>
+                      <div className="font-bold text-lg group-hover:text-blue-500 transition-colors">{edu.degree}</div>
+                      <div className="text-gray-500 text-sm font-bold">{edu.school}</div>
+                    </div>
+                    <div className="px-3 py-1 rounded-full bg-gray-100 dark:bg-gray-800 text-xs font-bold whitespace-nowrap border border-black/5 dark:border-white/5">
+                      {edu.year}
+                    </div>
+                  </div>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                    {edu.desc}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* 7. SOCIAL TILES */}
+          {socialLinks.map((social, i) => (
+            <a
+              key={i}
+              href={social.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`md:col-span-1 md:row-span-1 rounded-[2.5rem] p-6 flex flex-col justify-center items-center gap-3 hover:scale-105 transition-transform shadow-lg ${social.bg} animate-fadeInUp`}
+              style={{ animationDelay: `${0.5 + (i * 0.1)}s` }}
+            >
+              {social.icon}
+              <span className="font-bold text-sm">{social.label}</span>
+            </a>
+          ))}
+
+          {/* 7. PHILOSOPHY TILE */}
+          <div className="md:col-span-1 md:row-span-1 glass-panel p-6 rounded-[2.5rem] flex flex-col justify-center items-center text-center hover:scale-[1.02] transition-transform animate-fadeInUp" style={{ animationDelay: '0.8s' }}>
+            <Heart className="w-8 h-8 text-pink-500 mb-3" />
+            <div className="font-bold text-sm">User Centric</div>
+            <div className="text-xs text-gray-500 mt-1">Design for humans</div>
+          </div>
+
         </div>
       </div>
     </div>

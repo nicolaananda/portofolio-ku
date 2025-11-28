@@ -29,9 +29,9 @@ const PortfolioListPage = lazy(() => import("./pages/PortfolioListPage"));
 const PortfolioEditPage = lazy(() => import("./pages/PortfolioEditPage"));
 const PortfolioCreatePage = lazy(() => import("./pages/PortfolioCreatePage"));
 const ContactListPage = lazy(() => import("./pages/ContactListPage"));
-const BlogListPage = lazy(() => import("./pages/BlogListPage"));
-const BlogCreatePage = lazy(() => import("./pages/BlogCreatePage"));
-const BlogEditPage = lazy(() => import("./pages/BlogEditPage"));
+const AdminBlogListPage = lazy(() => import("./pages/AdminBlogListPage"));
+const AdminBlogCreatePage = lazy(() => import("./pages/AdminBlogCreatePage"));
+const AdminBlogEditPage = lazy(() => import("./pages/AdminBlogEditPage"));
 
 // Enhanced loading component with better UX
 const LoadingSpinner = ({ message = "Loading..." }: { message?: string }) => (
@@ -192,24 +192,12 @@ const App = () => (
                   }
                 />
                 <Route
-                  path="/admin/portfolio"
-                  element={
-                    <ProtectedRoute>
-                      <Suspense fallback={<AdminLoadingSpinner />}>
-                        <AdminLayout>
-                          <PortfolioListPage />
-                        </AdminLayout>
-                      </Suspense>
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
                   path="/admin/blog"
                   element={
                     <ProtectedRoute>
                       <Suspense fallback={<AdminLoadingSpinner />}>
                         <AdminLayout>
-                          <BlogListPage />
+                          <AdminBlogListPage />
                         </AdminLayout>
                       </Suspense>
                     </ProtectedRoute>
@@ -221,7 +209,7 @@ const App = () => (
                     <ProtectedRoute>
                       <Suspense fallback={<AdminLoadingSpinner />}>
                         <AdminLayout>
-                          <BlogCreatePage />
+                          <AdminBlogCreatePage />
                         </AdminLayout>
                       </Suspense>
                     </ProtectedRoute>
@@ -233,7 +221,19 @@ const App = () => (
                     <ProtectedRoute>
                       <Suspense fallback={<AdminLoadingSpinner />}>
                         <AdminLayout>
-                          <BlogEditPage />
+                          <AdminBlogEditPage />
+                        </AdminLayout>
+                      </Suspense>
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/admin/portfolio"
+                  element={
+                    <ProtectedRoute>
+                      <Suspense fallback={<AdminLoadingSpinner />}>
+                        <AdminLayout>
+                          <PortfolioListPage />
                         </AdminLayout>
                       </Suspense>
                     </ProtectedRoute>

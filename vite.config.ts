@@ -20,10 +20,10 @@ export default defineConfig(({ mode }) => {
       port: 8080,
       proxy: {
         '/api': {
-          target: 'http://localhost:5002',
+          target: 'https://be.nicola.id',
           changeOrigin: true,
-          secure: false,
-          rewrite: (path) => path.replace(/^\/api/, '')
+          secure: true,
+          rewrite: (path) => path.replace(/^\/api/, '/api')
         }
       }
     },
