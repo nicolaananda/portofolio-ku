@@ -104,241 +104,190 @@ export default function PortfolioCreatePage() {
   };
 
   return (
-    <motion.div
-      initial="initial"
-      animate="animate"
-      variants={staggerContainer}
-      className="space-y-6"
-    >
-      {/* Header */}
-      <motion.div variants={fadeIn} className="flex items-center justify-between">
+    <div className="max-w-6xl mx-auto space-y-6">
+      <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold">Create Portfolio</h1>
-          <p className="text-gray-500 mt-1">Add a new project to your portfolio</p>
+          <h1 className="text-3xl font-bold text-white">Create Portfolio</h1>
+          <p className="text-slate-400 mt-1">Add a new project to your portfolio</p>
         </div>
-        <button
-          onClick={() => navigate('/admin/portfolio')}
-          className="flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          <span className="font-medium">Back to List</span>
-        </button>
-      </motion.div>
+      </div>
 
       {error && (
-        <motion.div
-          variants={fadeIn}
-          className="rounded-md bg-red-50 p-4 text-red-500"
-        >
+        <div className="rounded-lg bg-red-900/50 border border-red-800 p-4 text-red-300">
           {error}
-        </motion.div>
+        </div>
       )}
 
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <motion.div
-          variants={fadeIn}
-          className="grid gap-6 md:grid-cols-2"
-        >
-          <div className="space-y-2">
-            <label htmlFor="title" className="text-sm font-medium">
-              Title
-            </label>
-            <input
-              id="title"
-              type="text"
-              required
-              className="w-full rounded-lg border px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary/20"
-              value={formData.title}
-              onChange={(e) =>
-                setFormData({ ...formData, title: e.target.value })
-              }
-            />
-          </div>
-
-          <div className="space-y-2">
-            <label htmlFor="category" className="text-sm font-medium">
-              Category
-            </label>
-            <input
-              id="category"
-              type="text"
-              required
-              className="w-full rounded-lg border px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary/20"
-              value={formData.category}
-              onChange={(e) =>
-                setFormData({ ...formData, category: e.target.value })
-              }
-            />
-          </div>
-
-          <div className="space-y-2">
-            <label htmlFor="client" className="text-sm font-medium">
-              Client
-            </label>
-            <input
-              id="client"
-              type="text"
-              required
-              className="w-full rounded-lg border px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary/20"
-              value={formData.client}
-              onChange={(e) =>
-                setFormData({ ...formData, client: e.target.value })
-              }
-            />
-          </div>
-
-          <div className="space-y-2">
-            <label htmlFor="completionDate" className="text-sm font-medium">
-              Completion Date
-            </label>
-            <input
-              id="completionDate"
-              type="date"
-              required
-              className="w-full rounded-lg border px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary/20"
-              value={formData.completionDate}
-              onChange={(e) =>
-                setFormData({ ...formData, completionDate: e.target.value })
-              }
-            />
-          </div>
-
-          <div className="space-y-2">
-            <label htmlFor="technologies" className="text-sm font-medium">
-              Technologies
-            </label>
+      <form onSubmit={handleSubmit} className="space-y-8">
+        <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700 shadow-xl p-6">
+          <h2 className="text-xl font-semibold text-white mb-6">Basic Information</h2>
+          <div className="grid gap-6 md:grid-cols-2">
             <div className="space-y-2">
-              <div className="flex gap-2">
-                <input
-                  id="technologies"
-                  type="text"
-                  className="flex-1 rounded-lg border px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary/20"
-                  placeholder="Add a technology"
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') {
-                      e.preventDefault();
-                      handleAddArrayItem('technologies', e.currentTarget.value);
-                      e.currentTarget.value = '';
-                    }
-                  }}
-                />
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    const input = e.currentTarget.previousElementSibling as HTMLInputElement;
-                    handleAddArrayItem('technologies', input.value);
-                    input.value = '';
-                  }}
-                  className="px-3 py-2 rounded-lg bg-primary/10 text-primary hover:bg-primary/20 transition-colors"
-                >
-                  <Plus className="h-4 w-4" />
-                </button>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {formData.technologies.map((tech, index) => (
-                  <span
-                    key={index}
-                    className="flex items-center gap-1 px-3 py-1 bg-primary/10 text-primary rounded-full text-sm"
-                  >
-                    {tech}
-                    <button
-                      type="button"
-                      onClick={() => handleRemoveArrayItem('technologies', index)}
-                      className="hover:text-primary/80"
-                    >
-                      <X className="h-3 w-3" />
-                    </button>
-                  </span>
-                ))}
-              </div>
+              <label htmlFor="title" className="text-sm font-medium text-slate-300">
+                Title
+              </label>
+              <input
+                id="title"
+                type="text"
+                required
+                className="w-full rounded-lg border border-slate-600 bg-slate-700/50 px-3 py-2 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                value={formData.title}
+                onChange={(e) =>
+                  setFormData({ ...formData, title: e.target.value })
+                }
+              />
             </div>
-          </div>
 
-          <div className="space-y-2 md:col-span-2">
-            <label className="text-sm font-medium">
-              Project Images
-            </label>
-            <ImageUpload
-              images={formData.imageUrls}
-              onChange={(urls) => setFormData({ ...formData, imageUrls: urls })}
-              maxImages={10}
-              disabled={isLoading}
-            />
-          </div>
+            <div className="space-y-2">
+              <label htmlFor="category" className="text-sm font-medium text-slate-300">
+                Category
+              </label>
+              <input
+                id="category"
+                type="text"
+                required
+                className="w-full rounded-lg border border-slate-600 bg-slate-700/50 px-3 py-2 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                value={formData.category}
+                onChange={(e) =>
+                  setFormData({ ...formData, category: e.target.value })
+                }
+              />
+            </div>
 
-          <div className="space-y-2">
-            <label htmlFor="liveUrl" className="text-sm font-medium">
-              Live URL (optional)
-            </label>
-            <div className="relative">
-              <LinkIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+            <div className="space-y-2">
+              <label htmlFor="client" className="text-sm font-medium text-slate-300">
+                Client
+              </label>
+              <input
+                id="client"
+                type="text"
+                required
+                className="w-full rounded-lg border border-slate-600 bg-slate-700/50 px-3 py-2 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                value={formData.client}
+                onChange={(e) =>
+                  setFormData({ ...formData, client: e.target.value })
+                }
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label htmlFor="completionDate" className="text-sm font-medium text-slate-300">
+                Completion Date
+              </label>
+              <input
+                id="completionDate"
+                type="date"
+                required
+                className="w-full rounded-lg border border-slate-600 bg-slate-700/50 px-3 py-2 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                value={formData.completionDate}
+                onChange={(e) =>
+                  setFormData({ ...formData, completionDate: e.target.value })
+                }
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label htmlFor="technologies" className="text-sm font-medium text-slate-300">
+                Technologies (comma-separated)
+              </label>
+              <input
+                id="technologies"
+                type="text"
+                required
+                className="w-full rounded-lg border border-slate-600 bg-slate-700/50 px-3 py-2 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                value={formData.technologies.join(', ')}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    technologies: e.target.value.split(',').map((t) => t.trim()),
+                  })
+                }
+                placeholder="React, Node.js, MongoDB"
+              />
+            </div>
+
+            <div className="space-y-2 md:col-span-2">
+              <label className="text-sm font-medium text-slate-300">
+                Project Images
+              </label>
+              <ImageUpload
+                images={formData.imageUrls}
+                onChange={(urls) => setFormData({ ...formData, imageUrls: urls })}
+                maxImages={10}
+                disabled={isLoading}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label htmlFor="liveUrl" className="text-sm font-medium text-slate-300">
+                Live URL (optional)
+              </label>
               <input
                 id="liveUrl"
                 type="url"
-                className="w-full pl-10 pr-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-primary/20"
+                className="w-full rounded-lg border border-slate-600 bg-slate-700/50 px-3 py-2 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 value={formData.liveUrl}
                 onChange={(e) =>
                   setFormData({ ...formData, liveUrl: e.target.value })
                 }
+                placeholder="https://your-project.com"
               />
             </div>
-          </div>
 
-          <div className="space-y-2">
-            <label htmlFor="githubUrl" className="text-sm font-medium">
-              GitHub URL (optional)
-            </label>
-            <div className="relative">
-              <Github className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+            <div className="space-y-2">
+              <label htmlFor="githubUrl" className="text-sm font-medium text-slate-300">
+                GitHub URL (optional)
+              </label>
               <input
                 id="githubUrl"
                 type="url"
-                className="w-full pl-10 pr-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-primary/20"
+                className="w-full rounded-lg border border-slate-600 bg-slate-700/50 px-3 py-2 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 value={formData.githubUrl}
                 onChange={(e) =>
                   setFormData({ ...formData, githubUrl: e.target.value })
                 }
+                placeholder="https://github.com/username/project"
               />
             </div>
           </div>
-        </motion.div>
+        </div>
 
-        <motion.div variants={fadeIn} className="space-y-6">
-          <div className="space-y-2">
-            <label className="text-sm font-medium">
-              Case Study / Description
-            </label>
-            <div className="rounded-lg border bg-white dark:bg-black/50 overflow-hidden">
-              <RichTextEditor
-                value={formData.description}
-                onChange={(html) => setFormData({ ...formData, description: html })}
-                placeholder="Describe the project, challenge, and solution..."
-                minHeight="500px"
-              />
+        <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700 shadow-xl p-6">
+          <h2 className="text-xl font-semibold text-white mb-6">Project Details</h2>
+          <div className="space-y-6">
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-slate-300">
+                Case Study / Description
+              </label>
+              <div className="rounded-lg border border-slate-600 bg-slate-700/50 overflow-hidden text-black dark:text-gray-200">
+                <RichTextEditor
+                  value={formData.description}
+                  onChange={(html) => setFormData({ ...formData, description: html })}
+                  placeholder="Describe the project, challenge, and solution..."
+                  minHeight="500px"
+                />
+              </div>
             </div>
           </div>
-        </motion.div>
+        </div>
 
-        <motion.div
-          variants={fadeIn}
-          className="flex justify-end gap-4 pt-6 border-t"
-        >
+        <div className="flex justify-end gap-4 pt-6">
           <button
             type="button"
             onClick={() => navigate('/admin/portfolio')}
-            className="px-6 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors"
+            className="px-6 py-2 rounded-lg border border-slate-600 text-slate-300 hover:bg-slate-800 hover:text-white transition-colors"
           >
             Cancel
           </button>
           <button
             type="submit"
             disabled={isLoading}
-            className="px-6 py-2 rounded-lg bg-primary text-white hover:bg-primary/90 disabled:opacity-50 transition-colors"
+            className="px-6 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             {isLoading ? 'Creating...' : 'Create Portfolio'}
           </button>
-        </motion.div>
+        </div>
       </form>
-    </motion.div>
+    </div>
   );
 }
