@@ -32,6 +32,12 @@ if [ $? -eq 0 ]; then
   fi
   
   echo "Deployment complete!"
+  
+  # Restart backend with PM2
+  echo "Restarting backend..."
+  pm2 restart portfolio-backend || pm2 start ecosystem.config.cjs --env production
+  
+  echo "Service is live! 🚀"
   echo "✅ Don't forget to enable .htaccess in LiteSpeed WebAdmin!"
 else
   echo "Build failed. Deployment aborted."
