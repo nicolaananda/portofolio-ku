@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, ExternalLink, Github, Calendar, User, Layers, Loader2, Share2, ArrowUpRight } from 'lucide-react';
 import SEOHead from '../components/SEOHead';
+import { HTMLContent } from '@/components/HTMLContent';
 
 interface Project {
   _id: string;
@@ -98,7 +99,7 @@ const PortfolioDetailPage = () => {
               {project.title}
             </h1>
             <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 line-clamp-2 max-w-2xl">
-              {project.description}
+              {project.description.replace(/<[^>]*>?/gm, '')}
             </p>
           </div>
         </div>
@@ -149,34 +150,11 @@ const PortfolioDetailPage = () => {
           )}
         </div>
 
-        {/* Challenge Card */}
+        {/* Main Content - HTML from Editor */}
         <div className="glass-panel p-8 rounded-[2rem]">
-          <h2 className="text-2xl font-black tracking-tighter mb-4 flex items-center gap-2">
-            <span className="w-8 h-8 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center text-red-500 text-sm">01</span>
-            The Challenge
-          </h2>
-          <div
-            className="prose dark:prose-invert text-gray-600 dark:text-gray-300 leading-relaxed max-w-none"
-            dangerouslySetInnerHTML={{ __html: project.challenge || "No challenge description provided." }}
-          />
-        </div>
-
-        {/* Image 2 */}
-        {project.imageUrls[1] && (
-          <div className="rounded-[2rem] overflow-hidden shadow-xl">
-            <img src={project.imageUrls[1]} alt="Detail 1" className="w-full h-auto" />
-          </div>
-        )}
-
-        {/* Solution Card */}
-        <div className="glass-panel p-8 rounded-[2rem]">
-          <h2 className="text-2xl font-black tracking-tighter mb-4 flex items-center gap-2">
-            <span className="w-8 h-8 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center text-green-500 text-sm">02</span>
-            The Solution
-          </h2>
-          <div
-            className="prose dark:prose-invert text-gray-600 dark:text-gray-300 leading-relaxed max-w-none"
-            dangerouslySetInnerHTML={{ __html: project.solution || "No solution description provided." }}
+          <HTMLContent
+            html={project.description}
+            className="prose dark:prose-invert max-w-none prose-headings:font-bold prose-h1:text-4xl prose-h2:text-3xl prose-a:text-blue-500 hover:prose-a:underline prose-img:rounded-xl prose-img:shadow-lg"
           />
         </div>
 
@@ -194,7 +172,10 @@ const PortfolioDetailPage = () => {
                     iconName === 'nodejs' ? 'nodedotjs' :
                       iconName === 'c++' ? 'cplusplus' :
                         iconName === 'c#' ? 'csharp' :
-                          iconName;
+                          iconName === 'tailwind' ? 'tailwindcss' :
+                            iconName === 'sql' ? 'postgresql' :
+                              iconName === 'tableau' ? 'tableau' :
+                                iconName;
 
               return (
                 <div key={tech} className="group flex flex-col items-center gap-2">
@@ -219,10 +200,21 @@ const PortfolioDetailPage = () => {
           </div>
         </div>
 
-        {/* Image 3 */}
-        {project.imageUrls[2] && (
-          <div className="rounded-[2rem] overflow-hidden shadow-xl">
-            <img src={project.imageUrls[2]} alt="Detail 2" className="w-full h-auto" />
+        {/* Gallery - Display remaining images */}
+        {project.imageUrls.length > 1 && (
+          <div className="space-y-6">
+            <h3 className="text-xl font-bold">Project Gallery</h3>
+            <div className="grid gap-6 md:grid-cols-2">
+              {project.imageUrls.slice(1).map((img, index) => (
+                <div key={index} className="rounded-[2rem] overflow-hidden shadow-xl hover:scale-[1.02] transition-transform duration-500">
+                  <img
+                    src={img}
+                    alt={`${project.title} screenshot ${index + 2}`}
+                    className="w-full h-auto object-cover"
+                  />
+                </div>
+              ))}
+            </div>
           </div>
         )}
 

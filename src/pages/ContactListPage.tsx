@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { motion } from 'framer-motion';
-import { 
-  Mail, 
-  Search, 
-  Filter, 
-  Trash2, 
+import {
+  Mail,
+  Search,
+  Filter,
+  Trash2,
   CheckCircle2,
   ArrowUpRight,
   MessageSquare,
@@ -15,7 +15,7 @@ import {
 } from 'lucide-react';
 
 interface Contact {
-  _id: string;
+  id: string;
   name: string;
   email: string;
   subject: string;
@@ -78,7 +78,7 @@ export default function ContactListPage() {
       if (response.ok) {
         setContacts(
           contacts.map((contact) =>
-            contact._id === id ? { ...contact, isRead: true } : contact
+            contact.id === id ? { ...contact, isRead: true } : contact
           )
         );
       } else {
@@ -104,7 +104,7 @@ export default function ContactListPage() {
       });
 
       if (response.ok) {
-        setContacts(contacts.filter((contact) => contact._id !== id));
+        setContacts(contacts.filter((contact) => contact.id !== id));
       } else {
         const data = await response.json();
         setError(data.message || 'Failed to delete message');
@@ -119,13 +119,13 @@ export default function ContactListPage() {
   }, [accessToken]);
 
   const filteredContacts = contacts.filter(contact => {
-    const matchesSearch = 
+    const matchesSearch =
       contact.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       contact.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
       contact.subject.toLowerCase().includes(searchTerm.toLowerCase());
-    
+
     const matchesFilter = filterStatus === 'all' || !contact.isRead;
-    
+
     return matchesSearch && matchesFilter;
   });
 
@@ -141,7 +141,7 @@ export default function ContactListPage() {
   }
 
   return (
-    <motion.div 
+    <motion.div
       initial="initial"
       animate="animate"
       variants={staggerContainer}
@@ -161,7 +161,7 @@ export default function ContactListPage() {
       </motion.div>
 
       {error && (
-        <motion.div 
+        <motion.div
           variants={fadeIn}
           className="rounded-lg bg-red-900/50 border border-red-800 p-4 text-red-300"
         >
@@ -170,7 +170,7 @@ export default function ContactListPage() {
       )}
 
       {/* Search and Filter */}
-      <motion.div 
+      <motion.div
         variants={fadeIn}
         className="flex items-center gap-4 bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700 shadow-xl p-4"
       >
@@ -187,21 +187,19 @@ export default function ContactListPage() {
         <div className="flex items-center gap-2">
           <button
             onClick={() => setFilterStatus('all')}
-            className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-              filterStatus === 'all'
-                ? 'bg-blue-600 text-white'
-                : 'text-slate-300 hover:text-white hover:bg-slate-700'
-            }`}
+            className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${filterStatus === 'all'
+              ? 'bg-blue-600 text-white'
+              : 'text-slate-300 hover:text-white hover:bg-slate-700'
+              }`}
           >
             All
           </button>
           <button
             onClick={() => setFilterStatus('unread')}
-            className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-              filterStatus === 'unread'
-                ? 'bg-blue-600 text-white'
-                : 'text-slate-300 hover:text-white hover:bg-slate-700'
-            }`}
+            className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${filterStatus === 'unread'
+              ? 'bg-blue-600 text-white'
+              : 'text-slate-300 hover:text-white hover:bg-slate-700'
+              }`}
           >
             Unread
           </button>
@@ -209,19 +207,18 @@ export default function ContactListPage() {
       </motion.div>
 
       {/* Messages Grid */}
-      <motion.div 
+      <motion.div
         variants={fadeIn}
         className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"
       >
         {filteredContacts.map((contact) => (
           <motion.div
-            key={contact._id}
+            key={contact.id}
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             whileHover={{ y: -5 }}
-            className={`bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700 shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden ${
-              !contact.isRead ? 'ring-2 ring-blue-500/30' : ''
-            }`}
+            className={`bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700 shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden ${!contact.isRead ? 'ring-2 ring-blue-500/30' : ''
+              }`}
           >
             <div className="p-6 space-y-4">
               <div className="flex items-start justify-between">
@@ -237,9 +234,8 @@ export default function ContactListPage() {
                 </div>
                 <div className="flex items-center gap-2">
                   <span
-                    className={`inline-block h-2 w-2 rounded-full ${
-                      contact.isRead ? 'bg-slate-500' : 'bg-blue-500 animate-pulse'
-                    }`}
+                    className={`inline-block h-2 w-2 rounded-full ${contact.isRead ? 'bg-slate-500' : 'bg-blue-500 animate-pulse'
+                      }`}
                   />
                   <span className="text-sm text-slate-400">
                     {contact.isRead ? 'Read' : 'New'}
@@ -260,7 +256,7 @@ export default function ContactListPage() {
               <div className="flex items-center gap-2 pt-4 border-t border-slate-700">
                 {!contact.isRead && (
                   <button
-                    onClick={() => handleMarkAsRead(contact._id)}
+                    onClick={() => handleMarkAsRead(contact.id)}
                     className="flex-1 flex items-center justify-center gap-1 px-3 py-2 rounded-lg bg-blue-600/20 text-blue-300 hover:bg-blue-600/30 transition-colors border border-blue-600/30"
                   >
                     <CheckCircle2 className="h-4 w-4" />
@@ -268,7 +264,7 @@ export default function ContactListPage() {
                   </button>
                 )}
                 <button
-                  onClick={() => handleDelete(contact._id)}
+                  onClick={() => handleDelete(contact.id)}
                   className="flex-1 flex items-center justify-center gap-1 px-3 py-2 rounded-lg bg-red-900/20 text-red-300 hover:bg-red-900/30 transition-colors border border-red-800/30"
                 >
                   <Trash2 className="h-4 w-4" />

@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { ArrowLeft, Save, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ImageUpload from '@/components/ImageUpload';
+import { RichTextEditor } from '@/components/editor/RichTextEditor';
 
 export default function AdminBlogEditPage() {
     const { id } = useParams();
@@ -13,6 +14,7 @@ export default function AdminBlogEditPage() {
     const [isLoading, setIsLoading] = useState(true);
     const [isSaving, setIsSaving] = useState(false);
     const [error, setError] = useState('');
+    const [blogId, setBlogId] = useState<string | null>(null);
 
     const [formData, setFormData] = useState({
         title: '',
@@ -38,6 +40,7 @@ export default function AdminBlogEditPage() {
                         coverImage: data.data.coverImage,
                         featured: data.data.featured || false
                     });
+                    setBlogId(data.data.id);
                 } else {
                     setError(data.message || 'Failed to fetch post');
                 }
@@ -72,7 +75,8 @@ export default function AdminBlogEditPage() {
         setError('');
 
         try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/blog/${id}`, {
+            const targetId = blogId || id;
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/blog/${targetId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -216,17 +220,13 @@ export default function AdminBlogEditPage() {
                 <div className="bg-card rounded-xl border border-border shadow-sm p-6 space-y-6">
                     <div className="flex items-center justify-between">
                         <h2 className="text-xl font-semibold text-card-foreground">Content</h2>
-                        <span className="text-xs text-muted-foreground">Markdown Supported</span>
                     </div>
 
-                    <textarea
-                        name="content"
+                    <RichTextEditor
                         value={formData.content}
-                        onChange={handleChange}
+                        onChange={(html) => setFormData(prev => ({ ...prev, content: html }))}
                         placeholder="Write your post content here..."
-                        required
-                        rows={20}
-                        className="w-full px-4 py-2 rounded-lg border border-input bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary font-mono text-sm placeholder:text-muted-foreground"
+                        minHeight="600px"
                     />
                 </div>
 

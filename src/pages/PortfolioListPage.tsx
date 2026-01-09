@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { motion } from 'framer-motion';
-import { 
-  Briefcase, 
-  Search, 
-  Filter, 
-  Trash2, 
+import {
+  Briefcase,
+  Search,
+  Filter,
+  Trash2,
   Edit,
   Plus,
   Calendar,
@@ -17,7 +17,7 @@ import {
 } from 'lucide-react';
 
 interface Portfolio {
-  _id: string;
+  id: string;
   title: string;
   category: string;
   client: string;
@@ -85,7 +85,7 @@ export default function PortfolioListPage() {
       });
 
       if (response.ok) {
-        setPortfolios(portfolios.filter(portfolio => portfolio._id !== id));
+        setPortfolios(portfolios.filter(portfolio => portfolio.id !== id));
       } else {
         const data = await response.json();
         setError(data.message || 'Failed to delete portfolio');
@@ -100,16 +100,16 @@ export default function PortfolioListPage() {
   }, [accessToken]);
 
   const filteredPortfolios = portfolios.filter(portfolio => {
-    const matchesSearch = 
+    const matchesSearch =
       portfolio.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       portfolio.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
       portfolio.client.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      portfolio.technologies.some(tech => 
+      portfolio.technologies.some(tech =>
         tech.toLowerCase().includes(searchTerm.toLowerCase())
       );
-    
+
     const matchesFilter = filterCategory === 'all' || portfolio.category === filterCategory;
-    
+
     return matchesSearch && matchesFilter;
   });
 
@@ -127,7 +127,7 @@ export default function PortfolioListPage() {
   }
 
   return (
-    <motion.div 
+    <motion.div
       initial="initial"
       animate="animate"
       variants={staggerContainer}
@@ -149,7 +149,7 @@ export default function PortfolioListPage() {
       </motion.div>
 
       {error && (
-        <motion.div 
+        <motion.div
           variants={fadeIn}
           className="rounded-lg bg-red-900/50 border border-red-800 p-4 text-red-300"
         >
@@ -158,7 +158,7 @@ export default function PortfolioListPage() {
       )}
 
       {/* Search and Filter */}
-      <motion.div 
+      <motion.div
         variants={fadeIn}
         className="flex items-center gap-4 bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700 shadow-xl p-4"
       >
@@ -177,11 +177,10 @@ export default function PortfolioListPage() {
             <button
               key={category}
               onClick={() => setFilterCategory(category)}
-              className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                filterCategory === category
+              className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${filterCategory === category
                   ? 'bg-blue-600 text-white'
                   : 'text-slate-300 hover:text-white hover:bg-slate-700'
-              }`}
+                }`}
             >
               {category.charAt(0).toUpperCase() + category.slice(1)}
             </button>
@@ -190,13 +189,13 @@ export default function PortfolioListPage() {
       </motion.div>
 
       {/* Portfolios Grid */}
-      <motion.div 
+      <motion.div
         variants={fadeIn}
         className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"
       >
         {filteredPortfolios.map((portfolio) => (
           <motion.div
-            key={portfolio._id}
+            key={portfolio.id}
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             whileHover={{ y: -5 }}
@@ -232,7 +231,7 @@ export default function PortfolioListPage() {
                   <span className="text-sm text-slate-400">{portfolio.category}</span>
                 </div>
               </div>
-              
+
               <div className="flex flex-wrap gap-2">
                 {portfolio.technologies.map((tech) => (
                   <span
@@ -282,14 +281,14 @@ export default function PortfolioListPage() {
 
               <div className="flex items-center gap-2 pt-4 border-t border-slate-700">
                 <Link
-                  to={`/admin/portfolio/${portfolio._id}/edit`}
+                  to={`/admin/portfolio/${portfolio.id}/edit`}
                   className="flex-1 flex items-center justify-center gap-1 px-3 py-2 rounded-lg bg-blue-600/20 text-blue-300 hover:bg-blue-600/30 transition-colors border border-blue-600/30"
                 >
                   <Edit className="h-4 w-4" />
                   <span className="text-sm font-medium">Edit</span>
                 </Link>
                 <button
-                  onClick={() => handleDelete(portfolio._id)}
+                  onClick={() => handleDelete(portfolio.id)}
                   className="flex-1 flex items-center justify-center gap-1 px-3 py-2 rounded-lg bg-red-900/20 text-red-300 hover:bg-red-900/30 transition-colors border border-red-800/30"
                 >
                   <Trash2 className="h-4 w-4" />

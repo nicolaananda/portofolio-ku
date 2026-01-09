@@ -1,0 +1,90 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  name      String
+  role      String   @default("admin")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}
+
+model Portfolio {
+  id           String   @id @default(uuid())
+  slug         String   @unique
+  title        String
+  description  String   @db.Text // HTML content
+  category     String
+  client       String?
+  completionDate DateTime?
+  technologies String[] // Array of technology names
+  imageUrls    String[] // Array of image URLs
+  projectUrl   String?
+  githubUrl    String?
+  published    Boolean  @default(true)
+  featured     Boolean  @default(false)
+  order        Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("portfolios")
+}
+
+model Blog {
+  id          String   @id @default(uuid())
+  slug        String   @unique
+  title       String
+  excerpt     String   @db.Text
+  content     String   @db.Text // HTML content
+  coverImage  String
+  category    String
+  tags        String[] // Array of tags
+  published   Boolean  @default(false)
+  featured    Boolean  @default(false)
+  readTime    String?  @default("5 min read")
+  authorName  String   @default("Nicola Ananda")
+  authorAvatar String? @default("/images/avatar.jpg")
+  views       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("blogs")
+}
+
+model Media {
+  id        String   @id @default(uuid())
+  filename  String
+  originalName String
+  mimetype  String
+  size      Int
+  url       String
+  path      String?
+  createdAt DateTime @default(now())
+
+  @@map("media")
+}
+
+model Contact {
+  id        String   @id @default(uuid())
+  name      String
+  email     String
+  subject   String?
+  message   String   @db.Text
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@map("contacts")
+}

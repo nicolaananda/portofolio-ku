@@ -1,106 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
-  
-  <!-- Homepage -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://nicola.id/</loc>
-    <lastmod>2024-05-27</lastmod>
+    <loc>http://localhost:8080</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-    <image:image>
-      <image:loc>https://nicola.id/profile.webp</image:loc>
-      <image:title>Nicola Ananda - Data Analyst &amp; Web Developer</image:title>
-    </image:image>
   </url>
-
-  <!-- About Page -->
   <url>
-    <loc>https://nicola.id/about</loc>
-    <lastmod>2024-05-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <!-- Portfolio Page -->
-  <url>
-    <loc>https://nicola.id/portfolio</loc>
-    <lastmod>2024-05-27</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <!-- Portfolio Detail Pages -->
-  <url>
-    <loc>https://nicola.id/portfolio/1</loc>
-    <lastmod>2024-05-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  
-  <url>
-    <loc>https://nicola.id/portfolio/2</loc>
-    <lastmod>2024-05-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://nicola.id/portfolio/3</loc>
-    <lastmod>2024-05-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://nicola.id/portfolio/4</loc>
-    <lastmod>2024-05-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://nicola.id/portfolio/5</loc>
-    <lastmod>2024-05-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://nicola.id/portfolio/6</loc>
-    <lastmod>2024-05-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://nicola.id/portfolio/7</loc>
-    <lastmod>2024-05-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://nicola.id/portfolio/8</loc>
-    <lastmod>2024-05-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- Blog Page -->
-  <url>
-    <loc>https://nicola.id/blog</loc>
-    <lastmod>2024-05-27</lastmod>
+    <loc>http://localhost:8080/about</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
-
-  <!-- Contact Page -->
   <url>
-    <loc>https://nicola.id/contact</loc>
-    <lastmod>2024-05-27</lastmod>
+    <loc>http://localhost:8080/portfolio</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://localhost:8080/blog</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://localhost:8080/contact</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://localhost:8080/portfolio/sample-portfolio</loc>
+    <lastmod>2026-01-09T16:23:37.097Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
-
-</urlset> 
+  <url>
+    <loc>http://localhost:8080/portfolio/staycool-pos-digital-ecosystem</loc>
+    <lastmod>2026-01-09T18:07:10.078Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>http://localhost:8080/blog/welcome-to-my-blog</loc>
+    <lastmod>2026-01-09T17:38:35.617Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+</urlset>

@@ -10,7 +10,7 @@ export default defineConfig(({ mode }) => {
 
   // Determine API URL based on mode
   const apiUrl = mode === 'production'
-    ? 'https://be.nicola.id/api'
+    ? (env.VITE_API_URL || 'https://be.nicola.id/api')
     : '/api';
 
   return {
@@ -20,7 +20,7 @@ export default defineConfig(({ mode }) => {
       port: 8080,
       proxy: {
         '/api': {
-          target: 'https://be.nicola.id',
+          target: 'http://localhost:5001',
           changeOrigin: true,
           secure: true,
           rewrite: (path) => path.replace(/^\/api/, '/api')

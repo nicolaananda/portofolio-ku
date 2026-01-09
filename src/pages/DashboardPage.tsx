@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { 
-  BarChart3, 
-  FileText, 
-  Mail, 
-  TrendingUp, 
+import {
+  BarChart3,
+  FileText,
+  Mail,
+  TrendingUp,
   Users,
   Calendar,
   Eye,
@@ -104,23 +104,23 @@ export default function DashboardPage() {
   const contactGrowth = 23.2;
 
   return (
-    <motion.div 
+    <motion.div
       initial="initial"
       animate="animate"
       variants={staggerContainer}
       className="space-y-6"
     >
       {/* Welcome Header */}
-      <motion.div 
+      <motion.div
         variants={fadeIn}
         className="liquid-glass-strong rounded-2xl p-6 text-center"
       >
         <h1 className="text-2xl font-bold dark:text-white text-gray-900 mb-2">Admin Dashboard</h1>
         <p className="dark:text-slate-400 text-gray-600">Manage your portfolio and messages</p>
       </motion.div>
-      
+
       {/* Search and Filter Bar */}
-      <motion.div 
+      <motion.div
         variants={fadeIn}
         className="liquid-glass rounded-xl p-4"
       >
@@ -143,12 +143,12 @@ export default function DashboardPage() {
       </motion.div>
 
       {/* Stats Grid */}
-      <motion.div 
+      <motion.div
         variants={staggerContainer}
         className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4"
       >
         {/* Total Portfolios */}
-        <motion.div 
+        <motion.div
           variants={fadeIn}
           className="liquid-glass-strong rounded-xl p-4 sm:p-6 hover:-translate-y-1 transition-transform"
         >
@@ -166,7 +166,7 @@ export default function DashboardPage() {
         </motion.div>
 
         {/* Total Messages */}
-        <motion.div 
+        <motion.div
           variants={fadeIn}
           className="liquid-glass-strong rounded-xl p-4 sm:p-6 hover:-translate-y-1 transition-transform"
         >
@@ -184,7 +184,7 @@ export default function DashboardPage() {
         </motion.div>
 
         {/* Unread Messages */}
-        <motion.div 
+        <motion.div
           variants={fadeIn}
           className="liquid-glass-strong rounded-xl p-4 sm:p-6 hover:-translate-y-1 transition-transform"
         >
@@ -203,7 +203,7 @@ export default function DashboardPage() {
         </motion.div>
 
         {/* Quick Actions */}
-        <motion.div 
+        <motion.div
           variants={fadeIn}
           className="liquid-glass-strong rounded-xl p-4 sm:p-6 hover:-translate-y-1 transition-transform"
         >
@@ -228,12 +228,12 @@ export default function DashboardPage() {
       </motion.div>
 
       {/* Recent Activity Section */}
-      <motion.div 
+      <motion.div
         variants={staggerContainer}
         className="grid gap-4 sm:gap-6 grid-cols-1 lg:grid-cols-2"
       >
         {/* Recent Portfolios */}
-        <motion.div 
+        <motion.div
           variants={fadeIn}
           className="liquid-glass-strong rounded-xl hover:-translate-y-1 transition-transform"
         >
@@ -253,8 +253,8 @@ export default function DashboardPage() {
             {stats.recentPortfolios?.length > 0 ? (
               <div className="space-y-4">
                 {stats.recentPortfolios.slice(0, 5).map((portfolio: any) => (
-                  <motion.div 
-                    key={portfolio._id}
+                  <motion.div
+                    key={portfolio.id}
                     whileHover={{ x: 5 }}
                     className="flex items-center justify-between p-3 rounded-lg liquid-glass hover:scale-105 transition-transform"
                   >
@@ -267,7 +267,7 @@ export default function DashboardPage() {
                       </div>
                     </div>
                     <Link
-                      to={`/admin/portfolio/${portfolio._id}/edit`}
+                      to={`/admin/portfolio/${portfolio.id}/edit`}
                       className="text-sm text-cyan-400 hover:text-cyan-300 flex items-center gap-1 group ml-4"
                     >
                       Edit
@@ -283,7 +283,7 @@ export default function DashboardPage() {
         </motion.div>
 
         {/* Recent Messages */}
-        <motion.div 
+        <motion.div
           variants={fadeIn}
           className="liquid-glass-strong rounded-xl hover:-translate-y-1 transition-transform"
         >
@@ -303,14 +303,13 @@ export default function DashboardPage() {
             {stats.recentContacts?.length > 0 ? (
               <div className="space-y-4">
                 {stats.recentContacts.slice(0, 5).map((contact: any) => (
-                  <motion.div 
-                    key={contact._id}
+                  <motion.div
+                    key={contact.id}
                     whileHover={{ x: 5 }}
                     className="flex items-start gap-3 p-3 rounded-lg liquid-glass hover:scale-105 transition-transform"
                   >
-                    <div className={`mt-1 h-2 w-2 rounded-full flex-shrink-0 ${
-                      contact.isRead ? 'bg-gray-300' : 'bg-cyan-400 animate-pulse'
-                    }`} />
+                    <div className={`mt-1 h-2 w-2 rounded-full flex-shrink-0 ${contact.isRead ? 'bg-gray-300' : 'bg-cyan-400 animate-pulse'
+                      }`} />
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between">
                         <h3 className="font-medium dark:text-white text-gray-900 truncate">{contact.name}</h3>
@@ -332,7 +331,7 @@ export default function DashboardPage() {
       </motion.div>
 
       {/* Activity Chart */}
-      <motion.div 
+      <motion.div
         variants={fadeIn}
         className="liquid-glass-strong rounded-xl p-4 sm:p-6 hover:-translate-y-1 transition-transform"
       >
@@ -343,11 +342,10 @@ export default function DashboardPage() {
               <button
                 key={timeframe}
                 onClick={() => setActiveTimeframe(timeframe)}
-                className={`px-3 py-1 text-sm font-medium rounded-lg transition-colors ${
-                  activeTimeframe === timeframe
+                className={`px-3 py-1 text-sm font-medium rounded-lg transition-colors ${activeTimeframe === timeframe
                     ? 'liquid-glass dark:text-white text-gray-900'
                     : 'dark:text-slate-400 text-gray-600 hover:liquid-glass'
-                }`}
+                  }`}
               >
                 {timeframe.charAt(0).toUpperCase() + timeframe.slice(1)}
               </button>

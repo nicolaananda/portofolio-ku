@@ -5,7 +5,7 @@ import SEOHead from '../components/SEOHead';
 import { useState, useEffect } from 'react';
 
 interface Project {
-  _id: string;
+  id: string;
   slug?: string;
   title: string;
   category: string;
@@ -184,7 +184,10 @@ const HomePage = () => {
                           iconName === 'nodejs' ? 'nodedotjs' :
                             iconName === 'c++' ? 'cplusplus' :
                               iconName === 'c#' ? 'csharp' :
-                                iconName;
+                                iconName === 'tailwind' ? 'tailwindcss' :
+                                  iconName === 'sql' ? 'postgresql' :
+                                    iconName === 'tableau' ? 'tableau' :
+                                      iconName;
 
                     return (
                       <div key={tech} className="group flex flex-col items-center gap-2">
@@ -272,8 +275,8 @@ const HomePage = () => {
             ) : (
               featuredProjects.map((project) => (
                 <Link
-                  to={`/portfolio/${project.slug || project._id}`}
-                  key={project._id}
+                  to={`/portfolio/${project.slug || project.id}`}
+                  key={project.id}
                   className="group block"
                 >
                   <div className="aspect-[4/3] overflow-hidden rounded-[2rem] bg-gray-100 dark:bg-gray-900 mb-6 relative shadow-lg group-hover:shadow-2xl transition-all duration-500 group-hover:-translate-y-2">

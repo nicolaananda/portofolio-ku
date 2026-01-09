@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { motion } from 'framer-motion';
-import { 
+import {
   Briefcase,
   Calendar,
   Tag,
@@ -14,6 +14,7 @@ import {
   X
 } from 'lucide-react';
 import ImageUpload from '@/components/ImageUpload';
+import { RichTextEditor } from '@/components/editor/RichTextEditor';
 
 interface PortfolioFormData {
   title: string;
@@ -22,8 +23,6 @@ interface PortfolioFormData {
   completionDate: string;
   technologies: string[];
   description: string;
-  challenge: string;
-  solution: string;
   imageUrls: string[];
   liveUrl?: string;
   githubUrl?: string;
@@ -55,8 +54,6 @@ export default function PortfolioCreatePage() {
     completionDate: '',
     technologies: [],
     description: '',
-    challenge: '',
-    solution: '',
     imageUrls: [],
     liveUrl: '',
     githubUrl: '',
@@ -107,7 +104,7 @@ export default function PortfolioCreatePage() {
   };
 
   return (
-    <motion.div 
+    <motion.div
       initial="initial"
       animate="animate"
       variants={staggerContainer}
@@ -129,7 +126,7 @@ export default function PortfolioCreatePage() {
       </motion.div>
 
       {error && (
-        <motion.div 
+        <motion.div
           variants={fadeIn}
           className="rounded-md bg-red-50 p-4 text-red-500"
         >
@@ -138,7 +135,7 @@ export default function PortfolioCreatePage() {
       )}
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        <motion.div 
+        <motion.div
           variants={fadeIn}
           className="grid gap-6 md:grid-cols-2"
         >
@@ -308,55 +305,21 @@ export default function PortfolioCreatePage() {
 
         <motion.div variants={fadeIn} className="space-y-6">
           <div className="space-y-2">
-            <label htmlFor="description" className="text-sm font-medium">
-              Description
+            <label className="text-sm font-medium">
+              Case Study / Description
             </label>
-            <textarea
-              id="description"
-              required
-              rows={4}
-              className="w-full rounded-lg border px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary/20"
-              value={formData.description}
-              onChange={(e) =>
-                setFormData({ ...formData, description: e.target.value })
-              }
-            />
-          </div>
-
-          <div className="space-y-2">
-            <label htmlFor="challenge" className="text-sm font-medium">
-              Challenge
-            </label>
-            <textarea
-              id="challenge"
-              required
-              rows={4}
-              className="w-full rounded-lg border px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary/20"
-              value={formData.challenge}
-              onChange={(e) =>
-                setFormData({ ...formData, challenge: e.target.value })
-              }
-            />
-          </div>
-
-          <div className="space-y-2">
-            <label htmlFor="solution" className="text-sm font-medium">
-              Solution
-            </label>
-            <textarea
-              id="solution"
-              required
-              rows={4}
-              className="w-full rounded-lg border px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary/20"
-              value={formData.solution}
-              onChange={(e) =>
-                setFormData({ ...formData, solution: e.target.value })
-              }
-            />
+            <div className="rounded-lg border bg-white dark:bg-black/50 overflow-hidden">
+              <RichTextEditor
+                value={formData.description}
+                onChange={(html) => setFormData({ ...formData, description: html })}
+                placeholder="Describe the project, challenge, and solution..."
+                minHeight="500px"
+              />
+            </div>
           </div>
         </motion.div>
 
-        <motion.div 
+        <motion.div
           variants={fadeIn}
           className="flex justify-end gap-4 pt-6 border-t"
         >

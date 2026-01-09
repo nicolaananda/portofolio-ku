@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { motion } from 'framer-motion';
 import ImageUpload from '@/components/ImageUpload';
+import { RichTextEditor } from '@/components/editor/RichTextEditor';
 
 interface PortfolioFormData {
   title: string;
@@ -11,8 +12,6 @@ interface PortfolioFormData {
   completionDate: string;
   technologies: string[];
   description: string;
-  challenge: string;
-  solution: string;
   imageUrls: string[];
   liveUrl?: string;
   githubUrl?: string;
@@ -25,6 +24,7 @@ export default function PortfolioEditPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState('');
+  const [portfolioId, setPortfolioId] = useState<string | null>(null);
   const [formData, setFormData] = useState<PortfolioFormData>({
     title: '',
     category: '',
@@ -32,8 +32,6 @@ export default function PortfolioEditPage() {
     completionDate: '',
     technologies: [],
     description: '',
-    challenge: '',
-    solution: '',
     imageUrls: [],
     liveUrl: '',
     githubUrl: '',
@@ -50,7 +48,11 @@ export default function PortfolioEditPage() {
         const data = await response.json();
 
         if (response.ok) {
-          setFormData(data.data);
+          setFormData({
+            ...data.data,
+            completionDate: data.data.completionDate ? new Date(data.data.completionDate).toISOString().split('T')[0] : '',
+          });
+          setPortfolioId(data.data.id);
         } else {
           setError(data.message || 'Failed to fetch portfolio');
         }
@@ -70,7 +72,8 @@ export default function PortfolioEditPage() {
     setIsSaving(true);
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/portfolio/${id}`, {
+      const targetId = portfolioId || id;
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/portfolio/${targetId}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -256,63 +259,17 @@ export default function PortfolioEditPage() {
           <h2 className="text-xl font-semibold text-white mb-6">Project Details</h2>
           <div className="space-y-6">
             <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <label htmlFor="description" className="text-sm font-medium text-slate-300">
-                  Description
-                </label>
-                <span className="text-xs text-slate-400">HTML supported</span>
+              <label className="text-sm font-medium text-slate-300">
+                Case Study / Description
+              </label>
+              <div className="rounded-lg border border-slate-600 bg-slate-700/50 overflow-hidden text-black dark:text-gray-200">
+                <RichTextEditor
+                  value={formData.description}
+                  onChange={(html) => setFormData({ ...formData, description: html })}
+                  placeholder="Describe the project, challenge, and solution..."
+                  minHeight="500px"
+                />
               </div>
-              <textarea
-                id="description"
-                required
-                rows={6}
-                className="w-full rounded-lg border border-slate-600 bg-slate-700/50 px-3 py-2 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-vertical font-mono text-sm"
-                value={formData.description}
-                onChange={(e) =>
-                  setFormData({ ...formData, description: e.target.value })
-                }
-                placeholder="Use HTML for formatting:&#10;&lt;strong&gt;bold&lt;/strong&gt;, &lt;em&gt;italic&lt;/em&gt;&#10;&lt;ul&gt;&lt;li&gt;bullet point&lt;/li&gt;&lt;/ul&gt;&#10;&lt;br/&gt; for line breaks"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <label htmlFor="challenge" className="text-sm font-medium text-slate-300">
-                  Challenge
-                </label>
-                <span className="text-xs text-slate-400">HTML supported</span>
-              </div>
-              <textarea
-                id="challenge"
-                required
-                rows={6}
-                className="w-full rounded-lg border border-slate-600 bg-slate-700/50 px-3 py-2 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-vertical font-mono text-sm"
-                value={formData.challenge}
-                onChange={(e) =>
-                  setFormData({ ...formData, challenge: e.target.value })
-                }
-                placeholder="Use HTML for bullet points:&#10;&lt;ul&gt;&#10;  &lt;li&gt;Challenge 1&lt;/li&gt;&#10;  &lt;li&gt;Challenge 2&lt;/li&gt;&#10;&lt;/ul&gt;"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <label htmlFor="solution" className="text-sm font-medium text-slate-300">
-                  Solution
-                </label>
-                <span className="text-xs text-slate-400">HTML supported</span>
-              </div>
-              <textarea
-                id="solution"
-                required
-                rows={6}
-                className="w-full rounded-lg border border-slate-600 bg-slate-700/50 px-3 py-2 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-vertical font-mono text-sm"
-                value={formData.solution}
-                onChange={(e) =>
-                  setFormData({ ...formData, solution: e.target.value })
-                }
-                placeholder="Use HTML for bullet points:&#10;&lt;ul&gt;&#10;  &lt;li&gt;Solution 1&lt;/li&gt;&#10;  &lt;li&gt;Solution 2&lt;/li&gt;&#10;&lt;/ul&gt;"
-              />
             </div>
           </div>
         </div>

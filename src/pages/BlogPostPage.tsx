@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Calendar, Clock, Share2, Bookmark, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import SEOHead from '../components/SEOHead';
+import { HTMLContent } from '@/components/HTMLContent';
 import { motion, useScroll, useSpring } from 'framer-motion';
 
 interface BlogPost {
@@ -153,9 +154,9 @@ const BlogPostPage = () => {
         </div>
 
         {/* Content */}
-        <div
-          className="prose prose-lg dark:prose-invert max-w-none prose-headings:font-bold prose-h1:text-4xl prose-h2:text-3xl prose-a:text-black dark:prose-a:text-white prose-a:no-underline prose-a:border-b prose-a:border-black/20 dark:prose-a:border-white/20 hover:prose-a:border-black dark:hover:prose-a:border-white prose-img:rounded-xl"
-          dangerouslySetInnerHTML={{ __html: post.content }}
+        <HTMLContent
+          html={post.content}
+          className="prose dark:prose-invert max-w-none prose-headings:font-bold prose-h1:text-4xl prose-h2:text-3xl prose-a:text-black dark:prose-a:text-white prose-a:no-underline prose-a:border-b prose-a:border-black/20 dark:prose-a:border-white/20 hover:prose-a:border-black dark:hover:prose-a:border-white prose-img:rounded-xl"
         />
 
         {/* Footer */}

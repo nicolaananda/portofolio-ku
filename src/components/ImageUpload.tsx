@@ -74,7 +74,7 @@ export default function ImageUpload({
     const formData = new FormData();
     formData.append('image', file);
 
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/upload`, {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/upload/image`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${accessToken}`,

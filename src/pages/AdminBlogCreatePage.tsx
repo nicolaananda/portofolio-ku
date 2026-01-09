@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { ArrowLeft, Save, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ImageUpload from '@/components/ImageUpload';
+import { RichTextEditor } from '@/components/editor/RichTextEditor';
 
 export default function AdminBlogCreatePage() {
     const navigate = useNavigate();
@@ -178,17 +179,13 @@ export default function AdminBlogCreatePage() {
                 <div className="bg-card rounded-xl border border-border shadow-sm p-6 space-y-6">
                     <div className="flex items-center justify-between">
                         <h2 className="text-xl font-semibold text-card-foreground">Content</h2>
-                        <span className="text-xs text-muted-foreground">Markdown Supported</span>
                     </div>
 
-                    <textarea
-                        name="content"
+                    <RichTextEditor
                         value={formData.content}
-                        onChange={handleChange}
+                        onChange={(html) => setFormData(prev => ({ ...prev, content: html }))}
                         placeholder="Write your post content here..."
-                        required
-                        rows={20}
-                        className="w-full px-4 py-2 rounded-lg border border-input bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary font-mono text-sm placeholder:text-muted-foreground"
+                        minHeight="600px"
                     />
                 </div>
 

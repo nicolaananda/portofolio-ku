@@ -15,7 +15,7 @@ import {
 } from 'lucide-react';
 
 interface BlogPost {
-    _id: string;
+    id: string;
     title: string;
     category: string;
     createdAt: string;
@@ -81,7 +81,7 @@ export default function AdminBlogListPage() {
             });
 
             if (response.ok) {
-                setPosts(posts.filter(post => post._id !== id));
+                setPosts(posts.filter(post => post.id !== id));
             } else {
                 const data = await response.json();
                 setError(data.message || 'Failed to delete post');
@@ -171,8 +171,8 @@ export default function AdminBlogListPage() {
                             key={category}
                             onClick={() => setFilterCategory(category)}
                             className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap ${filterCategory === category
-                                    ? 'bg-black text-white'
-                                    : 'text-gray-600 hover:text-black hover:bg-gray-100'
+                                ? 'bg-black text-white'
+                                : 'text-gray-600 hover:text-black hover:bg-gray-100'
                                 }`}
                         >
                             {category.charAt(0).toUpperCase() + category.slice(1)}
@@ -188,7 +188,7 @@ export default function AdminBlogListPage() {
             >
                 {filteredPosts.map((post) => (
                     <motion.div
-                        key={post._id}
+                        key={post.id}
                         initial={{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
                         whileHover={{ y: -5 }}
@@ -230,7 +230,7 @@ export default function AdminBlogListPage() {
 
                             <div className="mt-auto pt-4 border-t border-gray-100 flex items-center gap-2">
                                 <Link
-                                    to={`/blog/${post.slug || post._id}`}
+                                    to={`/blog/${post.slug || post.id}`}
                                     target="_blank"
                                     className="p-2 rounded-lg text-gray-400 hover:text-black hover:bg-gray-50 transition-colors"
                                     title="View Live"
@@ -239,13 +239,13 @@ export default function AdminBlogListPage() {
                                 </Link>
                                 <div className="flex-1"></div>
                                 <Link
-                                    to={`/admin/blog/${post._id}/edit`}
+                                    to={`/admin/blog/${post.id}/edit`}
                                     className="flex items-center gap-1 px-3 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors text-sm font-medium"
                                 >
                                     <Edit className="w-4 h-4" /> Edit
                                 </Link>
                                 <button
-                                    onClick={() => handleDelete(post._id)}
+                                    onClick={() => handleDelete(post.id)}
                                     className="flex items-center gap-1 px-3 py-2 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 transition-colors text-sm font-medium"
                                 >
                                     <Trash2 className="w-4 h-4" /> Delete
