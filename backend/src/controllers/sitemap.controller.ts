@@ -6,7 +6,14 @@ const prisma = new PrismaClient();
 
 export const getSitemap = async (req: Request, res: Response) => {
     try {
-        const baseUrl = process.env.FRONTEND_URL || 'https://nicola.id';
+        // Priority: Host header -> FRONTEND_URL -> Hardcoded fallback
+        const host = req.get('host');
+        let baseUrl = host ? `https://${host}` : (process.env.FRONTEND_URL || 'https://nicola.id');
+
+        // Normalize URL (remove trailing slash)
+        if (baseUrl.endsWith('/')) {
+            baseUrl = baseUrl.slice(0, -1);
+        }
 
         // Fetch dynamic data
         const portfolios = await prisma.portfolio.findMany({
