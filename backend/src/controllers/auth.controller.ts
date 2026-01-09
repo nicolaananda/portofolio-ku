@@ -72,7 +72,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
                     name: user.name,
                     role: user.role,
                 },
-                token,
+                accessToken: token,
             },
         });
     } catch (error) {
@@ -193,7 +193,7 @@ export const refreshToken = async (req: Request, res: Response): Promise<void> =
                     name: user.name,
                     role: user.role,
                 },
-                token: newToken,
+                accessToken: newToken,
             },
         });
     } catch (error) {

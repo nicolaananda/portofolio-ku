@@ -79,6 +79,7 @@ export default function ImageUpload({
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
+      credentials: 'include',
       body: formData,
     });
 

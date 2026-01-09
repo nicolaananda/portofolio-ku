@@ -22,9 +22,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       });
 
       if (response.ok) {
-        const data = await response.json();
-        setAccessToken(data.accessToken);
-        localStorage.setItem('accessToken', data.accessToken);
+        const result = await response.json();
+        const token = result.accessToken || result.data?.accessToken;
+        setAccessToken(token);
+        localStorage.setItem('accessToken', token);
         setIsAuthenticated(true);
         return true;
       }
@@ -63,14 +64,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         body: JSON.stringify({ email, password }),
       });
 
-      const data = await response.json();
+      const result = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || 'Login failed');
+        throw new Error(result.message || 'Login failed');
       }
 
-      setAccessToken(data.accessToken);
-      localStorage.setItem('accessToken', data.accessToken);
+      const token = result.accessToken || result.data?.accessToken;
+      setAccessToken(token);
+      localStorage.setItem('accessToken', token);
       setIsAuthenticated(true);
     } catch (error) {
       throw error;
