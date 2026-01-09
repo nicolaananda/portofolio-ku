@@ -5,6 +5,9 @@
     
     # Don't rewrite if the request is for index.html
     RewriteRule ^index\.html$ - [L]
+
+    # Proxy sitemap.xml to backend
+    RewriteRule ^sitemap\.xml$ http://localhost:5002/sitemap.xml [P,L]
     
     # Don't rewrite if the request is for an existing file
     RewriteCond %{REQUEST_FILENAME} !-f
