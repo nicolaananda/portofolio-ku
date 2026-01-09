@@ -1,9 +1,16 @@
 #!/bin/bash
 
-# Build the project
-echo "Building project..."
+# Build the backend
+echo "Building backend..."
+cd backend
+npm install
 npm run build
+cd ..
 
+# Build the frontend
+echo "Building frontend..."
+npm install
+npm run build
 # Check if build was successful
 if [ $? -eq 0 ]; then
   echo "Build successful. Deploying to /home/nicola.id/public_html..."
