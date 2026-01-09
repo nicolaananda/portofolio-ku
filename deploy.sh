@@ -6,22 +6,22 @@ npm run build
 
 # Check if build was successful
 if [ $? -eq 0 ]; then
-  echo "Build successful. Deploying to /var/www/nicola.id/html..."
+  echo "Build successful. Deploying to /home/nicola.id/public_html..."
   
   # Ensure the target directory exists
-  if [ ! -d "/var/www/nicola.id/html" ]; then
-    echo "Creating directory /var/www/nicola.id/html..."
-    sudo mkdir -p /var/www/nicola.id/html
+  if [ ! -d "/home/nicola.id/public_html" ]; then
+    echo "Creating directory /home/nicola.id/public_html..."
+    sudo mkdir -p /home/nicola.id/public_html
   fi
 
   # Copy files (including hidden files like .htaccess)
   echo "Copying files..."
-  sudo cp -r dist/* /var/www/nicola.id/html/
+  sudo cp -r dist/* /home/nicola.id/public_html/
   # Explicitly copy .htaccess if it exists
   if [ -f "dist/.htaccess" ]; then
     echo "Copying .htaccess file..."
-    sudo cp dist/.htaccess /var/www/nicola.id/html/.htaccess
-    sudo chmod 644 /var/www/nicola.id/html/.htaccess
+    sudo cp dist/.htaccess /home/nicola.id/public_html/.htaccess
+    sudo chmod 644 /home/nicola.id/public_html/.htaccess
   fi
   
   echo "Deployment complete!"
