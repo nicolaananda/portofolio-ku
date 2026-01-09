@@ -5,16 +5,12 @@ import prisma from '../config/database';
 export const generateSitemap = async () => {
     try {
         const baseUrl = process.env.FRONTEND_URL || 'https://nicola.id';
-        const publicDir = path.join(__dirname, '../../../public'); // Adjust based on dist structure? No, dev structure.
-        // In Prod, it might be different. But user is running dev.
-        // Actually, user path: /Users/nicola.../SE/portofolio-ku/backend/src/utils
-        // Public is /Users/nicola.../SE/portofolio-ku/public
-        // So ../../../public is correct.
+        const sitemapPath = process.env.SITEMAP_PATH || path.join(__dirname, '../../../public/sitemap.xml');
+        const sitemapDir = path.dirname(sitemapPath);
 
-        // Verify public dir exists
-        if (!fs.existsSync(publicDir)) {
-            // If public doesn't exist (e.g. focused backend), maybe just log or skip
-            console.warn('Public directory not found for sitemap generation:', publicDir);
+        // Verify directory exists
+        if (!fs.existsSync(sitemapDir)) {
+            console.warn('Sitemap directory not found:', sitemapDir);
             return;
         }
 
@@ -74,7 +70,7 @@ export const generateSitemap = async () => {
         sitemap += `
 </urlset>`;
 
-        fs.writeFileSync(path.join(publicDir, 'sitemap.xml'), sitemap);
+        fs.writeFileSync(sitemapPath, sitemap);
         console.log('Sitemap generated successfully');
 
     } catch (error) {
