@@ -9,6 +9,7 @@ cd ..
 
 # Build the frontend
 echo "Building frontend..."
+rm -f public/sitemap.xml # Ensure static sitemap is gone before build
 npm install
 npm run build
 # Check if build was successful
@@ -23,6 +24,7 @@ if [ $? -eq 0 ]; then
 
   # Copy files (including hidden files like .htaccess)
   echo "Copying files..."
+  sudo rm -f /home/nicola.id/public_html/sitemap.xml # Remove old static sitemap from server
   sudo cp -r dist/* /home/nicola.id/public_html/
   # Explicitly copy .htaccess if it exists
   if [ -f "dist/.htaccess" ]; then
