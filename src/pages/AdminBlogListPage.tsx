@@ -129,12 +129,12 @@ export default function AdminBlogListPage() {
             {/* Header */}
             <motion.div variants={fadeIn} className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-3xl font-bold text-gray-900">Blog Posts</h1>
-                    <p className="text-gray-500 mt-1">Manage your journal entries</p>
+                    <h1 className="text-3xl font-bold text-white">Blog Posts</h1>
+                    <p className="text-slate-400 mt-1">Manage your journal entries</p>
                 </div>
                 <Link
                     to="/admin/blog/create"
-                    className="flex items-center gap-2 px-4 py-2 rounded-lg bg-black text-white hover:bg-gray-800 transition-colors group"
+                    className="flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-colors group"
                 >
                     <Plus className="h-4 w-4" />
                     <span className="font-medium">New Post</span>
@@ -144,7 +144,7 @@ export default function AdminBlogListPage() {
             {error && (
                 <motion.div
                     variants={fadeIn}
-                    className="rounded-lg bg-red-50 border border-red-200 p-4 text-red-600"
+                    className="rounded-lg bg-red-900/50 border border-red-800 p-4 text-red-300"
                 >
                     {error}
                 </motion.div>
@@ -153,26 +153,26 @@ export default function AdminBlogListPage() {
             {/* Search and Filter */}
             <motion.div
                 variants={fadeIn}
-                className="flex items-center gap-4 bg-white rounded-xl border border-gray-200 shadow-sm p-4"
+                className="flex items-center gap-4 bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700 shadow-xl p-4"
             >
                 <div className="flex-1 relative">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
                     <input
                         type="text"
                         placeholder="Search posts..."
-                        className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-200 bg-gray-50 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
+                        className="w-full pl-10 pr-4 py-2 rounded-lg border border-slate-600 bg-slate-700/50 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
                 </div>
-                <div className="flex items-center gap-2 overflow-x-auto">
+                <div className="flex items-center gap-2 overflow-x-auto no-scrollbar">
                     {categories.map((category) => (
                         <button
                             key={category}
                             onClick={() => setFilterCategory(category)}
                             className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap ${filterCategory === category
-                                ? 'bg-black text-white'
-                                : 'text-gray-600 hover:text-black hover:bg-gray-100'
+                                ? 'bg-blue-600 text-white'
+                                : 'text-slate-300 hover:text-white hover:bg-slate-700'
                                 }`}
                         >
                             {category.charAt(0).toUpperCase() + category.slice(1)}
@@ -192,9 +192,9 @@ export default function AdminBlogListPage() {
                         initial={{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
                         whileHover={{ y: -5 }}
-                        className="bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col"
+                        className="bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700 shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden flex flex-col"
                     >
-                        <div className="aspect-video overflow-hidden bg-gray-100 relative">
+                        <div className="aspect-video overflow-hidden bg-slate-800 relative">
                             {post.coverImage ? (
                                 <img
                                     src={post.coverImage}
@@ -202,12 +202,12 @@ export default function AdminBlogListPage() {
                                     className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                                 />
                             ) : (
-                                <div className="w-full h-full flex items-center justify-center text-gray-400">
+                                <div className="w-full h-full flex items-center justify-center text-slate-500">
                                     <FileText className="w-12 h-12" />
                                 </div>
                             )}
                             {post.featured && (
-                                <div className="absolute top-2 right-2 px-2 py-1 bg-yellow-400 text-black text-xs font-bold uppercase rounded shadow-sm">
+                                <div className="absolute top-2 right-2 px-2 py-1 bg-yellow-500 text-black text-xs font-bold uppercase rounded shadow-sm">
                                     Featured
                                 </div>
                             )}
@@ -216,23 +216,23 @@ export default function AdminBlogListPage() {
                         <div className="p-6 flex-1 flex flex-col">
                             <div className="mb-4">
                                 <div className="flex items-center gap-2 mb-2">
-                                    <span className="px-2 py-1 bg-gray-100 text-gray-600 text-xs font-bold uppercase rounded">
+                                    <span className="px-2 py-1 bg-blue-900/50 text-blue-300 text-xs font-bold uppercase rounded border border-blue-800/50">
                                         {post.category}
                                     </span>
-                                    <span className="text-xs text-gray-400 flex items-center gap-1">
+                                    <span className="text-xs text-slate-400 flex items-center gap-1">
                                         <Calendar className="w-3 h-3" />
                                         {new Date(post.createdAt).toLocaleDateString()}
                                     </span>
                                 </div>
-                                <h3 className="text-lg font-bold text-gray-900 line-clamp-2 mb-2">{post.title}</h3>
-                                <p className="text-sm text-gray-500 line-clamp-2">{post.excerpt}</p>
+                                <h3 className="text-lg font-bold text-white line-clamp-2 mb-2">{post.title}</h3>
+                                <p className="text-sm text-slate-400 line-clamp-2">{post.excerpt}</p>
                             </div>
 
-                            <div className="mt-auto pt-4 border-t border-gray-100 flex items-center gap-2">
+                            <div className="mt-auto pt-4 border-t border-slate-700 flex items-center gap-2">
                                 <Link
                                     to={`/blog/${post.slug || post.id}`}
                                     target="_blank"
-                                    className="p-2 rounded-lg text-gray-400 hover:text-black hover:bg-gray-50 transition-colors"
+                                    className="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-700 transition-colors"
                                     title="View Live"
                                 >
                                     <Eye className="w-4 h-4" />
@@ -240,13 +240,13 @@ export default function AdminBlogListPage() {
                                 <div className="flex-1"></div>
                                 <Link
                                     to={`/admin/blog/${post.id}/edit`}
-                                    className="flex items-center gap-1 px-3 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors text-sm font-medium"
+                                    className="flex items-center gap-1 px-3 py-2 rounded-lg bg-blue-600/20 text-blue-300 hover:bg-blue-600/30 transition-colors border border-blue-600/30 text-sm font-medium"
                                 >
                                     <Edit className="w-4 h-4" /> Edit
                                 </Link>
                                 <button
                                     onClick={() => handleDelete(post.id)}
-                                    className="flex items-center gap-1 px-3 py-2 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 transition-colors text-sm font-medium"
+                                    className="flex items-center gap-1 px-3 py-2 rounded-lg bg-red-900/20 text-red-300 hover:bg-red-900/30 transition-colors border border-red-800/30 text-sm font-medium"
                                 >
                                     <Trash2 className="w-4 h-4" /> Delete
                                 </button>

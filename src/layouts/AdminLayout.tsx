@@ -20,9 +20,11 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   ];
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      {/* Background Effects - Simplified for consistency */}
-      <div className="fixed inset-0 -z-10 bg-background"></div>
+    <div className="dark min-h-screen bg-slate-950 text-white selection:bg-blue-500/30">
+      {/* Background Effects */}
+      <div className="fixed inset-0 -z-10 bg-slate-950">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(30,41,59,1),rgba(2,6,23,1))]"></div>
+      </div>
 
       {/* Mobile Menu Button */}
       <button
@@ -34,12 +36,12 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
 
       {/* Sidebar */}
       <aside className={cn(
-        "fixed inset-y-0 left-0 w-64 bg-card/95 backdrop-blur-xl border-r border-border transform transition-transform duration-300 ease-in-out z-40",
+        "fixed inset-y-0 left-0 w-64 bg-slate-900/95 backdrop-blur-xl border-r border-slate-800 transform transition-transform duration-300 ease-in-out z-40",
         "md:translate-x-0",
         isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
       )}>
-        <div className="flex h-16 items-center justify-center border-b border-border">
-          <h1 className="text-xl font-bold text-foreground">Admin Panel</h1>
+        <div className="flex h-16 items-center justify-center border-b border-slate-800">
+          <h1 className="text-xl font-bold text-white">Admin Panel</h1>
         </div>
         <nav className="p-4">
           <ul className="space-y-2">

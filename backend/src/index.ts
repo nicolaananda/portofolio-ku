@@ -11,6 +11,7 @@ import portfolioRoutes from './routes/portfolio.routes';
 import blogRoutes from './routes/blog.routes';
 import uploadRoutes from './routes/upload.routes';
 import contactRoutes from './routes/contact.routes';
+import sitemapRoutes from './routes/sitemap.routes';
 
 // Load environment variables
 dotenv.config();
@@ -50,6 +51,7 @@ app.use('/api/portfolio', portfolioRoutes);
 app.use('/api/blog', blogRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/api/contact', contactRoutes);
+app.use('/', sitemapRoutes);
 
 // Health check
 app.get('/health', (req: Request, res: Response) => {

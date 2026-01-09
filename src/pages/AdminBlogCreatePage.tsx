@@ -74,21 +74,21 @@ export default function AdminBlogCreatePage() {
         >
             <div className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-3xl font-bold text-foreground">Create New Post</h1>
-                    <p className="text-muted-foreground mt-1">Share your thoughts with the world</p>
+                    <h1 className="text-3xl font-bold text-white">Create New Post</h1>
+                    <p className="text-slate-400 mt-1">Share your thoughts with the world</p>
                 </div>
                 <Button
                     variant="outline"
                     onClick={() => navigate('/admin/blog')}
-                    className="gap-2"
+                    className="px-6 py-2 rounded-lg border border-slate-600 text-slate-300 hover:bg-slate-800 hover:text-white transition-colors"
                 >
-                    <ArrowLeft className="h-4 w-4" />
+                    <ArrowLeft className="h-4 w-4 mr-2" />
                     Back to List
                 </Button>
             </div>
 
             {error && (
-                <div className="rounded-lg bg-destructive/10 border border-destructive/20 p-4 text-destructive">
+                <div className="rounded-lg bg-red-900/50 border border-red-800 p-4 text-red-300">
                     {error}
                 </div>
             )}
@@ -97,11 +97,11 @@ export default function AdminBlogCreatePage() {
                 <div className="grid gap-6 md:grid-cols-2">
                     {/* Left Column: Basic Info */}
                     <div className="space-y-6">
-                        <div className="bg-card rounded-xl border border-border shadow-sm p-6 space-y-6">
-                            <h2 className="text-xl font-semibold text-card-foreground">Basic Information</h2>
+                        <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700 shadow-xl p-6 space-y-6">
+                            <h2 className="text-xl font-semibold text-white">Basic Information</h2>
 
                             <div className="space-y-2">
-                                <label className="text-sm font-medium text-card-foreground">Title</label>
+                                <label className="text-sm font-medium text-slate-300">Title</label>
                                 <input
                                     type="text"
                                     name="title"
@@ -109,12 +109,12 @@ export default function AdminBlogCreatePage() {
                                     onChange={handleChange}
                                     placeholder="Enter post title"
                                     required
-                                    className="w-full px-4 py-2 rounded-lg border border-input bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary placeholder:text-muted-foreground"
+                                    className="w-full rounded-lg border border-slate-600 bg-slate-700/50 px-4 py-2 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                 />
                             </div>
 
                             <div className="space-y-2">
-                                <label className="text-sm font-medium text-card-foreground">Category</label>
+                                <label className="text-sm font-medium text-slate-300">Category</label>
                                 <input
                                     type="text"
                                     name="category"
@@ -122,12 +122,12 @@ export default function AdminBlogCreatePage() {
                                     onChange={handleChange}
                                     placeholder="e.g. Development, Design"
                                     required
-                                    className="w-full px-4 py-2 rounded-lg border border-input bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary placeholder:text-muted-foreground"
+                                    className="w-full rounded-lg border border-slate-600 bg-slate-700/50 px-4 py-2 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                 />
                             </div>
 
                             <div className="space-y-2">
-                                <label className="text-sm font-medium text-card-foreground">Excerpt</label>
+                                <label className="text-sm font-medium text-slate-300">Excerpt</label>
                                 <textarea
                                     name="excerpt"
                                     value={formData.excerpt}
@@ -135,7 +135,7 @@ export default function AdminBlogCreatePage() {
                                     placeholder="Brief summary for the card preview"
                                     required
                                     rows={4}
-                                    className="w-full px-4 py-2 rounded-lg border border-input bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary resize-none placeholder:text-muted-foreground"
+                                    className="w-full rounded-lg border border-slate-600 bg-slate-700/50 px-4 py-2 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
                                 />
                             </div>
 
@@ -146,9 +146,9 @@ export default function AdminBlogCreatePage() {
                                         name="featured"
                                         checked={formData.featured}
                                         onChange={handleCheckboxChange}
-                                        className="w-5 h-5 rounded border-input text-primary focus:ring-primary"
+                                        className="w-5 h-5 rounded border-slate-600 bg-slate-700/50 text-blue-500 focus:ring-blue-500"
                                     />
-                                    <span className="font-medium text-card-foreground">Featured Post</span>
+                                    <span className="font-medium text-slate-300">Featured Post</span>
                                 </label>
                             </div>
                         </div>
@@ -156,18 +156,18 @@ export default function AdminBlogCreatePage() {
 
                     {/* Right Column: Image & Media */}
                     <div className="space-y-6">
-                        <div className="bg-card rounded-xl border border-border shadow-sm p-6 space-y-6">
-                            <h2 className="text-xl font-semibold text-card-foreground">Cover Image</h2>
+                        <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700 shadow-xl p-6 space-y-6">
+                            <h2 className="text-xl font-semibold text-white">Cover Image</h2>
 
                             <div className="space-y-2">
-                                <label className="text-sm font-medium text-card-foreground">Upload Image</label>
+                                <label className="text-sm font-medium text-slate-300">Upload Image</label>
                                 <ImageUpload
                                     images={formData.coverImage ? [formData.coverImage] : []}
                                     onChange={handleImageChange}
                                     maxImages={1}
                                     disabled={isLoading}
                                 />
-                                <p className="text-xs text-muted-foreground">
+                                <p className="text-xs text-slate-400">
                                     Recommended size: 1200x630px. Max size: 5MB.
                                 </p>
                             </div>
@@ -176,31 +176,34 @@ export default function AdminBlogCreatePage() {
                 </div>
 
                 {/* Full Width: Content */}
-                <div className="bg-card rounded-xl border border-border shadow-sm p-6 space-y-6">
+                <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700 shadow-xl p-6 space-y-6">
                     <div className="flex items-center justify-between">
-                        <h2 className="text-xl font-semibold text-card-foreground">Content</h2>
+                        <h2 className="text-xl font-semibold text-white">Content</h2>
                     </div>
 
-                    <RichTextEditor
-                        value={formData.content}
-                        onChange={(html) => setFormData(prev => ({ ...prev, content: html }))}
-                        placeholder="Write your post content here..."
-                        minHeight="600px"
-                    />
+                    <div className="rounded-lg border border-slate-600 bg-slate-700/50 overflow-hidden text-black dark:text-gray-200">
+                        <RichTextEditor
+                            value={formData.content}
+                            onChange={(html) => setFormData(prev => ({ ...prev, content: html }))}
+                            placeholder="Write your post content here..."
+                            minHeight="600px"
+                        />
+                    </div>
                 </div>
 
-                <div className="flex justify-end gap-4 pt-4 border-t border-border">
+                <div className="flex justify-end gap-4 pt-4 border-t border-slate-700">
                     <Button
                         type="button"
                         variant="outline"
                         onClick={() => navigate('/admin/blog')}
+                        className="px-6 py-2 rounded-lg border border-slate-600 text-slate-300 hover:bg-slate-800 hover:text-white transition-colors"
                     >
                         Cancel
                     </Button>
                     <Button
                         type="submit"
                         disabled={isLoading}
-                        className="bg-primary text-primary-foreground hover:bg-primary/90"
+                        className="px-6 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                     >
                         {isLoading ? (
                             <>

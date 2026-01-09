@@ -1,5 +1,4 @@
 import { Response } from 'express';
-import fs from 'fs';
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import prisma from '../config/database';
 import { AuthRequest } from '../middleware/auth';
@@ -14,9 +13,11 @@ const s3Client = new S3Client({
     },
 });
 
-const uploadToR2 = async (file: Express.Multer.File): Promise<string> => {
-    const fileContent = fs.readFileSync(file.path);
-    const key = `uploads/${Date.now()}-${file.filename}`; // Unique key
+const uploadToR2 = async (file: Express.Multer.File): Promise<{ url: string; key: string }> => {
+    const fileContent = file.buffer;
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+    const filename = file.fieldname + '-' + uniqueSuffix + (file.originalname.includes('.') ? file.originalname.substring(file.originalname.lastIndexOf('.')) : '');
+    const key = `uploads/${filename}`; // Unique key
 
     const command = new PutObjectCommand({
         Bucket: process.env.R2_BUCKET_NAME,
@@ -27,15 +28,11 @@ const uploadToR2 = async (file: Express.Multer.File): Promise<string> => {
 
     await s3Client.send(command);
 
-    // Clean up local file
-    try {
-        fs.unlinkSync(file.path);
-    } catch (e) {
-        console.error('Failed to delete local file:', e);
-    }
-
-    // Return public URL
-    return `${process.env.R2_PUBLIC_URL}/${key}`;
+    // Return public URL and generated filename (key)
+    return {
+        url: `${process.env.R2_PUBLIC_URL}/${key}`,
+        key: filename
+    };
 };
 
 // Upload single image
@@ -49,10 +46,10 @@ export const uploadImage = async (req: AuthRequest, res: Response): Promise<void
             return;
         }
 
-        const { filename, originalname, mimetype, size, path: filePath } = req.file;
+        const { originalname, mimetype, size } = req.file;
 
         // Upload to R2
-        const url = await uploadToR2(req.file);
+        const { url, key: filename } = await uploadToR2(req.file);
 
         // Save to database
         const media = await prisma.media.create({
@@ -97,10 +94,10 @@ export const uploadImages = async (req: AuthRequest, res: Response): Promise<voi
 
         const uploadedFiles = await Promise.all(
             req.files.map(async (file) => {
-                const { filename, originalname, mimetype, size } = file;
+                const { originalname, mimetype, size } = file;
 
                 // Upload to R2
-                const url = await uploadToR2(file);
+                const { url, key: filename } = await uploadToR2(file);
 
                 const media = await prisma.media.create({
                     data: {
