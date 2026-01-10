@@ -12,8 +12,24 @@ echo "Building frontend..."
 # Generate static sitemap
 echo "Generating static sitemap..."
 cd backend
+# Ensure dependencies are available (including devDeps for ts-node)
+if [ "$NODE_ENV" = "production" ]; then
+    echo "Installing dev dependencies for sitemap generation..."
+    npm install --only=dev
+fi
+
 npx ts-node scripts/generate-sitemap.ts
+if [ $? -ne 0 ]; then
+    echo "❌ Sitemap generation failed! Aborting deployment."
+    exit 1
+fi
 cd ..
+
+# Ensure public/sitemap.xml exists
+if [ ! -f "public/sitemap.xml" ]; then
+    echo "❌ public/sitemap.xml not found after generation!"
+    exit 1
+fi
 
 npm install
 npm run build
@@ -31,6 +47,7 @@ if [ $? -eq 0 ]; then
   echo "Copying files..."
   sudo rm -f /home/nicola.id/public_html/sitemap.xml # Remove old static sitemap from server
   sudo cp -r dist/* /home/nicola.id/public_html/
+  sudo cp public/sitemap.xml /home/nicola.id/public_html/sitemap.xml # Explicitly copy sitemap to be safe
   # Explicitly copy .htaccess if it exists
   if [ -f "dist/.htaccess" ]; then
     echo "Copying .htaccess file..."
