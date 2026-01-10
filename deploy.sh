@@ -9,7 +9,12 @@ cd ..
 
 # Build the frontend
 echo "Building frontend..."
-rm -f public/sitemap.xml # Ensure static sitemap is gone before build
+# Generate static sitemap
+echo "Generating static sitemap..."
+cd backend
+npx ts-node scripts/generate-sitemap.ts
+cd ..
+
 npm install
 npm run build
 # Check if build was successful
