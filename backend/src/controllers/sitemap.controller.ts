@@ -4,6 +4,19 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
+const escapeXml = (unsafe: string) => {
+    return unsafe.replace(/[<>&'"]/g, (c) => {
+        switch (c) {
+            case '<': return '&lt;';
+            case '>': return '&gt;';
+            case '&': return '&amp;';
+            case '\'': return '&apos;';
+            case '"': return '&quot;';
+            default: return c;
+        }
+    });
+};
+
 export const getSitemap = async (req: Request, res: Response) => {
     try {
         // Priority: Host header -> FRONTEND_URL -> Hardcoded fallback
@@ -18,12 +31,12 @@ export const getSitemap = async (req: Request, res: Response) => {
         // Fetch dynamic data
         const portfolios = await prisma.portfolio.findMany({
             where: { published: true },
-            select: { slug: true, updatedAt: true },
+            select: { slug: true, updatedAt: true, createdAt: true },
         });
 
         const blogs = await prisma.blog.findMany({
             where: { published: true },
-            select: { slug: true, updatedAt: true },
+            select: { slug: true, updatedAt: true, createdAt: true },
         });
 
         // Static pages
@@ -50,24 +63,48 @@ export const getSitemap = async (req: Request, res: Response) => {
 
         // Add portfolios
         portfolios.forEach(portfolio => {
-            xml += `
+            try {
+                // Ensure valid date
+                const lastMod = portfolio.updatedAt || portfolio.createdAt || new Date();
+                const lastModStr = lastMod instanceof Date ? lastMod.toISOString() : new Date(lastMod).toISOString();
+
+                // Ensure slug is safe
+                const safeSlug = escapeXml(portfolio.slug);
+
+                xml += `
   <url>
-    <loc>${baseUrl}/portfolio/${portfolio.slug}</loc>
-    <lastmod>${portfolio.updatedAt.toISOString()}</lastmod>
+    <loc>${baseUrl}/portfolio/${safeSlug}</loc>
+    <lastmod>${lastModStr}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>`;
+            } catch (err) {
+                console.error(`Error processing portfolio for sitemap: ${JSON.stringify(portfolio)}`, err);
+                // Continue with other items instead of crashing
+            }
         });
 
         // Add blogs
         blogs.forEach(blog => {
-            xml += `
+            try {
+                // Ensure valid date
+                const lastMod = blog.updatedAt || blog.createdAt || new Date();
+                const lastModStr = lastMod instanceof Date ? lastMod.toISOString() : new Date(lastMod).toISOString();
+
+                // Ensure slug is safe
+                const safeSlug = escapeXml(blog.slug);
+
+                xml += `
   <url>
-    <loc>${baseUrl}/blog/${blog.slug}</loc>
-    <lastmod>${blog.updatedAt.toISOString()}</lastmod>
+    <loc>${baseUrl}/blog/${safeSlug}</loc>
+    <lastmod>${lastModStr}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>`;
+            } catch (err) {
+                console.error(`Error processing blog for sitemap: ${JSON.stringify(blog)}`, err);
+                // Continue
+            }
         });
 
         xml += `
@@ -76,7 +113,7 @@ export const getSitemap = async (req: Request, res: Response) => {
         res.header('Content-Type', 'application/xml');
         res.send(xml);
     } catch (error) {
-        console.error('Sitemap generation error:', error);
+        console.error('Critical sitemap generation error:', error);
         res.status(500).send('Error generating sitemap');
     }
 };
