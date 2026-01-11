@@ -77,10 +77,10 @@ const PortfolioPage = () => {
         <div className="blob bg-blue-500/10 w-[500px] h-[500px] bottom-[-100px] right-[10%] mix-blend-multiply filter blur-[100px] animate-blob animation-delay-2000"></div>
       </div>
 
-      <div className="container max-w-7xl mx-auto px-4 pt-24 pb-20">
+      <div className="container max-w-7xl mx-auto px-4 pt-32 pb-20">
         {/* HEADER */}
-        <div className="mb-16 text-center max-w-3xl mx-auto">
-          <h1 className="text-5xl md:text-7xl font-black tracking-tighter mb-6 animate-reveal">
+        <div className="mb-10 text-center max-w-3xl mx-auto">
+          <h1 className="text-5xl md:text-7xl font-black tracking-tighter mb-4 animate-reveal">
             Selected Work
           </h1>
           <p className="text-xl text-gray-500 dark:text-gray-400 animate-fadeInUp" style={{ animationDelay: '0.2s' }}>
@@ -89,7 +89,7 @@ const PortfolioPage = () => {
         </div>
 
         {/* CONTROLS */}
-        <div className="flex flex-col md:flex-row justify-between items-center gap-6 mb-12 sticky top-20 z-30 bg-background/80 backdrop-blur-xl p-4 rounded-[2rem] border border-black/5 dark:border-white/5 shadow-sm animate-fadeInUp" style={{ animationDelay: '0.3s' }}>
+        <div className="flex flex-col md:flex-row justify-between items-center gap-6 mb-10 sticky top-20 z-30 bg-background/80 backdrop-blur-xl p-4 rounded-[2rem] border border-black/5 dark:border-white/5 shadow-sm animate-fadeInUp" style={{ animationDelay: '0.3s' }}>
           {/* Categories */}
           <div className="flex gap-2 overflow-x-auto no-scrollbar w-full md:w-auto pb-2 md:pb-0">
             {categories.map((category) => (
@@ -97,8 +97,8 @@ const PortfolioPage = () => {
                 key={category}
                 onClick={() => setActiveCategory(category)}
                 className={`px-6 py-2 rounded-full text-sm font-bold transition-all whitespace-nowrap ${activeCategory === category
-                    ? 'bg-black text-white dark:bg-white dark:text-black shadow-lg scale-105'
-                    : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'
+                  ? 'bg-black text-white dark:bg-white dark:text-black shadow-lg scale-105'
+                  : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'
                   }`}
               >
                 {category}
@@ -136,7 +136,7 @@ const PortfolioPage = () => {
                   <img
                     src={project.imageUrls[0]}
                     alt={project.title}
-                    className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105"
+                    className="w-full aspect-[4/3] object-cover transition-transform duration-700 group-hover:scale-105"
                   />
 
                   {/* Overlay */}

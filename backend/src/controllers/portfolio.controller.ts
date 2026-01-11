@@ -58,7 +58,7 @@ export const getPortfolio = async (req: AuthRequest, res: Response): Promise<voi
     try {
         const { slug } = req.params; // We keep the param name 'slug' from routes, but treat it as identifier
 
-        const portfolio = await prisma.portfolio.findFirst({
+        let portfolio = await prisma.portfolio.findFirst({
             where: {
                 OR: [
                     { id: slug },
@@ -82,6 +82,26 @@ export const getPortfolio = async (req: AuthRequest, res: Response): Promise<voi
                 message: 'Portfolio not found',
             });
             return;
+        }
+
+        // Check and generate AI summary if missing
+        if (!portfolio.summary && portfolio.description) {
+            try {
+                // Import AI service dynamically to avoid circular dependencies or initialization issues if any
+                const { aiService } = await import('../services/ai.service');
+                const generatedSummary = await aiService.generateSummary(portfolio.description);
+
+                if (generatedSummary) {
+                    // Save to DB
+                    portfolio = await prisma.portfolio.update({
+                        where: { id: portfolio.id },
+                        data: { summary: generatedSummary }
+                    });
+                }
+            } catch (aiError) {
+                console.error("Failed to auto-generate summary:", aiError);
+                // Continue without summary, don't block the response
+            }
         }
 
         res.json({

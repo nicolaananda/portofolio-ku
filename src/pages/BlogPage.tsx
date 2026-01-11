@@ -97,7 +97,7 @@ const BlogPage = () => {
   }
 
   return (
-    <div className="bg-background text-foreground min-h-screen pt-24 pb-20">
+    <div className="bg-background text-foreground min-h-screen pt-32 pb-20">
       <SEOHead
         title="Journal - Nicola Ananda"
         description="Thoughts, insights, and perspectives on data analysis, web development, and modern technology trends."
@@ -105,120 +105,98 @@ const BlogPage = () => {
         url="https://nicola.id/blog"
       />
 
-      <div className="container max-w-7xl mx-auto px-4">
-        {/* Header */}
-        <div className="mb-20">
-          <h1 className="text-7xl md:text-9xl font-black tracking-tighter mb-8 animate-reveal leading-[0.85]">
-            JOURNAL
-          </h1>
-
-          <div className="flex flex-col md:flex-row justify-between items-end gap-8 border-t border-black/10 dark:border-white/10 pt-8">
-            <div className="flex flex-wrap gap-4">
-              {categories.map(category => (
-                <button
-                  key={category}
-                  onClick={() => setSelectedCategory(category)}
-                  className={`text-sm font-bold uppercase tracking-wider transition-colors duration-300 ${selectedCategory === category
-                    ? 'text-black dark:text-white underline underline-offset-4 decoration-2'
-                    : 'text-gray-400 hover:text-black dark:hover:text-white'
-                    }`}
-                >
-                  {category}
-                </button>
-              ))}
-            </div>
-
+      <div className="container max-w-3xl mx-auto px-6">
+        {/* Minimal Header */}
+        <div className="mb-16 border-b border-gray-200 dark:border-gray-800">
+          <div className="flex flex-col md:flex-row justify-between items-end gap-6 mb-8">
+            <h1 className="text-5xl md:text-6xl font-serif font-black tracking-tight text-foreground">
+              Journal.
+            </h1>
             <div className="relative w-full md:w-auto">
-              <Search className="absolute left-0 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500" />
+              <Search className="absolute left-0 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
               <Input
                 type="text"
-                placeholder="Search articles..."
-                className="pl-8 w-full md:w-64 bg-transparent border-none border-b border-black/10 dark:border-white/10 focus:border-black dark:focus:border-white rounded-none px-0"
+                placeholder="Search..."
+                className="pl-8 w-full md:w-48 bg-transparent border-none focus:ring-0 placeholder:text-gray-400 text-sm"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
           </div>
+
+          {/* Categories / Tabs */}
+          <div className="flex gap-6 overflow-x-auto pb-4 no-scrollbar">
+            {categories.map(category => (
+              <button
+                key={category}
+                onClick={() => setSelectedCategory(category)}
+                className={`text-sm font-medium whitespace-nowrap transition-colors ${selectedCategory === category
+                  ? 'text-foreground border-b-2 border-foreground pb-1'
+                  : 'text-gray-500 hover:text-foreground'
+                  }`}
+              >
+                {category}
+              </button>
+            ))}
+          </div>
         </div>
 
+        {/* Post Stream */}
         {filteredPosts.length > 0 ? (
-          <div className="space-y-24">
-            {/* Featured Hero Post */}
-            {featuredPost && (
-              <Link to={`/blog/${featuredPost.slug || featuredPost._id}`} className="group block relative animate-fadeInUp" style={{ animationDelay: '0.2s' }}>
-                <div className="grid lg:grid-cols-12 gap-8 items-center">
-                  <div className="lg:col-span-8 relative overflow-hidden rounded-2xl aspect-[16/9] bg-gray-100 dark:bg-gray-900">
-                    <img
-                      src={featuredPost.coverImage}
-                      alt={featuredPost.title}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-500" />
-                  </div>
-                  <div className="lg:col-span-4 flex flex-col justify-center">
-                    <div className="flex items-center gap-3 text-xs font-bold uppercase tracking-widest text-gray-400 mb-4">
-                      <span className="text-black dark:text-white">Featured</span>
+          <div className="space-y-12">
+            {filteredPosts.map((post) => (
+              <Link
+                to={`/blog/${post.slug || post._id}`}
+                key={post._id}
+                className="group block"
+              >
+                <div className="flex flex-col-reverse md:flex-row gap-6 md:gap-10 items-start">
+                  <div className="flex-1 space-y-3">
+                    <div className="flex items-center gap-2 text-xs font-bold tracking-wider text-gray-500 uppercase">
+                      <span className="text-blue-600 dark:text-blue-400">{post.category}</span>
                       <span>•</span>
-                      <span>{new Date(featuredPost.createdAt).toLocaleDateString()}</span>
+                      <span>{new Date(post.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}</span>
                     </div>
-                    <h2 className="text-3xl md:text-4xl font-black leading-tight mb-6 group-hover:underline decoration-2 underline-offset-4">
-                      {featuredPost.title}
+
+                    <h2 className="text-2xl md:text-3xl font-bold font-serif leading-tight group-hover:text-gray-600 dark:group-hover:text-gray-300 transition-colors">
+                      {post.title}
                     </h2>
-                    <p className="text-lg text-gray-600 dark:text-gray-400 line-clamp-3 mb-6">
-                      {featuredPost.excerpt}
+
+                    <p className="text-gray-500 dark:text-gray-400 line-clamp-3 leading-relaxed font-serif text-base">
+                      {post.excerpt}
                     </p>
-                    <div className="flex items-center text-sm font-bold uppercase tracking-widest group-hover:translate-x-2 transition-transform">
-                      Read Story <ArrowRight className="ml-2 h-4 w-4" />
+
+                    <div className="flex items-center gap-2 text-xs font-medium text-gray-400 pt-2">
+                      <span>{post.readTime || '5 min read'}</span>
+                      {post.featured && (
+                        <>
+                          <span>•</span>
+                          <span className="flex items-center gap-1 text-amber-500"><Sparkles className="w-3 h-3" /> Featured</span>
+                        </>
+                      )}
                     </div>
+                  </div>
+
+                  {/* Thumbnail Image */}
+                  <div className="w-full md:w-40 aspect-[16/10] md:aspect-square shrink-0 bg-gray-100 dark:bg-gray-900 rounded-lg overflow-hidden">
+                    <img
+                      src={post.coverImage}
+                      alt={post.title}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
                   </div>
                 </div>
               </Link>
-            )}
-
-            {/* List View for Other Posts */}
-            {otherPosts.length > 0 && (
-              <div className="border-t border-black/10 dark:border-white/10">
-                {otherPosts.map((post, idx) => (
-                  <Link
-                    to={`/blog/${post.slug || post._id}`}
-                    key={post._id}
-                    className="group block border-b border-black/10 dark:border-white/10 py-12 hover:bg-black/5 dark:hover:bg-white/5 transition-colors px-4 -mx-4 animate-fadeInUp"
-                    style={{ animationDelay: `${0.1 * idx}s` }}
-                  >
-                    <div className="grid md:grid-cols-12 gap-8 items-center">
-                      <div className="md:col-span-3 text-sm font-bold text-gray-400 uppercase tracking-wider">
-                        {new Date(post.createdAt).toLocaleDateString()}
-                      </div>
-                      <div className="md:col-span-7">
-                        <div className="text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">
-                          {post.category}
-                        </div>
-                        <h3 className="text-2xl md:text-3xl font-bold group-hover:underline decoration-2 underline-offset-4 mb-2">
-                          {post.title}
-                        </h3>
-                        <p className="text-gray-600 dark:text-gray-400 line-clamp-2">
-                          {post.excerpt}
-                        </p>
-                      </div>
-                      <div className="md:col-span-2 flex justify-end">
-                        <ArrowUpRight className="w-6 h-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                      </div>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            )}
+            ))}
           </div>
         ) : (
-          <div className="py-20 text-center border-t border-black/10 dark:border-white/10">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 dark:bg-gray-800 mb-6">
-              <Sparkles className="w-8 h-8 text-gray-400" />
-            </div>
-            <h2 className="text-2xl font-bold mb-2">No stories found</h2>
-            <p className="text-gray-500 mb-6">
-              Try changing your search term or selecting a different category.
+          <div className="py-20 text-center">
+            <Sparkles className="w-8 h-8 text-gray-300 mx-auto mb-4" />
+            <h2 className="text-xl font-serif font-bold mb-2">No stories found</h2>
+            <p className="text-gray-500 mb-6 text-sm">
+              We couldn't find any articles matching your criteria.
             </p>
-            <Button onClick={() => { setSearchTerm(''); setSelectedCategory('All'); }} variant="outline">
+            <Button onClick={() => { setSearchTerm(''); setSelectedCategory('All'); }} variant="outline" size="sm">
               Clear Filters
             </Button>
           </div>

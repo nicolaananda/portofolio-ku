@@ -27,6 +27,7 @@ model Portfolio {
   slug         String   @unique
   title        String
   description  String   @db.Text // HTML content
+  summary      String?  @db.Text // AI generated summary
   category     String
   client       String?
   completionDate DateTime?

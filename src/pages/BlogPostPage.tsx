@@ -95,7 +95,7 @@ const BlogPostPage = () => {
   }
 
   return (
-    <div className="bg-background text-foreground min-h-screen pt-24 pb-20">
+    <div className="bg-background text-foreground min-h-screen pt-32 pb-24">
       <SEOHead
         title={`${post.title} - Nicola Ananda`}
         description={post.excerpt || post.content.replace(/<[^>]*>?/gm, '').substring(0, 160)}
@@ -106,46 +106,42 @@ const BlogPostPage = () => {
 
       {/* Progress Bar */}
       <motion.div
-        className="fixed top-0 left-0 right-0 h-1 bg-black dark:bg-white origin-left z-50"
+        className="fixed top-0 left-0 right-0 h-1 bg-foreground origin-left z-50"
         style={{ scaleX }}
       />
 
-      <article className="container max-w-3xl mx-auto px-4">
+      <article className="container max-w-3xl mx-auto px-6">
         {/* Navigation */}
-        <Link to="/blog" className="inline-flex items-center text-sm font-bold uppercase tracking-wider text-gray-400 hover:text-black dark:hover:text-white transition-colors mb-12">
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          Back to Journal
-        </Link>
+        <div className="mb-12">
+          <Link to="/blog" className="inline-flex items-center text-sm font-medium text-gray-500 hover:text-foreground transition-colors group">
+            <ArrowLeft className="mr-2 h-4 w-4 group-hover:-translate-x-1 transition-transform" />
+            Back to Journal
+          </Link>
+        </div>
 
         {/* Header */}
-        <div className="mb-12 text-center">
-          <div className="flex justify-center gap-4 items-center mb-8 text-xs font-bold uppercase tracking-widest text-gray-400">
-            <span className="text-black dark:text-white">
-              {post.category}
-            </span>
-            <span>•</span>
-            <span>{new Date(post.createdAt).toLocaleDateString()}</span>
-            <span>•</span>
-            <span>{post.readTime}</span>
-          </div>
-
-          <h1 className="text-4xl md:text-6xl font-black tracking-tighter mb-12 leading-tight text-balance">
+        <div className="mb-12">
+          <h1 className="text-4xl md:text-6xl font-serif font-black tracking-tight mb-8 leading-[1.1] text-balance">
             {post.title}
           </h1>
 
-          <div className="flex items-center justify-center gap-4">
-            <div className="w-12 h-12 rounded-full bg-gray-200 overflow-hidden">
+          <div className="flex items-center gap-4">
+            <div className="w-10 h-10 rounded-full bg-gray-200 overflow-hidden ring-2 ring-background">
               <img src={post.author?.avatar} alt={post.author?.name} className="w-full h-full object-cover" />
             </div>
-            <div className="text-left">
-              <p className="font-bold text-sm">{post.author?.name}</p>
-              <p className="text-xs text-gray-500">{post.author?.bio}</p>
+            <div className="text-sm">
+              <p className="font-bold text-foreground">{post.author?.name}</p>
+              <div className="flex items-center gap-2 text-gray-500">
+                <span>{new Date(post.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                <span>•</span>
+                <span>{post.readTime}</span>
+              </div>
             </div>
           </div>
         </div>
 
         {/* Cover Image */}
-        <div className="rounded-2xl overflow-hidden mb-16 bg-gray-100 dark:bg-gray-900 aspect-video relative">
+        <div className="rounded-xl overflow-hidden mb-12 bg-gray-100 dark:bg-gray-900 aspect-video shadow-sm">
           <img
             src={post.coverImage}
             alt={post.title}
@@ -156,17 +152,28 @@ const BlogPostPage = () => {
         {/* Content */}
         <HTMLContent
           html={post.content}
-          className="prose dark:prose-invert max-w-none prose-headings:font-bold prose-h1:text-4xl prose-h2:text-3xl prose-a:text-black dark:prose-a:text-white prose-a:no-underline prose-a:border-b prose-a:border-black/20 dark:prose-a:border-white/20 hover:prose-a:border-black dark:hover:prose-a:border-white prose-img:rounded-xl"
+          className="prose prose-lg dark:prose-invert max-w-none font-serif leading-relaxed
+            prose-headings:font-serif prose-headings:font-bold prose-headings:tracking-tight
+            prose-p:text-gray-700 dark:prose-p:text-gray-300
+            prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-a:no-underline hover:prose-a:underline
+            prose-img:rounded-xl prose-img:shadow-md
+            prose-blockquote:border-l-4 prose-blockquote:border-black dark:prose-blockquote:border-white prose-blockquote:italic"
         />
 
         {/* Footer */}
-        <div className="mt-20 pt-12 border-t border-black/10 dark:border-white/10 flex justify-between items-center">
+        <div className="mt-20 pt-8 border-t border-gray-200 dark:border-gray-800 flex justify-between items-center">
           <div className="flex gap-2">
-            <Button variant="outline" size="sm" className="rounded-full">
-              <Share2 className="w-4 h-4 mr-2" /> Share
+            <div className="inline-flex items-center px-3 py-1 rounded-full bg-gray-100 dark:bg-gray-800 text-xs font-bold uppercase tracking-wider text-gray-600 dark:text-gray-400">
+              {post.category}
+            </div>
+          </div>
+
+          <div className="flex gap-2">
+            <Button variant="ghost" size="icon" className="rounded-full hover:bg-gray-100 dark:hover:bg-gray-800">
+              <Share2 className="w-5 h-5 text-gray-600 dark:text-gray-400" />
             </Button>
-            <Button variant="outline" size="sm" className="rounded-full">
-              <Bookmark className="w-4 h-4 mr-2" /> Save
+            <Button variant="ghost" size="icon" className="rounded-full hover:bg-gray-100 dark:hover:bg-gray-800">
+              <Bookmark className="w-5 h-5 text-gray-600 dark:text-gray-400" />
             </Button>
           </div>
         </div>

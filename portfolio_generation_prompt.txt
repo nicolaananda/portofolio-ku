@@ -3,7 +3,6 @@ You are a professional technical copywriter. I need you to generate content for 
 Please provide the output in a clear, structured format that I can copy-paste into my CMS fields.
 
 Here is the source project information:
-[PASTE YOUR PROJECT DETAILS HERE: GITHUB README, TECH STACK, CHALLENGES, SOLUTIONS, ETC.]
 
 ---
 Please generate the following fields:
