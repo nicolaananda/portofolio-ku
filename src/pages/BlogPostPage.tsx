@@ -157,7 +157,8 @@ const BlogPostPage = () => {
             prose-p:text-gray-700 dark:prose-p:text-gray-300
             prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-a:no-underline hover:prose-a:underline
             prose-img:rounded-xl prose-img:shadow-md
-            prose-blockquote:border-l-4 prose-blockquote:border-black dark:prose-blockquote:border-white prose-blockquote:italic"
+            prose-blockquote:border-l-4 prose-blockquote:border-black dark:prose-blockquote:border-white prose-blockquote:italic prose-blockquote:pl-4
+            prose-pre:bg-gray-100 dark:prose-pre:bg-[#111] prose-pre:border prose-pre:border-gray-200 dark:prose-pre:border-gray-800"
         />
 
         {/* Footer */}
