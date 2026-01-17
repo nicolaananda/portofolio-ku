@@ -10,6 +10,11 @@ interface ImageUploadProps {
   disabled?: boolean;
 }
 
+interface UploadProgress {
+  fileName: string;
+  progress: number;
+}
+
 export default function ImageUpload({
   images,
   onChange,
@@ -19,6 +24,7 @@ export default function ImageUpload({
   const { accessToken } = useAuth();
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState('');
+  const [uploadProgress, setUploadProgress] = useState<UploadProgress[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,10 +41,19 @@ export default function ImageUpload({
 
     setUploading(true);
 
+    // Initialize progress for all files
+    const initialProgress = Array.from(files).map((file) => ({
+      fileName: file.name,
+      progress: 0,
+    }));
+    setUploadProgress(initialProgress);
+
     try {
       const uploadedUrls: string[] = [];
 
-      for (const file of Array.from(files)) {
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+
         // Validate file type
         if (!file.type.startsWith('image/')) {
           setError('Please select valid image files');
@@ -51,9 +66,11 @@ export default function ImageUpload({
           continue;
         }
 
-        // Upload file
-        const url = await uploadImage(file);
-        uploadedUrls.push(url);
+        // Upload file with progress tracking
+        const url = await uploadImageWithProgress(file, i);
+        if (url) {
+          uploadedUrls.push(url);
+        }
       }
 
       if (uploadedUrls.length > 0) {
@@ -63,6 +80,7 @@ export default function ImageUpload({
       setError(err instanceof Error ? err.message : 'Failed to upload images');
     } finally {
       setUploading(false);
+      setUploadProgress([]);
       // Reset file input
       if (fileInputRef.current) {
         fileInputRef.current.value = '';
@@ -70,35 +88,59 @@ export default function ImageUpload({
     }
   };
 
-  const uploadImage = async (file: File): Promise<string> => {
-    const formData = new FormData();
-    formData.append('image', file);
+  const uploadImageWithProgress = (file: File, index: number): Promise<string | null> => {
+    return new Promise((resolve, reject) => {
+      const formData = new FormData();
+      formData.append('image', file);
 
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/upload/image`, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-      credentials: 'include',
-      body: formData,
+      const xhr = new XMLHttpRequest();
+
+      // Track upload progress
+      xhr.upload.addEventListener('progress', (event) => {
+        if (event.lengthComputable) {
+          const percentComplete = Math.round((event.loaded / event.total) * 100);
+          setUploadProgress((prev) => {
+            const updated = [...prev];
+            if (updated[index]) {
+              updated[index] = { ...updated[index], progress: percentComplete };
+            }
+            return updated;
+          });
+        }
+      });
+
+      xhr.addEventListener('load', () => {
+        if (xhr.status >= 200 && xhr.status < 300) {
+          try {
+            const data = JSON.parse(xhr.responseText);
+            // Handle different response formats
+            if (data.success && data.url) {
+              resolve(data.url);
+            } else {
+              resolve(data.url || data.imageUrl || data.data?.url || data.data?.imageUrl);
+            }
+          } catch {
+            reject(new Error('Invalid response from server'));
+          }
+        } else {
+          try {
+            const data = JSON.parse(xhr.responseText);
+            reject(new Error(data.message || data.error || 'Failed to upload image'));
+          } catch {
+            reject(new Error('Failed to upload image'));
+          }
+        }
+      });
+
+      xhr.addEventListener('error', () => {
+        reject(new Error('Network error during upload'));
+      });
+
+      xhr.open('POST', `${import.meta.env.VITE_API_URL}/upload/image`);
+      xhr.setRequestHeader('Authorization', `Bearer ${accessToken}`);
+      xhr.withCredentials = true;
+      xhr.send(formData);
     });
-
-    const data = await response.json();
-
-    // Handle different response formats
-    if (!response.ok) {
-      const errorMessage = data.message || data.error || 'Failed to upload image';
-      throw new Error(errorMessage);
-    }
-
-    // Backend returns: { success: true, url: "...", message: "..." }
-    // Or legacy: { url: "..." }
-    if (data.success && data.url) {
-      return data.url;
-    }
-
-    // Fallback to other possible formats
-    return data.url || data.imageUrl || data.data?.url || data.data?.imageUrl;
   };
 
   const handleRemoveImage = (index: number) => {
@@ -111,6 +153,11 @@ export default function ImageUpload({
       fileInputRef.current?.click();
     }
   };
+
+  // Calculate overall progress
+  const overallProgress = uploadProgress.length > 0
+    ? Math.round(uploadProgress.reduce((sum, p) => sum + p.progress, 0) / uploadProgress.length)
+    : 0;
 
   return (
     <div className="space-y-4">
@@ -135,7 +182,7 @@ export default function ImageUpload({
           {uploading ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Uploading...
+              Uploading... {overallProgress}%
             </>
           ) : (
             <>
@@ -146,6 +193,26 @@ export default function ImageUpload({
           )}
         </Button>
       </div>
+
+      {/* Progress Bar */}
+      {uploading && uploadProgress.length > 0 && (
+        <div className="space-y-2">
+          {uploadProgress.map((item, idx) => (
+            <div key={idx} className="space-y-1">
+              <div className="flex justify-between text-xs text-slate-500 dark:text-slate-400">
+                <span className="truncate max-w-[200px]">{item.fileName}</span>
+                <span>{item.progress}%</span>
+              </div>
+              <div className="h-2 w-full rounded-full bg-slate-200 dark:bg-slate-700 overflow-hidden">
+                <div
+                  className="h-full rounded-full bg-gradient-to-r from-blue-500 to-indigo-500 transition-all duration-300 ease-out"
+                  style={{ width: `${item.progress}%` }}
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
 
       {/* Error Message */}
       {error && (

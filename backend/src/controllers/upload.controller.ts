@@ -2,6 +2,7 @@ import { Response } from 'express';
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import prisma from '../config/database';
 import { AuthRequest } from '../middleware/auth';
+import { optimizeImage } from '../utils/image-optimizer';
 
 // Initialize S3 Client for Cloudflare R2
 const s3Client = new S3Client({
@@ -13,25 +14,32 @@ const s3Client = new S3Client({
     },
 });
 
-const uploadToR2 = async (file: Express.Multer.File): Promise<{ url: string; key: string }> => {
-    const fileContent = file.buffer;
+const uploadToR2 = async (file: Express.Multer.File): Promise<{ url: string; key: string; size: number }> => {
+    // Optimize image: convert to WebP and compress
+    const optimized = await optimizeImage(file.buffer, {
+        quality: 80,
+        maxWidth: 1920,
+        maxHeight: 1080,
+    });
+
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-    const filename = file.fieldname + '-' + uniqueSuffix + (file.originalname.includes('.') ? file.originalname.substring(file.originalname.lastIndexOf('.')) : '');
-    const key = `uploads/${filename}`; // Unique key
+    const filename = file.fieldname + '-' + uniqueSuffix + optimized.extension;
+    const key = `uploads/${filename}`;
 
     const command = new PutObjectCommand({
         Bucket: process.env.R2_BUCKET_NAME,
         Key: key,
-        Body: fileContent,
-        ContentType: file.mimetype,
+        Body: optimized.buffer,
+        ContentType: optimized.mimetype,
     });
 
     await s3Client.send(command);
 
-    // Return public URL and generated filename (key)
+    // Return public URL, generated filename, and optimized size
     return {
         url: `${process.env.R2_PUBLIC_URL}/${key}`,
-        key: filename
+        key: filename,
+        size: optimized.buffer.length,
     };
 };
 
@@ -46,20 +54,20 @@ export const uploadImage = async (req: AuthRequest, res: Response): Promise<void
             return;
         }
 
-        const { originalname, mimetype, size } = req.file;
+        const { originalname } = req.file;
 
-        // Upload to R2
-        const { url, key: filename } = await uploadToR2(req.file);
+        // Upload to R2 (converts to WebP and compresses)
+        const { url, key: filename, size } = await uploadToR2(req.file);
 
         // Save to database
         const media = await prisma.media.create({
             data: {
                 filename,
                 originalName: originalname,
-                mimetype,
+                mimetype: 'image/webp',
                 size,
-                url, // Store the R2 URL
-                path: url, // Path is also URL in this case
+                url,
+                path: url,
             },
         });
 
@@ -94,16 +102,16 @@ export const uploadImages = async (req: AuthRequest, res: Response): Promise<voi
 
         const uploadedFiles = await Promise.all(
             req.files.map(async (file) => {
-                const { originalname, mimetype, size } = file;
+                const { originalname } = file;
 
-                // Upload to R2
-                const { url, key: filename } = await uploadToR2(file);
+                // Upload to R2 (converts to WebP and compresses)
+                const { url, key: filename, size } = await uploadToR2(file);
 
                 const media = await prisma.media.create({
                     data: {
                         filename,
                         originalName: originalname,
-                        mimetype,
+                        mimetype: 'image/webp',
                         size,
                         url,
                         path: url,
