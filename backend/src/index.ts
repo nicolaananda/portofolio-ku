@@ -58,6 +58,10 @@ app.get('/health', (req: Request, res: Response) => {
     res.json({ status: 'ok', message: 'Server is running' });
 });
 
+app.get('/api/health', (req: Request, res: Response) => {
+    res.json({ status: 'ok', message: 'Server is running', timestamp: new Date().toISOString() });
+});
+
 // 404 handler
 app.use((req: Request, res: Response) => {
     res.status(404).json({
