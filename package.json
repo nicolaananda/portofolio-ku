@@ -26,13 +26,10 @@
     "type-check": "tsc --noEmit",
     "clean": "rm -rf dist node_modules/.vite",
     "clean:install": "npm run clean && npm install",
-    "docker:up": "docker-compose --env-file docker.env up -d",
-    "docker:down": "docker-compose --env-file docker.env down",
-    "docker:logs": "docker-compose --env-file docker.env logs -f",
-    "docker:build-serve": "npm run build && docker-compose --env-file docker.env up -d",
-    "env:dev": "cp env.development .env",
-    "env:prod": "cp env.production .env",
-    "env:docker": "cp docker.env .env"
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "docker:logs": "docker-compose logs -f",
+    "docker:build": "docker-compose build"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.0.1",
