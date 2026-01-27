@@ -17,7 +17,7 @@ import sitemapRoutes from './routes/sitemap.routes';
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 5002;
+const PORT = process.env.PORT || 5992;
 
 // Middleware
 app.use((req, res, next) => {
