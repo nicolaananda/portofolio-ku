@@ -155,7 +155,7 @@ const HomePage = () => {
                       <div key={tech} className="group flex flex-col items-center gap-2">
                         <div className="w-12 h-12 rounded-xl bg-gray-50 dark:bg-gray-800 border border-black/5 dark:border-white/5 flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform duration-300">
                           <img
-                            src={`https://cdn.simpleicons.org/${slug}/000000/ffffff`}
+                            src={`https://cdn.simpleicons.org/${slug}`}
                             alt={tech}
                             loading="lazy"
                             className="w-5 h-5 dark:invert"
