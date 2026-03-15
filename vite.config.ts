@@ -62,14 +62,30 @@ export default defineConfig(({ mode }) => {
             'vendor-query': [
               '@tanstack/react-query'
             ],
-            // Split admin components separately
+            // TipTap Editor - lazy loaded separately to reduce admin bundle
+            'editor-tiptap': [
+              '@tiptap/react',
+              '@tiptap/starter-kit',
+              '@tiptap/extension-image',
+              '@tiptap/extension-link',
+              '@tiptap/extension-placeholder',
+              '@tiptap/extension-text-align',
+              '@tiptap/extension-underline'
+            ],
+            // Admin pages (WITHOUT editor components)
             'admin': [
               './src/pages/DashboardPage',
               './src/pages/PortfolioListPage',
-              './src/pages/PortfolioEditPage',
-              './src/pages/PortfolioCreatePage',
               './src/pages/ContactListPage',
               './src/layouts/AdminLayout'
+            ],
+            // Admin edit pages with editor (separate chunk)
+            'admin-editor': [
+              './src/pages/PortfolioEditPage',
+              './src/pages/PortfolioCreatePage',
+              './src/pages/AdminBlogCreatePage',
+              './src/pages/AdminBlogEditPage',
+              './src/pages/AdminBlogListPage'
             ],
             // Core UI components
             'ui-core': [
@@ -102,6 +118,10 @@ export default defineConfig(({ mode }) => {
             // Animation libraries
             'animation': [
               'framer-motion'
+            ],
+            // HTML sanitization
+            'sanitize': [
+              'dompurify'
             ]
           },
           chunkFileNames: 'assets/js/[name]-[hash].js',

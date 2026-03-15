@@ -3,8 +3,8 @@ Allow: /
 Disallow: /admin/
 Disallow: /login
 
-# Sitemap location
+# Sitemap
 Sitemap: https://nicola.id/sitemap.xml
 
-# Crawl delay (optional, helps with server load)
+# Crawl delay to be respectful
 Crawl-delay: 1

@@ -45,7 +45,7 @@ const AnimatedSection = ({
   return (
     <div
       ref={sectionRef}
-      className={`${className} ${isVisible ? 'animate-slide-up' : 'opacity-0'}`}
+      className={`${className} ${isVisible ? 'animate-fadeInUp' : 'opacity-0'}`}
       style={{ transitionDelay: `${delay}ms` }}
     >
       {children}

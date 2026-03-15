@@ -84,11 +84,11 @@ const ContactPage = () => {
             </p>
 
             <div className="space-y-6 animate-fadeInUp" style={{ animationDelay: '0.4s' }}>
-              <a href="mailto:gmail@nicola.id" className="group flex items-center gap-4 text-xl font-bold hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
+              <a href="mailto:hello@nicola.id" className="group flex items-center gap-4 text-xl font-bold hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
                 <div className="w-12 h-12 rounded-full bg-black text-white dark:bg-white dark:text-black flex items-center justify-center group-hover:scale-110 transition-transform">
                   <Mail className="h-5 w-5" />
                 </div>
-                gmail@nicola.id
+                hello@nicola.id
               </a>
 
               <div className="flex items-center gap-4 text-xl font-bold">

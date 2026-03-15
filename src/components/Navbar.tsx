@@ -18,6 +18,17 @@ const Navbar = ({ isScrolled }: NavbarProps) => {
     setIsMenuOpen(false);
   }, [location.pathname]);
 
+  // Close mobile menu on Escape key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isMenuOpen) {
+        setIsMenuOpen(false);
+      }
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [isMenuOpen]);
+
   const navLinks = [
     { to: '/', label: 'Home' },
     { to: '/about', label: 'About' },
@@ -29,9 +40,9 @@ const Navbar = ({ isScrolled }: NavbarProps) => {
   return (
     <>
       <header className={`fixed top-6 left-0 right-0 z-50 transition-all duration-500 flex justify-center px-4 pointer-events-none`}>
-        <div className={`pointer-events-auto transition-all duration-500 ease-[cubic-bezier(0.76,0,0.24,1)] ${isScrolled
-            ? 'w-auto rounded-full bg-white/80 dark:bg-black/80 backdrop-blur-xl border border-black/5 dark:border-white/10 shadow-lg py-2 px-2'
-            : 'w-full max-w-7xl rounded-none bg-transparent border-none py-4 px-0'
+        <div className={`pointer-events-auto transition-all duration-500 ease-out-expo ${isScrolled
+          ? 'w-auto rounded-full bg-white/80 dark:bg-black/80 backdrop-blur-xl border border-black/5 dark:border-white/10 shadow-lg py-2 px-2'
+          : 'w-full max-w-7xl rounded-none bg-transparent border-none py-4 px-0'
           }`}>
           <div className="flex items-center justify-between gap-4">
             {/* Logo */}
@@ -69,8 +80,8 @@ const Navbar = ({ isScrolled }: NavbarProps) => {
               <Button
                 asChild
                 className={`hidden md:flex rounded-full font-medium transition-all duration-300 ${isScrolled
-                    ? 'h-9 px-4 text-xs'
-                    : 'h-10 px-6'
+                  ? 'h-9 px-4 text-xs'
+                  : 'h-10 px-6'
                   }`}
               >
                 <Link to="/contact">
@@ -93,7 +104,7 @@ const Navbar = ({ isScrolled }: NavbarProps) => {
       </header>
 
       {/* Mobile Menu Overlay */}
-      <div className={`fixed inset-0 z-40 bg-white dark:bg-black transition-all duration-500 ease-[cubic-bezier(0.76,0,0.24,1)] ${isMenuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-full pointer-events-none'
+      <div className={`fixed inset-0 z-40 bg-white dark:bg-black transition-all duration-500 ease-out-expo ${isMenuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-full pointer-events-none'
         }`}>
         <div className="h-full flex flex-col justify-center items-center p-4">
           <nav className="flex flex-col items-center gap-6">
@@ -126,8 +137,8 @@ const NavLink = ({ to, label, isActive, isScrolled }: { to: string; label: strin
   <Link
     to={to}
     className={`relative px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 hover:text-black dark:hover:text-white ${isActive
-        ? 'text-black dark:text-white bg-black/5 dark:bg-white/10'
-        : 'text-gray-500 dark:text-gray-400'
+      ? 'text-black dark:text-white bg-black/5 dark:bg-white/10'
+      : 'text-gray-500 dark:text-gray-400'
       }`}
   >
     {label}

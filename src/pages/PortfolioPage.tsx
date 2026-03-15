@@ -1,53 +1,21 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { ArrowUpRight, Filter, Search, Loader2 } from 'lucide-react';
+import { ArrowUpRight, Search, AlertCircle } from 'lucide-react';
 import SEOHead from '../components/SEOHead';
-
-interface Project {
-  _id: string;
-  slug?: string;
-  title: string;
-  category: string;
-  imageUrls: string[];
-  description: string;
-  technologies: string[];
-}
+import useProjects from '../hooks/useProjects';
 
 const PortfolioPage = () => {
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [filteredProjects, setFilteredProjects] = useState<Project[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const { projects, isLoading, error } = useProjects();
+  const [filteredProjects, setFilteredProjects] = useState(projects);
   const [activeCategory, setActiveCategory] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
 
-  const API_URL = import.meta.env.VITE_API_URL;
-
-  useEffect(() => {
-    const fetchProjects = async () => {
-      try {
-        const response = await fetch(`${API_URL}/portfolio`);
-        const data = await response.json();
-        if (response.ok) {
-          setProjects(data.data);
-          setFilteredProjects(data.data);
-        }
-      } catch (err) {
-        console.error('Failed to fetch projects', err);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchProjects();
-  }, []);
-
   useEffect(() => {
     let result = projects;
-
     if (activeCategory !== 'All') {
       result = result.filter(project => project.category === activeCategory);
     }
-
     if (searchQuery) {
       result = result.filter(project =>
         project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -55,7 +23,6 @@ const PortfolioPage = () => {
         project.technologies.some(tech => tech.toLowerCase().includes(searchQuery.toLowerCase()))
       );
     }
-
     setFilteredProjects(result);
   }, [activeCategory, searchQuery, projects]);
 
@@ -90,7 +57,6 @@ const PortfolioPage = () => {
 
         {/* CONTROLS */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-6 mb-10 sticky top-20 z-30 bg-background/80 backdrop-blur-xl p-4 rounded-[2rem] border border-black/5 dark:border-white/5 shadow-sm animate-fadeInUp" style={{ animationDelay: '0.3s' }}>
-          {/* Categories */}
           <div className="flex gap-2 overflow-x-auto no-scrollbar w-full md:w-auto pb-2 md:pb-0">
             {categories.map((category) => (
               <button
@@ -105,8 +71,6 @@ const PortfolioPage = () => {
               </button>
             ))}
           </div>
-
-          {/* Search */}
           <div className="relative w-full md:w-64">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
             <input
@@ -119,68 +83,79 @@ const PortfolioPage = () => {
           </div>
         </div>
 
-        {/* MASONRY GRID */}
-        {isLoading ? (
-          <div className="flex justify-center py-20">
-            <Loader2 className="w-10 h-10 animate-spin text-gray-400" />
-          </div>
-        ) : filteredProjects.length > 0 ? (
-          <div className="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8 animate-fadeInUp" style={{ animationDelay: '0.4s' }}>
-            {filteredProjects.map((project, idx) => (
-              <Link
-                to={`/portfolio/${project.slug || project._id}`}
-                key={project._id}
-                className="group block break-inside-avoid"
-              >
-                <div className="relative rounded-[2rem] overflow-hidden bg-gray-100 dark:bg-gray-900 shadow-sm hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
-                  <img
-                    src={project.imageUrls[0]}
-                    alt={project.title}
-                    className="w-full aspect-[4/3] object-cover transition-transform duration-700 group-hover:scale-105"
-                  />
-
-                  {/* Overlay */}
-                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-8">
-                    <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                      <div className="text-xs font-bold text-gray-300 uppercase tracking-wider mb-2">
-                        {project.category}
-                      </div>
-                      <h3 className="text-2xl font-bold text-white mb-4 leading-tight">
-                        {project.title}
-                      </h3>
-                      <div className="flex flex-wrap gap-2">
-                        {project.technologies.slice(0, 3).map((tech) => (
-                          <span key={tech} className="px-2 py-1 rounded-md bg-white/20 text-white text-xs font-bold backdrop-blur-sm">
-                            {tech}
-                          </span>
-                        ))}
-                        {project.technologies.length > 3 && (
-                          <span className="px-2 py-1 rounded-md bg-white/20 text-white text-xs font-bold backdrop-blur-sm">
-                            +{project.technologies.length - 3}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-
-                    <div className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white text-black flex items-center justify-center transform scale-0 group-hover:scale-100 transition-transform duration-300 delay-100">
-                      <ArrowUpRight className="w-5 h-5" />
-                    </div>
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-20">
-            <p className="text-xl text-gray-500">No projects found matching your criteria.</p>
-            <Button
-              variant="link"
-              onClick={() => { setActiveCategory('All'); setSearchQuery(''); }}
-              className="mt-4"
-            >
-              Clear filters
+        {/* Error State */}
+        {error && (
+          <div className="flex flex-col items-center justify-center py-24 gap-4 text-center">
+            <AlertCircle className="w-12 h-12 text-red-400" />
+            <h2 className="text-xl font-bold text-gray-800 dark:text-gray-200">Gagal memuat proyek</h2>
+            <p className="text-sm text-gray-500 max-w-sm">{error}</p>
+            <Button variant="outline" onClick={() => window.location.reload()} className="rounded-full mt-2">
+              Coba Lagi
             </Button>
           </div>
+        )}
+
+        {/* Loading */}
+        {isLoading && !error && (
+          <div className="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8">
+            {[...Array(6)].map((_, i) => (
+              <div key={i} className="break-inside-avoid rounded-[2rem] bg-gray-100 dark:bg-gray-900 animate-pulse aspect-[4/3]" />
+            ))}
+          </div>
+        )}
+
+        {/* MASONRY GRID */}
+        {!isLoading && !error && (
+          filteredProjects.length > 0 ? (
+            <div className="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8 animate-fadeInUp" style={{ animationDelay: '0.4s' }}>
+              {filteredProjects.map((project) => (
+                <Link
+                  to={`/portfolio/${project.slug || project._id}`}
+                  key={project._id}
+                  className="group block break-inside-avoid"
+                >
+                  <div className="relative rounded-[2rem] overflow-hidden bg-gray-100 dark:bg-gray-900 shadow-sm hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
+                    <img
+                      src={project.imageUrls[0]}
+                      alt={project.title}
+                      loading="lazy"
+                      className="w-full aspect-[4/3] object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-8">
+                      <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                        <div className="text-xs font-bold text-gray-300 uppercase tracking-wider mb-2">{project.category}</div>
+                        <h3 className="text-2xl font-bold text-white mb-4 leading-tight">{project.title}</h3>
+                        <div className="flex flex-wrap gap-2">
+                          {project.technologies.slice(0, 3).map((tech) => (
+                            <span key={tech} className="px-2 py-1 rounded-md bg-white/20 text-white text-xs font-bold backdrop-blur-sm">{tech}</span>
+                          ))}
+                          {project.technologies.length > 3 && (
+                            <span className="px-2 py-1 rounded-md bg-white/20 text-white text-xs font-bold backdrop-blur-sm">
+                              +{project.technologies.length - 3}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      <div className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white text-black flex items-center justify-center transform scale-0 group-hover:scale-100 transition-transform duration-300 delay-100">
+                        <ArrowUpRight className="w-5 h-5" />
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-20">
+              <p className="text-xl text-gray-500">No projects found matching your criteria.</p>
+              <Button
+                variant="link"
+                onClick={() => { setActiveCategory('All'); setSearchQuery(''); }}
+                className="mt-4"
+              >
+                Clear filters
+              </Button>
+            </div>
+          )
         )}
       </div>
     </div>
